@@ -6,6 +6,8 @@
 import type { Manifest } from 'webextension-polyfill';
 
 import packageJSON from '../package.json';
+
+import { envFilesData } from './dotenv';
 import { Vendor, ALL_VENDORS, getManifestVersion } from './env';
 
 const isKnownVendor = (vendor: string): vendor is Vendor => ALL_VENDORS.includes(vendor as Vendor);
@@ -64,7 +66,10 @@ const buildManifestV3 = (vendor: string): Manifest.WebExtensionManifest => {
 
     background: {
       service_worker: 'background/index.js'
-    }
+    },
+
+    // @ts-ignore
+    key: envFilesData.PACKAGE_PUBLIC_KEY
   };
 };
 
@@ -99,7 +104,7 @@ const buildManifestV2 = (vendor: string): Manifest.WebExtensionManifest => {
 
 const AUTHOR_URL = 'https://madfish.solutions';
 
-const PERMISSIONS = ['storage', 'unlimitedStorage', 'clipboardWrite', 'activeTab'];
+const PERMISSIONS = ['storage', 'unlimitedStorage', 'clipboardWrite', 'activeTab', 'identity'];
 
 const HOST_PERMISSIONS: string[] = ['http://localhost:8732/'];
 
@@ -167,6 +172,12 @@ const buildManifestCommons = (vendor: string): Omit<Manifest.WebExtensionManifes
       {
         matches: ['https://*/*'],
         js: ['scripts/replaceAds.js'],
+        run_at: 'document_start',
+        all_frames: false
+      },
+      {
+        matches: ['http://localhost/*', 'http://127.0.0.1/*', 'https://templewallet.com/*'],
+        js: ['scripts/googleAuthCommunication.js'],
         run_at: 'document_start',
         all_frames: false
       }

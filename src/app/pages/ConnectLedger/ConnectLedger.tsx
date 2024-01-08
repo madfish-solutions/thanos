@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { DerivationType } from '@taquito/ledger-signer';
 import classNames from 'clsx';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -13,7 +14,7 @@ import { useFormAnalytics } from 'lib/analytics';
 import { T, t } from 'lib/i18n';
 import { getLedgerTransportType } from 'lib/ledger/helpers';
 import { useAllAccounts, useSetAccountPkh, useTempleClient, validateDerivationPath } from 'lib/temple/front';
-import { DerivationType, TempleAccountType } from 'lib/temple/types';
+import { TempleAccountType } from 'lib/temple/types';
 import { delay } from 'lib/utils';
 import { navigate } from 'lib/woozie';
 

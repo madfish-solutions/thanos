@@ -161,7 +161,8 @@ const scriptsConfig = (() => {
 
   config.entry = {
     contentScript: Path.join(PATHS.SOURCE, 'contentScript.ts'),
-    replaceAds: Path.join(PATHS.SOURCE, 'replaceAds.ts')
+    replaceAds: Path.join(PATHS.SOURCE, 'replaceAds.ts'),
+    googleAuthCommunication: Path.join(PATHS.SOURCE, 'googleAuthCommunication.ts')
   };
 
   if (BACKGROUND_IS_WORKER)

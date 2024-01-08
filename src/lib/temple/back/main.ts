@@ -241,6 +241,15 @@ const processRequest = async (req: TempleRequest, port: Runtime.Port): Promise<T
         }
       }
       break;
+
+    case TempleMessageType.GoogleAuthTokenReceivedRequest:
+      intercom.broadcast({
+        type: TempleMessageType.GoogleAuthTokenReceived,
+        authToken: req.authToken
+      });
+      return {
+        type: TempleMessageType.GoogleAuthTokenReceiveAcknowledge
+      };
   }
 };
 

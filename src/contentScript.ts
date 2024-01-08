@@ -2,9 +2,10 @@ import { TemplePageMessage, TemplePageMessageType } from '@temple-wallet/dapp/di
 import browser from 'webextension-polyfill';
 
 import { ContentScriptType, WEBSITES_ANALYTICS_ENABLED } from 'lib/constants';
-import { IntercomClient } from 'lib/intercom/client';
 import { serealizeError } from 'lib/intercom/helpers';
 import { TempleMessageType, TempleResponse } from 'lib/temple/types';
+
+import { getIntercom } from './intercom-client';
 
 const TRACK_URL_CHANGE_INTERVAL = 5000;
 
@@ -181,12 +182,4 @@ function beaconRequest(evt: MessageEvent) {
 function send(msg: TemplePageMessage | LegacyPageMessage | BeaconPageMessage, targetOrigin: string) {
   if (!targetOrigin || targetOrigin === '*') return;
   window.postMessage(msg, targetOrigin);
-}
-
-let intercom: IntercomClient;
-function getIntercom() {
-  if (!intercom) {
-    intercom = new IntercomClient();
-  }
-  return intercom;
 }

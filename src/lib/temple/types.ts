@@ -1,6 +1,6 @@
-import { DerivationType } from '@taquito/ledger-signer';
-import { Estimate } from '@taquito/taquito';
-import { TempleDAppMetadata, TempleDAppNetwork } from '@temple-wallet/dapp/dist/types';
+import type { DerivationType } from '@taquito/ledger-signer';
+import type { Estimate } from '@taquito/taquito';
+import type { TempleDAppMetadata, TempleDAppNetwork } from '@temple-wallet/dapp/dist/types';
 
 import type { TID } from 'lib/i18n/types';
 
@@ -221,13 +221,15 @@ export type TempleDAppPayload = TempleDAppConnectPayload | TempleDAppOperationsP
  */
 
 export enum TempleMessageType {
-  // Aknowledge
+  // Acknowledge
   Acknowledge = 'TEMPLE_CONNECT_AKNOWLEDGE',
+  GoogleAuthTokenReceiveAcknowledge = 'GOOGLE_AUTH_TOKEN_RECEIVE_ACKNOWLEDGE',
   // Notifications
   StateUpdated = 'TEMPLE_STATE_UPDATED',
   ConfirmationRequested = 'TEMPLE_CONFIRMATION_REQUESTED',
   ConfirmationExpired = 'TEMPLE_CONFIRMATION_EXPIRED',
   SelectedAccountChanged = 'TEMPLE_SELECTED_ACCOUNT_CHANGED',
+  GoogleAuthTokenReceived = 'GOOGLE_AUTH_TOKEN_RECEIVED',
   // Request-Response pairs
   GetStateRequest = 'TEMPLE_GET_STATE_REQUEST',
   GetStateResponse = 'TEMPLE_GET_STATE_RESPONSE',
@@ -288,14 +290,16 @@ export enum TempleMessageType {
   SendTrackEventRequest = 'SEND_TRACK_EVENT_REQUEST',
   SendTrackEventResponse = 'SEND_TRACK_EVENT_RESPONSE',
   SendPageEventRequest = 'SEND_PAGE_EVENT_REQUEST',
-  SendPageEventResponse = 'SEND_PAGE_EVENT_RESPONSE'
+  SendPageEventResponse = 'SEND_PAGE_EVENT_RESPONSE',
+  GoogleAuthTokenReceivedRequest = 'GOOGLE_AUTH_TOKEN_RECEIVED_REQUEST'
 }
 
 export type TempleNotification =
   | TempleStateUpdated
   | TempleConfirmationRequested
   | TempleConfirmationExpired
-  | TempleSelectedAccountChanged;
+  | TempleSelectedAccountChanged
+  | TempleGoogleAuthTokenReceived;
 
 export type TempleRequest =
   | TempleAcknowledgeRequest
@@ -328,11 +332,13 @@ export type TempleRequest =
   | TempleGetAllDAppSessionsRequest
   | TempleRemoveDAppSessionRequest
   | TempleSendTrackEventRequest
-  | TempleSendPageEventRequest;
+  | TempleSendPageEventRequest
+  | TempleGoogleAuthTokenReceivedRequest;
 
 export type TempleResponse =
   | TempleGetStateResponse
   | TempleAcknowledgeResponse
+  | TempleGoogleAuthTokenReceiveAcknowledgeResponse
   | TempleNewWalletResponse
   | TempleUnlockResponse
   | TempleLockResponse
@@ -388,6 +394,11 @@ interface TempleSelectedAccountChanged extends TempleMessageBase {
   accountPublicKeyHash: string;
 }
 
+interface TempleGoogleAuthTokenReceived extends TempleMessageBase {
+  type: TempleMessageType.GoogleAuthTokenReceived;
+  authToken: string;
+}
+
 interface TempleGetStateRequest extends TempleMessageBase {
   type: TempleMessageType.GetStateRequest;
 }
@@ -401,6 +412,10 @@ interface TempleAcknowledgeResponse extends TempleMessageBase {
   type: TempleMessageType.Acknowledge;
   payload: string;
   encrypted?: boolean;
+}
+
+interface TempleGoogleAuthTokenReceiveAcknowledgeResponse extends TempleMessageBase {
+  type: TempleMessageType.GoogleAuthTokenReceiveAcknowledge;
 }
 
 interface TempleNewWalletRequest extends TempleMessageBase {
@@ -695,6 +710,11 @@ interface TempleRemoveDAppSessionRequest extends TempleMessageBase {
 interface TempleRemoveDAppSessionResponse extends TempleMessageBase {
   type: TempleMessageType.DAppRemoveSessionResponse;
   sessions: TempleDAppSessions;
+}
+
+interface TempleGoogleAuthTokenReceivedRequest extends TempleMessageBase {
+  type: TempleMessageType.GoogleAuthTokenReceivedRequest;
+  authToken: string;
 }
 
 export type OperationsPreview = any[] | { branch: string; contents: any[] };
