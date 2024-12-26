@@ -59,6 +59,9 @@ export const EnvVars = {
   SMARTY_970_250_PLACEMENT_ID: process.env.SMARTY_970_250_PLACEMENT_ID!,
   SMARTY_320_100_PLACEMENT_ID: process.env.SMARTY_320_100_PLACEMENT_ID!,
   SMARTY_300_600_PLACEMENT_ID: process.env.SMARTY_300_600_PLACEMENT_ID!,
+  BITMEDIA_SMALL_PLACEMENT_SLUG: process.env.BITMEDIA_SMALL_PLACEMENT_SLUG!,
+  BITMEDIA_HIGH_PLACEMENT_SLUG: process.env.BITMEDIA_HIGH_PLACEMENT_SLUG!,
+  BITMEDIA_WIDE_PLACEMENT_SLUG: process.env.BITMEDIA_WIDE_PLACEMENT_SLUG!,
   /** Whether ads stubs should be added if loading failed. Set it to `true` only for testing */
   USE_ADS_STUBS: process.env.USE_ADS_STUBS === 'true',
   TAKE_ADS_TOKEN: process.env.TAKE_ADS_TOKEN!

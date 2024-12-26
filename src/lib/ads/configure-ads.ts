@@ -19,7 +19,7 @@ import { importExtensionAdsModule } from './import-extension-ads-module';
 // build runs without errors.
 interface AdSource {
   shouldNotUseStrictContainerLimits?: boolean;
-  providerName: 'Temple' | 'Persona' | 'HypeLab' | 'SmartyAds';
+  providerName: 'Temple' | 'Persona' | 'HypeLab' | 'SmartyAds' | 'Bitmedia';
   native?: boolean;
   slug: string;
   categories?: string[];
@@ -124,6 +124,51 @@ const buildNativeAdsMeta = (containerWidth: number, containerHeight: number) =>
   ].filter(isTruthy);
 
 const bannerAdsMetaBase: (AdMetadata | false)[] = [
+  {
+    source: {
+      providerName: 'Bitmedia' as const,
+      native: false,
+      slug: EnvVars.BITMEDIA_WIDE_PLACEMENT_SLUG
+    },
+    dimensions: {
+      width: 728,
+      height: 90,
+      minContainerWidth: 727,
+      minContainerHeight: 89,
+      maxContainerWidth: Infinity,
+      maxContainerHeight: 300
+    }
+  },
+  {
+    source: {
+      providerName: 'Bitmedia' as const,
+      slug: EnvVars.BITMEDIA_HIGH_PLACEMENT_SLUG
+    },
+    dimensions: {
+      width: 300,
+      height: 250,
+      minContainerWidth: 299,
+      minContainerHeight: 249,
+      maxContainerWidth: 700,
+      maxContainerHeight: Infinity
+    }
+  },
+  {
+    source: {
+      providerName: 'Bitmedia' as const,
+      native: false,
+      slug: EnvVars.BITMEDIA_SMALL_PLACEMENT_SLUG,
+      shouldNotUseStrictContainerLimits: true
+    },
+    dimensions: {
+      width: 320,
+      height: 50,
+      minContainerWidth: 319,
+      minContainerHeight: 49,
+      maxContainerWidth: 420,
+      maxContainerHeight: 130
+    }
+  },
   {
     source: {
       providerName: 'SmartyAds' as const,
