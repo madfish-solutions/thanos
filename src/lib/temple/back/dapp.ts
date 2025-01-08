@@ -35,7 +35,8 @@ import {
   TempleRequest,
   TempleNotification,
   TEZOS_MAINNET_CHAIN_ID,
-  TempleTezosChainId
+  TempleTezosChainId,
+  TempleTezosDAppPayload
 } from 'lib/temple/types';
 import { isValidTezosAddress } from 'lib/tezos';
 import { TezosChainSpecs } from 'temple/front/chains-specs';
@@ -196,14 +197,15 @@ const handleIntercomRequest = async (
   resolve: any,
   reject: any
 ) => {
-  if (confirmReq?.type === TempleMessageType.DAppOpsConfirmationRequest && confirmReq?.id === id) {
-    if (confirmReq.confirmed) {
+  if (confirmReq?.type === TempleMessageType.DAppTezosOpsConfirmationRequest && confirmReq?.id === id) {
+    const { modifiedStorageLimit, modifiedTotalFee, confirmed } = confirmReq;
+    if (confirmed) {
       try {
         const op = await withUnlocked(({ vault }) =>
           vault.sendOperations(
             dApp.pkh,
             networkRpc,
-            buildFinalOpParams(req.opParams, confirmReq.modifiedTotalFee, confirmReq.modifiedStorageLimit)
+            buildFinalOpParams(req.opParams, modifiedTotalFee, modifiedStorageLimit)
           )
         );
 
@@ -370,7 +372,7 @@ export async function removeDApps(origins: string[]) {
   return result;
 }
 
-async function requestConfirm(params: Omit<RequestConfirmParams, 'transformPayload'>) {
+async function requestConfirm(params: Omit<RequestConfirmParams<TempleTezosDAppPayload>, 'transformPayload'>) {
   return genericRequestConfirm({
     ...params,
     transformPayload: async payload => {

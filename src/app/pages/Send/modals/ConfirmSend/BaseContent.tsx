@@ -1,24 +1,19 @@
-import React, { useCallback, useRef } from 'react';
+import React from 'react';
 
 import { SubmitHandler, useFormContext } from 'react-hook-form-v7';
 
+import { HashChip } from 'app/atoms/HashChip';
 import { ActionsButtonsBox } from 'app/atoms/PageModal/actions-buttons-box';
-import SegmentedControl from 'app/atoms/SegmentedControl';
-import Spinner from 'app/atoms/Spinner/Spinner';
 import { StyledButton } from 'app/atoms/StyledButton';
+import { TransactionTabs } from 'app/templates/TransactionTabs';
+import { DisplayedFeeOptions, FeeOptionLabel, Tab, TxParamsFormData } from 'app/templates/TransactionTabs/types';
 import { T } from 'lib/i18n';
 import { OneOfChains } from 'temple/front';
-import { TempleChainKind } from 'temple/types';
 
 import { CurrentAccount } from './components/CurrentAccount';
 import { Header } from './components/Header';
-import { AdvancedTab } from './tabs/Advanced';
-import { DetailsTab } from './tabs/Details';
-import { ErrorTab } from './tabs/Error';
-import { FeeTab } from './tabs/Fee';
-import { DisplayedFeeOptions, FeeOptionLabel, TxParamsFormData } from './types';
 
-export type Tab = 'details' | 'fee' | 'advanced' | 'error';
+export type { Tab } from 'app/templates/TransactionTabs/types';
 
 interface BaseContentProps<T extends TxParamsFormData> {
   network: OneOfChains;
@@ -53,13 +48,7 @@ export const BaseContent = <T extends TxParamsFormData>({
   displayedStorageFee,
   displayedFeeOptions
 }: BaseContentProps<T>) => {
-  const { handleSubmit, formState } = useFormContext<T>();
-
-  const errorTabRef = useRef<HTMLDivElement>(null);
-
-  const goToFeeTab = useCallback(() => setSelectedTab('fee'), [setSelectedTab]);
-
-  const isEvm = network.kind === TempleChainKind.EVM;
+  const { formState } = useFormContext<T>();
 
   return (
     <>
@@ -68,77 +57,23 @@ export const BaseContent = <T extends TxParamsFormData>({
 
         <CurrentAccount />
 
-        <SegmentedControl<Tab>
-          name="confirm-send-tabs"
-          activeSegment={selectedTab}
-          setActiveSegment={setSelectedTab}
-          controlRef={useRef<HTMLDivElement>(null)}
-          className="mt-6 mb-4"
-          segments={[
-            {
-              label: 'Details',
-              value: 'details',
-              ref: useRef<HTMLDivElement>(null)
-            },
-            {
-              label: 'Fee',
-              value: 'fee',
-              ref: useRef<HTMLDivElement>(null)
-            },
-            {
-              label: 'Advanced',
-              value: 'advanced',
-              ref: useRef<HTMLDivElement>(null)
-            },
-            ...(latestSubmitError
-              ? [
-                  {
-                    label: 'Error',
-                    value: 'error' as Tab,
-                    ref: errorTabRef
-                  }
-                ]
-              : [])
-          ]}
+        <TransactionTabs<T>
+          network={network}
+          nativeAssetSlug={assetSlug}
+          selectedTab={selectedTab}
+          setSelectedTab={setSelectedTab}
+          selectedFeeOption={selectedFeeOption}
+          latestSubmitError={latestSubmitError}
+          onFeeOptionSelect={onFeeOptionSelect}
+          onSubmit={onSubmit}
+          displayedFee={displayedFee}
+          displayedStorageFee={displayedStorageFee}
+          displayedFeeOptions={displayedFeeOptions}
+          formId="confirm-form"
+          tabsName="confirm-send-tabs"
+          destinationName={<T id="recipient" />}
+          destinationValue={<HashChip hash={recipientAddress} />}
         />
-
-        <form id="confirm-form" className="flex-1 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-          {displayedFeeOptions ? (
-            (() => {
-              switch (selectedTab) {
-                case 'fee':
-                  return (
-                    <FeeTab
-                      network={network}
-                      assetSlug={assetSlug}
-                      displayedFeeOptions={displayedFeeOptions}
-                      selectedOption={selectedFeeOption}
-                      onOptionSelect={onFeeOptionSelect}
-                    />
-                  );
-                case 'advanced':
-                  return <AdvancedTab isEvm={isEvm} />;
-                case 'error':
-                  return <ErrorTab isEvm={isEvm} message={latestSubmitError} />;
-                default:
-                  return (
-                    <DetailsTab
-                      network={network}
-                      assetSlug={assetSlug}
-                      recipientAddress={recipientAddress}
-                      displayedFee={displayedFee}
-                      displayedStorageFee={displayedStorageFee}
-                      goToFeeTab={goToFeeTab}
-                    />
-                  );
-              }
-            })()
-          ) : (
-            <div className="flex justify-center my-10">
-              <Spinner theme="gray" className="w-20" />
-            </div>
-          )}
-        </form>
       </div>
 
       <ActionsButtonsBox flexDirection="row" shouldChangeBottomShift={false}>

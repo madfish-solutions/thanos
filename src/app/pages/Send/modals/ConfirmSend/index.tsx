@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 
 import { PageModal } from 'app/atoms/PageModal';
 import { EvmReviewData, ReviewData } from 'app/pages/Send/form/interfaces';
+import { EvmEstimationDataProvider, TezosEstimationDataProvider } from 'app/templates/TransactionTabs/context';
 import { TempleChainKind } from 'temple/types';
 
-import { EvmEstimationDataProvider, TezosEstimationDataProvider } from './context';
 import { EvmContent } from './EvmContent';
 import { TezosContent } from './TezosContent';
 

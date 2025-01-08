@@ -1,3 +1,5 @@
+import { Estimate } from '@taquito/taquito';
+import BigNumber from 'bignumber.js';
 import { FeeValues, FeeValuesEIP1559, FeeValuesLegacy } from 'viem';
 
 export interface EvmTxParamsFormData {
@@ -16,6 +18,11 @@ export interface TezosTxParamsFormData {
 }
 
 export type TxParamsFormData = EvmTxParamsFormData | TezosTxParamsFormData;
+
+export interface TezosEstimationData {
+  baseFee: BigNumber;
+  estimates: Estimate;
+}
 
 export type FeeOptionLabel = 'slow' | 'mid' | 'fast';
 
@@ -44,3 +51,5 @@ interface EvmEip1559FeeOptions extends EvmFeeOptionsBase {
 }
 
 export type EvmFeeOptions = EvmLegacyFeeOptions | EvmEip1559FeeOptions;
+
+export type Tab = 'details' | 'fee' | 'advanced' | 'error';

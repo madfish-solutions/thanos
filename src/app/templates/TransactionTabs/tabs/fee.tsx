@@ -11,11 +11,10 @@ import { OneOfChains } from 'temple/front';
 import { DEFAULT_EVM_CURRENCY } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 
+import { FeeOptions } from '../components/fee-options';
 import { useEvmEstimationDataState, useTezosEstimationDataState } from '../context';
 import { DisplayedFeeOptions, EvmTxParamsFormData, FeeOptionLabel, TezosTxParamsFormData } from '../types';
 import { getTezosFeeOption, validateNonZero } from '../utils';
-
-import { FeeOptions } from './components/FeeOptions';
 
 interface FeeTabProps {
   network: OneOfChains;

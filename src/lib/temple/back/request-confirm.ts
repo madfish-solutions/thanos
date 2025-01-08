@@ -5,11 +5,11 @@ import { TempleDAppPayload, TempleMessageType, TempleRequest } from 'lib/temple/
 
 import { intercom } from './defaults';
 
-export interface RequestConfirmParams {
+export interface RequestConfirmParams<T extends TempleDAppPayload> {
   id: string;
-  payload: TempleDAppPayload;
+  payload: T;
   onDecline: () => void;
-  transformPayload?: (payload: TempleDAppPayload) => Promise<TempleDAppPayload>;
+  transformPayload?: (payload: T) => Promise<T>;
   handleIntercomRequest: (req: TempleRequest, decline: () => void) => Promise<any>;
 }
 
@@ -17,13 +17,13 @@ const CONFIRM_WINDOW_WIDTH = 384;
 const CONFIRM_WINDOW_HEIGHT = 600;
 const AUTODECLINE_AFTER = 120_000;
 
-export async function requestConfirm({
+export async function requestConfirm<T extends TempleDAppPayload>({
   id,
   payload,
   onDecline,
   transformPayload = identity,
   handleIntercomRequest
-}: RequestConfirmParams) {
+}: RequestConfirmParams<T>) {
   let closing = false;
   const close = async () => {
     if (closing) return;

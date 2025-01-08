@@ -9,6 +9,9 @@ import { useDebounce } from 'use-debounce';
 import { CLOSE_ANIMATION_TIMEOUT } from 'app/atoms/PageModal';
 import { TezosReviewData } from 'app/pages/Send/form/interfaces';
 import { TezosEstimationData, useTezosEstimationData } from 'app/pages/Send/hooks/use-tezos-estimation-data';
+import { useTezosEstimationDataState } from 'app/templates/TransactionTabs/context';
+import { DisplayedFeeOptions, FeeOptionLabel, TezosTxParamsFormData } from 'app/templates/TransactionTabs/types';
+import { getTezosFeeOption } from 'app/templates/TransactionTabs/utils';
 import { toastError, toastSuccess } from 'app/toaster';
 import { TEZ_TOKEN_SLUG } from 'lib/assets';
 import { toTransferParams } from 'lib/assets/contract.utils';
@@ -25,9 +28,6 @@ import { getTezosFastRpcClient, michelEncoder } from 'temple/tezos';
 
 import { BaseContent, Tab } from './BaseContent';
 import { DEFAULT_INPUT_DEBOUNCE } from './contants';
-import { useTezosEstimationDataState } from './context';
-import { DisplayedFeeOptions, FeeOptionLabel, TezosTxParamsFormData } from './types';
-import { getTezosFeeOption } from './utils';
 
 interface TezosContentProps {
   data: TezosReviewData;

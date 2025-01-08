@@ -3887,6 +3887,12 @@
   "disabledInTestnetMode": {
     "message": "Disabled in Testnet Mode"
   },
+  "unknownTransaction": {
+    "message": "Unknown Transaction"
+  },
+  "interactionWith": {
+    "message": "Interaction With"
+  },
   "marketPageDisclaimer": {
     "message": "Temple integrated third-party solutions to buy or exchange crypto."
   }

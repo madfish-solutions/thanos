@@ -12,12 +12,12 @@ import ViewsSwitcher from 'app/templates/ViewsSwitcher/ViewsSwitcher';
 import { TEZ_TOKEN_SLUG, toTokenSlug } from 'lib/assets';
 import { T, t } from 'lib/i18n';
 import { tryParseExpenses } from 'lib/temple/front';
-import { TempleTezosDAppOperationsPayload, TempleTezosDAppSignPayload } from 'lib/temple/types';
+import { TempleTezosDAppOperationsPayload } from 'lib/temple/types';
 import { TezosNetworkEssentials } from 'temple/networks';
 
 interface TezosOperationViewProps {
   network: TezosNetworkEssentials;
-  payload: TempleTezosDAppOperationsPayload | TempleTezosDAppSignPayload;
+  payload: TempleTezosDAppOperationsPayload;
   error?: any;
   modifyFeeAndLimit?: ModifyFeeAndLimit;
 }
@@ -28,16 +28,7 @@ const TezosOperationView: FC<TezosOperationViewProps> = ({
   error: payloadError,
   modifyFeeAndLimit
 }) => {
-  const contentToParse = useMemo(() => {
-    switch (payload.type) {
-      case 'confirm_operations':
-        return (payload.rawToSign ?? payload.opParams) || [];
-      case 'sign':
-        return payload.preview || [];
-      default:
-        return [];
-    }
-  }, [payload]);
+  const contentToParse = useMemo(() => (payload.rawToSign ?? payload.opParams) || [], [payload]);
 
   const rawExpensesData = useMemo(
     () => tryParseExpenses(contentToParse, payload.sourcePkh),
@@ -99,94 +90,47 @@ const TezosOperationView: FC<TezosOperationViewProps> = ({
 
   const [spFormat, setSpFormat] = useState(signPayloadFormats[0]);
 
-  if (payload.type === 'sign' && payload.preview) {
-    return (
-      <div className="flex flex-col w-full">
-        <h2 className="mb-3 leading-tight flex items-center">
-          <span className="mr-2 text-base font-semibold text-gray-700">
-            <T id="payloadToSign" />
-          </span>
+  return (
+    <div className="flex flex-col w-full">
+      <h2 className="mb-3 leading-tight flex items-center">
+        <span className="mr-2 text-base font-semibold text-gray-700">
+          <T id="operations" />
+        </span>
 
-          <div className="flex-1" />
+        <div className="flex-1" />
 
+        {signPayloadFormats.length > 1 && (
           <ViewsSwitcher activeItem={spFormat} items={signPayloadFormats} onChange={setSpFormat} />
-        </h2>
+        )}
+      </h2>
 
-        <OperationsBanner
-          opParams={payload.preview}
-          className={classNames(spFormat.key !== 'raw' && 'hidden')}
-          jsonViewStyle={{ height: '11rem', maxHeight: '100%', overflow: 'auto' }}
-        />
-
+      {payload.bytesToSign && (
         <RawPayloadView
-          payload={payload.payload}
+          payload={payload.bytesToSign}
           className={classNames(spFormat.key !== 'bytes' && 'hidden')}
           style={{ marginBottom: 0, height: '11rem' }}
+          fieldWrapperBottomMargin={false}
         />
+      )}
 
-        <div className={classNames(spFormat.key !== 'preview' && 'hidden')}>
-          <ExpensesView tezosNetwork={network} error={payloadError} expenses={expensesData} />
-        </div>
-      </div>
-    );
-  }
-
-  if (payload.type === 'sign') {
-    return (
-      <RawPayloadView
-        label={t('payloadToSign')}
-        payload={payload.payload}
-        style={{ marginBottom: 0, height: '11rem' }}
-        fieldWrapperBottomMargin={false}
+      <OperationsBanner
+        opParams={payload.rawToSign ?? payload.opParams}
+        className={classNames(spFormat.key !== 'raw' && 'hidden')}
+        jsonViewStyle={signPayloadFormats.length > 1 ? { height: '11rem' } : undefined}
+        label={null}
       />
-    );
-  }
 
-  if (payload.type === 'confirm_operations') {
-    return (
-      <div className="flex flex-col w-full">
-        <h2 className="mb-3 leading-tight flex items-center">
-          <span className="mr-2 text-base font-semibold text-gray-700">
-            <T id="operations" />
-          </span>
-
-          <div className="flex-1" />
-
-          {signPayloadFormats.length > 1 && (
-            <ViewsSwitcher activeItem={spFormat} items={signPayloadFormats} onChange={setSpFormat} />
-          )}
-        </h2>
-
-        {payload.bytesToSign && (
-          <RawPayloadView
-            payload={payload.bytesToSign}
-            className={classNames(spFormat.key !== 'bytes' && 'hidden')}
-            style={{ marginBottom: 0, height: '11rem' }}
-            fieldWrapperBottomMargin={false}
-          />
-        )}
-
-        <OperationsBanner
-          opParams={payload.rawToSign ?? payload.opParams}
-          className={classNames(spFormat.key !== 'raw' && 'hidden')}
-          jsonViewStyle={signPayloadFormats.length > 1 ? { height: '11rem' } : undefined}
-          label={null}
+      <div className={classNames(spFormat.key !== 'preview' && 'hidden')}>
+        <ExpensesView
+          tezosNetwork={network}
+          expenses={expensesData}
+          estimates={payload.estimates}
+          modifyFeeAndLimit={modifyFeeAndLimit}
+          error={payloadError}
         />
-
-        <div className={classNames(spFormat.key !== 'preview' && 'hidden')}>
-          <ExpensesView
-            tezosNetwork={network}
-            expenses={expensesData}
-            estimates={payload.estimates}
-            modifyFeeAndLimit={modifyFeeAndLimit}
-            error={payloadError}
-          />
-        </div>
       </div>
-    );
-  }
-
-  return null;
+    </div>
+  );
 };
 
 export default TezosOperationView;

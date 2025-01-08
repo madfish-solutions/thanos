@@ -11,11 +11,10 @@ import { AssetMetadataBase } from 'lib/metadata';
 import { useTypedSWR } from 'lib/swr';
 import { mutezToTz } from 'lib/temple/helpers';
 import { tezosManagerKeyHasManager } from 'lib/tezos';
+import { checkZeroBalance } from 'lib/utils/check-zero-balance';
 import { AccountForTezos } from 'temple/accounts';
 
 import { estimateTezosMaxFee } from '../form/utils';
-
-import { checkZeroBalance } from './utils';
 
 export interface TezosEstimationData {
   baseFee: BigNumber;

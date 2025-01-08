@@ -16,15 +16,17 @@ export const evmAddressValidationSchema = () =>
     });
 
 const HEX_STRING_REGEX = /^0x([0-9a-f]*)$/i;
-export const hexStringSchema = () =>
-  stringSchema<HexString>().test('valid', 'Invalid hex string', value => {
+const hexStringSchema = () => stringSchema<HexString>().matches(HEX_STRING_REGEX, 'Invalid hex string');
+
+export const hexByteStringSchema = () =>
+  hexStringSchema().test('even-digits', 'String must contain even amount of digits', value => {
     if (value === undefined) {
       return true;
     }
 
     const match = value.match(HEX_STRING_REGEX);
 
-    return match !== null && match[1].length % 2 === 0;
+    return !match || match[1].length % 2 === 0;
   });
 
 const typedDataTypeSchema = arraySchema()
@@ -39,7 +41,7 @@ const typedDataTypeSchema = arraySchema()
 const typedDataDomainSchema: ObjectSchema<TypedDataDomain> = objectSchema().shape({
   chainId: numberSchema().integer().positive(),
   name: stringSchema().min(1),
-  salt: hexStringSchema(),
+  salt: hexByteStringSchema(),
   verifyingContract: evmAddressValidationSchema(),
   version: stringSchema().min(1)
 });

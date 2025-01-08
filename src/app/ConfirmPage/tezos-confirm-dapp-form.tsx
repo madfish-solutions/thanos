@@ -8,7 +8,7 @@ import { useSafeState } from 'lib/ui/hooks';
 import { getAccountForTezos, isAccountOfActableType } from 'temple/accounts';
 import { useAllAccounts, useTezosChainIdLoadingValue } from 'temple/front';
 
-import { ConfirmDAppForm } from './confirm-dapp-form';
+import { ConfirmDAppForm, ConfirmDAppFormContentProps } from './confirm-dapp-form';
 import { TezosPayloadContent } from './payload-content';
 
 interface TezosConfirmDAppFormProps {
@@ -17,7 +17,7 @@ interface TezosConfirmDAppFormProps {
 }
 
 export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, id }) => {
-  const { confirmDAppPermission, confirmDAppOperation, confirmDAppSign } = useTempleClient();
+  const { confirmDAppPermission, confirmTezosDAppOperation, confirmDAppSign } = useTempleClient();
 
   const allAccountsStored = useAllAccounts();
   const allAccounts = useMemo(
@@ -83,7 +83,7 @@ export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, 
           return confirmDAppPermission(id, confimed, accountPkh);
 
         case 'confirm_operations':
-          return confirmDAppOperation(id, confimed, modifiedTotalFeeValue - revealFee, modifiedStorageLimitValue);
+          return confirmTezosDAppOperation(id, confimed, modifiedTotalFeeValue - revealFee, modifiedStorageLimitValue);
 
         case 'sign':
           return confirmDAppSign(id, confimed);
@@ -93,7 +93,7 @@ export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, 
       payload.type,
       confirmDAppPermission,
       id,
-      confirmDAppOperation,
+      confirmTezosDAppOperation,
       modifiedTotalFeeValue,
       revealFee,
       modifiedStorageLimitValue,
@@ -102,7 +102,7 @@ export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, 
   );
 
   const renderPayload = useCallback(
-    (openAccountsModal: EmptyFn, selectedAccount: StoredAccount) => (
+    ({ openAccountsModal, selectedAccount }: ConfirmDAppFormContentProps) => (
       <TezosPayloadContent
         network={network}
         error={payloadError}

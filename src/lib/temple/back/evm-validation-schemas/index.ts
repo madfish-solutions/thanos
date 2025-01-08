@@ -12,7 +12,7 @@ import { ChangePermissionsPayload } from 'temple/evm/types';
 
 import {
   evmAddressValidationSchema,
-  hexStringSchema,
+  hexByteStringSchema,
   oldTypedDataValidationSchema,
   typedDataValidationSchema
 } from './utils';
@@ -31,8 +31,8 @@ export const ethPersonalSignPayloadValidationSchema = mixedSchema<
   [HexString, HexString, string] | [HexString, HexString]
 >((value: unknown): value is [HexString, HexString, string] | [HexString, HexString] => {
   const tuplesSchemas = [
-    tupleSchema([hexStringSchema().required(), evmAddressValidationSchema().required(), stringSchema().required()]),
-    tupleSchema([hexStringSchema().required(), evmAddressValidationSchema().required()])
+    tupleSchema([hexByteStringSchema().required(), evmAddressValidationSchema().required(), stringSchema().required()]),
+    tupleSchema([hexByteStringSchema().required(), evmAddressValidationSchema().required()])
   ];
 
   for (const schema of tuplesSchemas) {
@@ -61,6 +61,6 @@ export const ethChangePermissionsPayloadValidationSchema: TupleSchema<[ChangePer
 ]).required();
 
 export const personalSignRecoverPayloadValidationSchema = tupleSchema([
-  hexStringSchema().required(),
-  hexStringSchema().required()
+  hexByteStringSchema().required(),
+  hexByteStringSchema().required()
 ]).required();
