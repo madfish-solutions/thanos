@@ -22,7 +22,7 @@ import { StoredHDAccount, TempleMessageType, TempleRequest, TempleResponse } fro
 import { getTrackedCashbackServiceDomain, getTrackedUrl } from 'lib/utils/url-track/url-track.utils';
 import { EVMErrorCodes } from 'temple/evm/constants';
 import { ErrorWithCode } from 'temple/evm/types';
-import { fromSerializableEvmTxParams } from 'temple/evm/utils';
+import { parseTransactionRequest } from 'temple/evm/utils';
 import { TempleChainKind } from 'temple/types';
 
 import * as Actions from './actions';
@@ -70,7 +70,7 @@ const processRequest = async (req: TempleRequest, port: Runtime.Port): Promise<T
       const txHash = await Actions.sendEvmTransaction(
         req.accountPkh,
         req.network,
-        fromSerializableEvmTxParams(req.txParams)
+        parseTransactionRequest(req.txParams)
       );
       return { type: TempleMessageType.SendEvmTransactionResponse, txHash };
 

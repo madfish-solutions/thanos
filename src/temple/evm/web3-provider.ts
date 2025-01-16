@@ -192,18 +192,20 @@ export class TempleWeb3Provider extends EventEmitter {
         return this.handleNewPermissionsRequest(params as RequestArgs<'wallet_requestPermissions'>);
       case evmRpcMethodsNames.wallet_revokePermissions:
         return this.handleRevokePermissionsRequest(params as RequestArgs<'wallet_revokePermissions'>);
+      case evmRpcMethodsNames.wallet_sendTransaction:
+      case evmRpcMethodsNames.eth_sendTransaction:
+        return this.handleSendTransactionRequest(
+          params as RequestArgs<'eth_sendTransaction' | 'wallet_sendTransaction'>
+        );
       /* Not going to support eth_sign */
       case 'wallet_grantPermissions':
       case 'eth_sendUserOperation':
-      case 'eth_sendTransaction':
-      case 'eth_sendRawTransaction':
       case 'eth_signTransaction':
       case 'eth_syncing':
       case 'wallet_addEthereumChain':
       case 'wallet_getCallsStatus':
       case 'wallet_getCapabilities':
       case 'wallet_sendCalls':
-      case 'wallet_sendTransaction':
       case 'wallet_showCallsStatus':
       case 'wallet_watchAsset':
       case 'eth_sign':
@@ -216,6 +218,23 @@ export class TempleWeb3Provider extends EventEmitter {
 
   async enable() {
     return this.handleConnect({ method: evmRpcMethodsNames.eth_requestAccounts });
+  }
+
+  private handleSendTransactionRequest(args: RequestArgs<'eth_sendTransaction' | 'wallet_sendTransaction'>) {
+    const from = args.params[0].from ?? this.accounts.at(0);
+
+    if (!from) {
+      throw new ErrorWithCode(EVMErrorCodes.NOT_AUTHORIZED, 'Account is not connected');
+    }
+
+    let sanitizedArgs: RequestArgs<'eth_sendTransaction' | 'wallet_sendTransaction'>;
+    try {
+      sanitizedArgs = { method: args.method, params: [{ ...args.params[0], from }] };
+    } catch (e: any) {
+      throw new ErrorWithCode(EVMErrorCodes.INVALID_PARAMS, e.message ?? 'Invalid params');
+    }
+
+    return this.handleRequest(sanitizedArgs, noop, identity, from);
   }
 
   // @ts-expect-error

@@ -1,14 +1,4 @@
-import React, {
-  Dispatch,
-  FC,
-  FocusEvent,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from 'react';
+import React, { FC, FocusEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { emptyFn } from '@rnw-community/shared';
 import bip39WordList from 'bip39/src/wordlists/english.json';
@@ -26,7 +16,7 @@ export interface SeedWordInputProps extends TestIDProperty {
   submitted: boolean;
   revealRef: unknown;
   onReveal: EmptyFn;
-  setWordSpellingErrorsCount: Dispatch<SetStateAction<number>>;
+  setWordSpellingErrorsCount: ReactSetStateFn<number>;
   onSeedWordChange: (index: number, value: string) => void;
   value?: string;
   onChange?: (e: React.ChangeEvent<FormFieldElement>) => void;

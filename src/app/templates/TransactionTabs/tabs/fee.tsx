@@ -11,11 +11,10 @@ import { OneOfChains } from 'temple/front';
 import { DEFAULT_EVM_CURRENCY } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 
+import { FeeOptions } from '../components/fee-options';
 import { useEvmEstimationDataState, useTezosEstimationDataState } from '../context';
 import { DisplayedFeeOptions, EvmTxParamsFormData, FeeOptionLabel, TezosTxParamsFormData } from '../types';
 import { getTezosFeeOption, validateNonZero } from '../utils';
-
-import { FeeOptions } from './components/FeeOptions';
 
 interface FeeTabProps {
   network: OneOfChains;
@@ -101,10 +100,15 @@ const TezosContent: FC<ContentProps> = ({ selectedOption, onOptionSelect }) => {
   const gasFeeFallback = useMemo(() => {
     if (!data || !selectedOption) return '';
 
-    return getTezosFeeOption(selectedOption, data.baseFee);
+    return getTezosFeeOption(selectedOption, data.gasFee);
   }, [data, selectedOption]);
 
   const gasFeeError = formState.errors.gasFee?.message;
+
+  const defaultStorageLimit = useMemo(
+    () => data?.estimates.reduce((acc, { storageLimit }) => acc + storageLimit, 0),
+    [data?.estimates]
+  );
 
   return (
     <>
@@ -139,7 +143,7 @@ const TezosContent: FC<ContentProps> = ({ selectedOption, onOptionSelect }) => {
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <AssetField
-            value={value || data?.estimates.storageLimit}
+            value={value || defaultStorageLimit}
             placeholder="0"
             min={0}
             onlyInteger

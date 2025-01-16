@@ -41,6 +41,7 @@ export const estimateTezosMaxFee = async (
   acc: AccountForTezos,
   tez: boolean,
   tezos: TezosToolkit,
+  from: string,
   to: string,
   balanceBN: BigNumber,
   transferParams: TransferParamsInvariant,
@@ -59,7 +60,7 @@ export const estimateTezosMaxFee = async (
     const estmtn = await tezos.estimate.transfer(transferParams);
     let amountMax = balanceBN.minus(mutezToTz(estmtn.totalCost));
     if (!tezosManagerKeyHasManager(manager)) {
-      amountMax = amountMax.minus(mutezToTz(getRevealFee(to)));
+      amountMax = amountMax.minus(mutezToTz(getRevealFee(from)));
     }
     estmtnMax = await tezos.estimate.transfer({
       to,

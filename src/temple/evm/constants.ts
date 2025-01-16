@@ -24,6 +24,8 @@ export const evmRpcMethodsNames = {
   wallet_requestPermissions: 'wallet_requestPermissions',
   wallet_revokePermissions: 'wallet_revokePermissions',
   personal_ecRecover: 'personal_ecRecover',
+  wallet_sendTransaction: 'wallet_sendTransaction',
+  eth_sendTransaction: 'eth_sendTransaction',
   eth_chainId: 'eth_chainId'
 } as const;
 

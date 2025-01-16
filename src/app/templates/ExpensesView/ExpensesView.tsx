@@ -1,6 +1,5 @@
 import React, { FC, memo, useCallback, useMemo, useState } from 'react';
 
-import { Estimate } from '@taquito/taquito';
 import BigNumber from 'bignumber.js';
 import classNames from 'clsx';
 import { Collapse } from 'react-collapse';
@@ -16,6 +15,7 @@ import { TProps, T, t } from 'lib/i18n';
 import { useTezosAssetMetadata, getAssetSymbol } from 'lib/metadata';
 import { RawOperationAssetExpense, RawOperationExpenses } from 'lib/temple/front';
 import { mutezToTz, tzToMutez } from 'lib/temple/helpers';
+import { SerializedEstimate } from 'lib/temple/types';
 import { TezosNetworkEssentials } from 'temple/networks';
 
 import OperationsBanner from '../OperationsBanner/OperationsBanner';
@@ -34,7 +34,7 @@ type OperationExpenses = Omit<RawOperationExpenses, 'expenses'> & {
 interface ExpensesViewProps {
   tezosNetwork: TezosNetworkEssentials;
   expenses?: OperationExpenses[];
-  estimates?: Estimate[];
+  estimates?: SerializedEstimate[];
   modifyFeeAndLimit?: ModifyFeeAndLimit;
   gasFeeError?: boolean;
   error?: any;
@@ -74,7 +74,7 @@ const ExpensesView: FC<ExpensesViewProps> = ({
           storageFeeMutez = storageFeeMutez.plus(
             Math.ceil(
               (i === 0 ? modifyFeeAndLimit.storageLimit ?? e.storageLimit : e.storageLimit) *
-                (e as any).minimalFeePerStorageByteMutez
+                Number(e.minimalFeePerStorageByteMutez)
             )
           );
           i++;

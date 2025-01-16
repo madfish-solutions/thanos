@@ -81,6 +81,17 @@ getIntercom().subscribe((msg?: TempleNotification) => {
         window.postMessage({ type: DISCONNECT_DAPP_MSG_TYPE }, window.origin);
       }
       break;
+    case TempleMessageType.TempleTezosDAppsDisconnected:
+      const { messagePayloads } = msg;
+
+      if (messagePayloads[window.origin]) {
+        const message = {
+          target: BeaconMessageTarget.Page,
+          encryptedPayload: messagePayloads[window.origin]
+        };
+        send({ message, sender: { id: SENDER.id } }, window.origin);
+      }
+      break;
     case TempleMessageType.TempleEvmChainSwitched:
       const { origin, type, ...chainSwitchPayload } = msg;
       if (origin === window.origin) {
@@ -221,3 +232,38 @@ function send(msg: TemplePageMessage | BeaconPageMessage, targetOrigin: string) 
   if (!targetOrigin || targetOrigin === '*') return;
   window.postMessage(msg, targetOrigin);
 }
+
+const TRACK_BEACON_DISCONNECTION_INTERVAL = 5000;
+function beaconIsConnected() {
+  try {
+    const activeAccountId = localStorage.getItem('beacon:active-account');
+    const accounts = JSON.parse(localStorage.getItem('beacon:accounts') || '[]');
+
+    if (!Array.isArray(accounts)) return false;
+
+    const account = accounts.find((acc: any) => acc.accountIdentifier === activeAccountId);
+
+    return account?.origin?.id === browser.runtime.id;
+  } catch (e) {
+    return false;
+  }
+}
+
+let beaconWasConnected = beaconIsConnected();
+setInterval(async () => {
+  const isConnected = beaconIsConnected();
+  if (!isConnected && beaconWasConnected) {
+    beaconRequest(
+      new MessageEvent('message', {
+        data: {
+          // {"type":"disconnect"} in base58 encoding
+          payload: 'rYiNcfGAJNzHCNK4eUj1VPy1xAWiwkXfRN',
+          target: BeaconMessageTarget.Extension,
+          targetId: SENDER.id
+        },
+        origin: window.location.origin
+      })
+    );
+  }
+  beaconWasConnected = isConnected;
+}, TRACK_BEACON_DISCONNECTION_INTERVAL);

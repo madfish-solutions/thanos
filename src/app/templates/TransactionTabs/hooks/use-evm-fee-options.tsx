@@ -1,8 +1,8 @@
 import { pick, transform } from 'lodash';
 import { FeeValues, formatEther } from 'viem';
 
-import { EvmEstimationData } from 'app/pages/Send/hooks/use-evm-estimation-data';
 import { useMemoWithCompare } from 'lib/ui/hooks';
+import { EvmEstimationData } from 'temple/evm/estimate';
 import { getGasPriceStep } from 'temple/evm/utils';
 
 import { EvmFeeOptions, FeeOptionLabel } from '../types';
