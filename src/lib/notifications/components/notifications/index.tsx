@@ -6,6 +6,7 @@ import { DataPlaceholder } from 'app/atoms';
 import PageLayout from 'app/layouts/PageLayout';
 import { useShouldShowPartnersPromoSelector } from 'app/store/partners-promotion/selectors';
 import { PartnersPromotion, PartnersPromotionVariant } from 'app/templates/partners-promotion';
+import { EnvVars } from 'lib/env';
 import { T } from 'lib/i18n';
 import { BellIcon } from 'lib/icons';
 import { useTimeout } from 'lib/ui/hooks';
@@ -43,7 +44,7 @@ export const Notifications = () => {
               id="promo-notifications-item"
               variant={PartnersPromotionVariant.Image}
               pageName="Notifications"
-              withPersonaProvider
+              withPersonaProvider={EnvVars.PERSONA_ADS_ENABLED}
             />
           </div>
         )}

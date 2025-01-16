@@ -9,6 +9,7 @@ import { ReactComponent as LayersIcon } from 'app/icons/layers.svg';
 import { useShouldShowPartnersPromoSelector } from 'app/store/partners-promotion/selectors';
 import { PartnersPromotion, PartnersPromotionVariant } from 'app/templates/partners-promotion';
 import { TEMPLE_TOKEN_SLUG } from 'lib/assets';
+import { EnvVars } from 'lib/env';
 import { T } from 'lib/i18n/react';
 import useActivities from 'lib/temple/activity-new/hook';
 import { useAccount } from 'lib/temple/front';
@@ -39,7 +40,7 @@ export const ActivityComponent: React.FC<Props> = ({ assetSlug }) => {
           id={`promo-activity-${assetSlug ?? 'all'}`}
           variant={PartnersPromotionVariant.Image}
           pageName="Activity"
-          withPersonaProvider
+          withPersonaProvider={EnvVars.PERSONA_ADS_ENABLED}
         />
       );
 
