@@ -19,7 +19,7 @@ import { importExtensionAdsModule } from './import-extension-ads-module';
 // build runs without errors.
 interface AdSource {
   shouldNotUseStrictContainerLimits?: boolean;
-  providerName: 'Temple' | 'Persona' | 'HypeLab' | 'SmartyAds';
+  providerName: 'Temple' | 'Persona' | 'HypeLab' | 'SmartyAds' | 'Bitmedia';
   native?: boolean;
   slug: string;
   categories?: string[];
@@ -187,7 +187,7 @@ const bannerAdsMetaBase: (AdMetadata | false)[] = [
       maxContainerHeight: 300
     }
   },
-  {
+  EnvVars.PERSONA_ADS_ENABLED && {
     source: {
       providerName: 'Persona' as const,
       native: false,
@@ -202,9 +202,10 @@ const bannerAdsMetaBase: (AdMetadata | false)[] = [
       maxContainerHeight: 300
     }
   },
-  {
+  EnvVars.PERSONA_ADS_ENABLED && {
     source: {
       providerName: 'Persona' as const,
+      native: false,
       slug: IS_MISES_BROWSER
         ? EnvVars.PERSONA_ADS_MISES_MEDIUM_BANNER_UNIT_ID
         : EnvVars.PERSONA_ADS_MEDIUM_BANNER_UNIT_ID
@@ -297,7 +298,7 @@ const bannerAdsMetaBase: (AdMetadata | false)[] = [
       maxContainerHeight: Infinity
     }
   },
-  {
+  EnvVars.PERSONA_ADS_ENABLED && {
     source: {
       providerName: 'Persona' as const,
       slug: IS_MISES_BROWSER
@@ -362,7 +363,7 @@ const bannerAdsMetaBase: (AdMetadata | false)[] = [
       maxContainerHeight: 130
     }
   },
-  {
+  EnvVars.PERSONA_ADS_ENABLED && {
     source: {
       providerName: 'Persona' as const,
       slug: IS_MISES_BROWSER ? EnvVars.PERSONA_ADS_MISES_BANNER_UNIT_ID : EnvVars.PERSONA_ADS_BANNER_UNIT_ID,
@@ -413,11 +414,7 @@ const pickNextAdMetadata = (
     return allAdsMetadata[0];
   }
 
-  if (allAdsMetadata.length === 1) {
-    return undefined;
-  }
-
-  return allAdsMetadata[(currentAdMetadataIndex + 1) % allAdsMetadata.length];
+  return allAdsMetadata[currentAdMetadataIndex + 1];
 };
 
 export const configureAds = async () => {

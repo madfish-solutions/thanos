@@ -8,6 +8,10 @@ on:
         type: boolean
         description: Build without private packages
         required: false
+      personaAds:
+        type: boolean
+        description: Enable persona ads provider
+        required: false
       prod:
         type: boolean
         description: Build for production environment
@@ -66,6 +70,7 @@ jobs:
           HYPELAB_NATIVE_PLACEMENT_SLUG: ${{ vars.HYPELAB_NATIVE_PLACEMENT_SLUG }}
           HYPELAB_PROPERTY_SLUG: ${{ vars.HYPELAB_PROPERTY_SLUG }}
           HYPELAB_ADS_WINDOW_URL: ${{ vars.HYPELAB_ADS_WINDOW_URL }}
+          PERSONA_ADS_ENABLED: ${{ github.event.inputs.personaAds == 'true' }}
           PERSONA_ADS_API_KEY: ${{ vars.PERSONA_ADS_API_KEY }}
           PERSONA_ADS_MISES_BANNER_UNIT_ID: ${{ vars.PERSONA_ADS_MISES_BANNER_UNIT_ID }}
           PERSONA_ADS_BANNER_UNIT_ID: ${{ vars.PERSONA_ADS_BANNER_UNIT_ID }}
