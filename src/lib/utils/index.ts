@@ -13,7 +13,7 @@ export const isTruthy = <T>(value: T): value is Truthy<T> => Boolean(value);
 /** With strict equality check (i.e. `===`) */
 export const filterUnique = <T>(array: T[]) => Array.from(new Set(array));
 
-/** Creates the function that runs promises paralelly but resolves them in FIFO order. */
+/** Creates the function that runs promises parallelly but resolves them in FIFO order. */
 export const fifoResolve = <A extends unknown[], T>(fn: (...args: A) => Promise<T>) => {
   const queueMutex = new Mutex();
   const queue: Array<Promise<T>> = [];
