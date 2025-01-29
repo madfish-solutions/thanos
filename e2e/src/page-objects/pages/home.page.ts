@@ -1,14 +1,15 @@
 import { HomeSelectors } from 'src/app/pages/Home/selectors';
+import { ExploreActionButtonsSelectors } from 'src/app/templates/ExploreActionButtons/selectors';
 
 import { Page } from '../../classes/page.class';
 import { createPageElement } from '../../utils/search.utils';
 
 export class HomePage extends Page {
-  receiveButton = createPageElement(HomeSelectors.receiveButton);
-  marketButton = createPageElement(HomeSelectors.marketButton);
-  sendButton = createPageElement(HomeSelectors.sendButton);
-  activityButton = createPageElement(HomeSelectors.activityButton);
-  swapButton = createPageElement(HomeSelectors.activityButton);
+  receiveButton = createPageElement(ExploreActionButtonsSelectors.receiveButton);
+  marketButton = createPageElement(ExploreActionButtonsSelectors.marketButton);
+  sendButton = createPageElement(ExploreActionButtonsSelectors.sendButton);
+  activityButton = createPageElement(ExploreActionButtonsSelectors.activityButton);
+  swapButton = createPageElement(ExploreActionButtonsSelectors.activityButton);
   accountMenuButton = createPageElement(HomeSelectors.accountMenuButton);
   accountIcon = createPageElement(HomeSelectors.accountIcon);
 

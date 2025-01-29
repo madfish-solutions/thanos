@@ -8,6 +8,7 @@ import { Anchor, IconBase } from 'app/atoms';
 import { ReactComponent as ActivityIcon } from 'app/icons/base/activity.svg';
 import { ReactComponent as MarketIcon } from 'app/icons/base/card.svg';
 import { ReactComponent as ReceiveIcon } from 'app/icons/base/income.svg';
+import { ReactComponent as OutcomeIcon } from 'app/icons/base/outcome.svg';
 import { ReactComponent as SendIcon } from 'app/icons/base/send.svg';
 import { ReactComponent as SwapIcon } from 'app/icons/base/swap.svg';
 import { buildSendPagePath } from 'app/pages/Send/build-url';
@@ -22,17 +23,17 @@ import { createLocationState } from 'lib/woozie/location';
 import { useAccount } from 'temple/front';
 import { TempleChainKind } from 'temple/types';
 
-import { HomeProps } from './interfaces';
-import { HomeSelectors } from './selectors';
+import { ExploreActionButtonsSelectors } from './selectors';
 
-const getDisabledTippyProps = (testnetMode: boolean) => ({
-  trigger: 'mouseenter',
-  hideOnClick: false,
-  content: t(testnetMode ? 'disabledInTestnetMode' : 'disabledForWatchOnlyAccount'),
-  animation: 'shift-away-subtle'
-});
+interface Props {
+  chainKind?: string | nullish;
+  chainId?: string | nullish;
+  assetSlug?: string | nullish;
+  activityBtn?: 'activity' | 'earn-tez';
+  className?: string;
+}
 
-export const ActionButtonsBar = memo<HomeProps>(({ chainKind, chainId, assetSlug }) => {
+export const ExploreActionButtonsBar = memo<Props>(({ chainKind, chainId, assetSlug, activityBtn, className }) => {
   const account = useAccount();
   const testnetModeEnabled = useTestnetModeEnabledSelector();
 
@@ -51,8 +52,13 @@ export const ActionButtonsBar = memo<HomeProps>(({ chainKind, chainId, assetSlug
   );
 
   return (
-    <div className="flex justify-between gap-x-2 h-13.5 mt-4">
-      <ActionButton labelI18nKey="receive" Icon={ReceiveIcon} to="/receive" testID={HomeSelectors.receiveButton} />
+    <div className={clsx('flex justify-between gap-x-2 h-13.5', className)}>
+      <ActionButton
+        labelI18nKey="receive"
+        Icon={ReceiveIcon}
+        to={chainKind ? `/receive/${chainKind}` : '/receive'}
+        testID={ExploreActionButtonsSelectors.receiveButton}
+      />
 
       <ActionButton
         labelI18nKey="market"
@@ -60,7 +66,7 @@ export const ActionButtonsBar = memo<HomeProps>(({ chainKind, chainId, assetSlug
         to="/market"
         disabled={!canSend || testnetModeEnabled}
         tippyProps={getDisabledTippyProps(testnetModeEnabled)}
-        testID={HomeSelectors.marketButton}
+        testID={ExploreActionButtonsSelectors.marketButton}
       />
 
       <ActionButton
@@ -69,10 +75,26 @@ export const ActionButtonsBar = memo<HomeProps>(({ chainKind, chainId, assetSlug
         to={swapLink}
         disabled={!canSend || testnetModeEnabled}
         tippyProps={getDisabledTippyProps(testnetModeEnabled)}
-        testID={HomeSelectors.swapButton}
+        testID={ExploreActionButtonsSelectors.swapButton}
       />
 
-      <ActionButton labelI18nKey="activity" Icon={ActivityIcon} to="/activity" testID={HomeSelectors.activityButton} />
+      {activityBtn === 'earn-tez' ? (
+        <ActionButton
+          labelI18nKey="earn"
+          Icon={OutcomeIcon}
+          to={`/earn-tez/${chainId}`}
+          testID={ExploreActionButtonsSelectors.earnButton}
+        />
+      ) : (
+        activityBtn === 'activity' && (
+          <ActionButton
+            labelI18nKey="activity"
+            Icon={ActivityIcon}
+            to="/activity"
+            testID={ExploreActionButtonsSelectors.activityButton}
+          />
+        )
+      )}
 
       <ActionButton
         labelI18nKey="send"
@@ -80,7 +102,7 @@ export const ActionButtonsBar = memo<HomeProps>(({ chainKind, chainId, assetSlug
         to={sendLink}
         disabled={!canSend}
         tippyProps={getDisabledTippyProps(false)}
-        testID={HomeSelectors.sendButton}
+        testID={ExploreActionButtonsSelectors.sendButton}
       />
     </div>
   );
@@ -105,7 +127,7 @@ const ActionButton = memo<ActionButtonProps>(
     const commonButtonProps = useMemo(
       () => ({
         className: clsx(
-          'flex-1 max-w-16 flex flex-col gap-y-0.5 p-2 items-center justify-center rounded-lg',
+          'flex-1 flex flex-col gap-y-0.5 p-2 items-center justify-center rounded-lg',
           disabled
             ? 'bg-disable text-grey-2'
             : 'bg-primary-low text-primary hover:bg-primary-hover-low hover:text-primary-hover'
@@ -143,3 +165,10 @@ const ActionButton = memo<ActionButtonProps>(
     return <Link testID={testID} testIDProperties={testIDProperties} to={to} {...commonButtonProps} />;
   }
 );
+
+const getDisabledTippyProps = (testnetMode: boolean) => ({
+  trigger: 'mouseenter',
+  hideOnClick: false,
+  content: t(testnetMode ? 'disabledInTestnetMode' : 'disabledForWatchOnlyAccount'),
+  animation: 'shift-away-subtle'
+});

@@ -800,9 +800,15 @@
   "send": {
     "message": "Send"
   },
-  "floorPrice": { "message": "Floor" },
-  "sellFor": { "message": "Sell for" },
-  "noOffersYet": { "message": "No offers yet" },
+  "floorPrice": {
+    "message": "Floor"
+  },
+  "sellFor": {
+    "message": "Sell for"
+  },
+  "noOffersYet": {
+    "message": "No offers yet"
+  },
   "get": {
     "message": "Get"
   },
@@ -1166,8 +1172,12 @@
   "enable": {
     "message": "enable"
   },
-  "payMeForEveryAdISee": { "message": "Pay me for every ad I see" },
-  "noThanks": { "message": "No thanks" },
+  "payMeForEveryAdISee": {
+    "message": "Pay me for every ad I see"
+  },
+  "noThanks": {
+    "message": "No thanks"
+  },
   "dAppsCheckmarkPrompt": {
     "message": "Click on the checkmark to $action$ DApps interaction feature",
     "description": "DApps = Decentralized Applications",
@@ -1933,9 +1943,15 @@
   "activity": {
     "message": "Activity"
   },
-  "manage": { "message": "Manage" },
-  "manageTokens": { "message": "Manage Tokens" },
-  "manageAssetsList": { "message": "Manage assets list" },
+  "manage": {
+    "message": "Manage"
+  },
+  "manageTokens": {
+    "message": "Manage Tokens"
+  },
+  "manageAssetsList": {
+    "message": "Manage assets list"
+  },
   "noItemsWithPositiveBalance": {
     "message": "No items with positive balance"
   },
@@ -2505,8 +2521,12 @@
   "blockExplorer": {
     "message": "Block Explorer"
   },
-  "viewOnExplorer": { "message": "View on explorer" },
-  "viewOnBlockExplorer": { "message": "View on block explorer" },
+  "viewOnExplorer": {
+    "message": "View on explorer"
+  },
+  "viewOnBlockExplorer": {
+    "message": "View on block explorer"
+  },
   "specifyTokenId": {
     "message": "Specify token ID"
   },
@@ -2753,14 +2773,30 @@
     "message": "less",
     "description": "Show less"
   },
-  "showDetails": { "message": "Show details" },
-  "blurSensitiveContent": { "message": "Blur sensitive content" },
-  "filterByNetwork": { "message": "Filter by network" },
-  "resetAll": { "message": "Reset All" },
-  "hideZeroBalance": { "message": "Hide 0 balance" },
-  "groupByNetwork": { "message": "Group by network" },
-  "tokensList": { "message": "Tokens list" },
-  "collectiblesView": { "message": "Collectibles view" },
+  "showDetails": {
+    "message": "Show details"
+  },
+  "blurSensitiveContent": {
+    "message": "Blur sensitive content"
+  },
+  "filterByNetwork": {
+    "message": "Filter by network"
+  },
+  "resetAll": {
+    "message": "Reset All"
+  },
+  "hideZeroBalance": {
+    "message": "Hide 0 balance"
+  },
+  "groupByNetwork": {
+    "message": "Group by network"
+  },
+  "tokensList": {
+    "message": "Tokens list"
+  },
+  "collectiblesView": {
+    "message": "Collectibles view"
+  },
   "recentDestinations": {
     "message": "Recent destinations"
   },
@@ -3886,6 +3922,9 @@
   },
   "disabledInTestnetMode": {
     "message": "Disabled in Testnet Mode"
+  },
+  "earn": {
+    "message": "Earn"
   },
   "marketPageDisclaimer": {
     "message": "Temple integrated third-party solutions to buy or exchange crypto."

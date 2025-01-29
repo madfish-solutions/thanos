@@ -5,9 +5,7 @@ import { setAnotherSelector, setTestID } from 'lib/analytics';
 import { getAssetSymbol, useTezosAssetMetadata } from 'lib/metadata';
 import { isEvmNativeTokenSlug } from 'lib/utils/evm.utils';
 import { useEvmChainByChainId } from 'temple/front/chains';
-import { TempleChainKind } from 'temple/types';
 
-import { HomeProps } from './interfaces';
 import { TokenPageSelectors } from './selectors';
 
 interface BaseProps {
@@ -16,28 +14,19 @@ interface BaseProps {
 interface TezosProps extends BaseProps {
   tezosChainId: string;
 }
+
 interface EvmProps extends BaseProps {
   evmChainId: number;
 }
 
-export const PageTitle = memo<HomeProps>(({ chainKind, chainId, assetSlug }) => {
-  if (!chainKind || !chainId || !assetSlug) return null;
-
-  return chainKind === TempleChainKind.Tezos ? (
-    <TezosPageTitle tezosChainId={chainId} assetSlug={assetSlug} />
-  ) : (
-    <EvmPageTitle evmChainId={Number(chainId)} assetSlug={assetSlug} />
-  );
-});
-
-const TezosPageTitle = memo<TezosProps>(({ assetSlug, tezosChainId }) => {
+export const TezosPageTitle = memo<TezosProps>(({ assetSlug, tezosChainId }) => {
   const assetMetadata = useTezosAssetMetadata(assetSlug, tezosChainId);
   const assetSymbol = getAssetSymbol(assetMetadata);
 
   return <BaseTitle assetSymbol={assetSymbol} />;
 });
 
-const EvmPageTitle = memo<EvmProps>(({ assetSlug, evmChainId }) => {
+export const EvmPageTitle = memo<EvmProps>(({ assetSlug, evmChainId }) => {
   const network = useEvmChainByChainId(evmChainId);
   const assetMetadata = useEvmTokenMetadataSelector(evmChainId, assetSlug);
 
@@ -49,11 +38,7 @@ const EvmPageTitle = memo<EvmProps>(({ assetSlug, evmChainId }) => {
 });
 
 const BaseTitle = memo<{ assetSymbol: string }>(({ assetSymbol }) => (
-  <span
-    className="font-normal"
-    {...setTestID(TokenPageSelectors.pageName)}
-    {...setAnotherSelector('symbol', assetSymbol)}
-  >
+  <span {...setTestID(TokenPageSelectors.pageName)} {...setAnotherSelector('symbol', assetSymbol)}>
     {assetSymbol}
   </span>
 ));

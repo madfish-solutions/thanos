@@ -89,7 +89,7 @@ export const PageModal: FC<PageModalProps> = ({
         <div className="w-12 flex justify-end">{titleRight}</div>
       </div>
 
-      <div className={clsx('flex-1 flex flex-col overflow-hidden', contentPadding && 'p-4')}>
+      <div className={clsx('flex-grow flex flex-col overflow-hidden', contentPadding && 'p-4')}>
         <SuspenseContainer>
           {typeof children === 'function' ? (opened ? children() : null) : children}
         </SuspenseContainer>

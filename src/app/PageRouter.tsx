@@ -23,10 +23,12 @@ import { TempleChainKind } from 'temple/types';
 
 import { ActivityPage } from './pages/Activity';
 import { ChainSettings } from './pages/ChainSettings';
+import { EarnTezPage } from './pages/EarnTez';
 import { ImportWallet } from './pages/ImportWallet';
 import { Market } from './pages/Market';
 import { RewardsPage } from './pages/Rewards';
 import { StakingPage } from './pages/Staking';
+import { TokenPage } from './pages/Token';
 
 interface RouteContext {
   popup: boolean;
@@ -69,15 +71,9 @@ const ROUTE_MAP = Woozie.createMap<RouteContext>([
   ],
   ['/loading', (_p, ctx) => (ctx.ready ? <Woozie.Redirect to={'/'} /> : <RootSuspenseFallback />)],
   ['/', (_p, ctx) => (ctx.ready ? <Home /> : <Welcome />)],
-  [
-    '/explore/:chainKind?/:chainId?/:assetSlug?',
-    onlyReady(({ chainKind, chainId, assetSlug }) => (
-      <Home chainKind={chainKind} chainId={chainId} assetSlug={assetSlug} />
-    ))
-  ],
   ['/activity', onlyReady(() => <ActivityPage />)],
   ['/connect-ledger', onlyReady(onlyInFullPage(() => <ConnectLedger />))],
-  ['/receive', onlyReady(() => <Receive />)],
+  ['/receive/:chainKind?', onlyReady(({ chainKind }) => <Receive chainKind={chainKind} />)],
   [
     '/send/:chainKind?/:chainId?/:assetSlug?',
     onlyReady(({ chainKind, chainId, assetSlug }) => (
@@ -87,6 +83,13 @@ const ROUTE_MAP = Woozie.createMap<RouteContext>([
   ['/swap', onlyReady(() => <Swap />)],
   ['/delegate/:tezosChainId', onlyReady(({ tezosChainId }) => <Delegate tezosChainId={tezosChainId!} />)],
   ['/staking/:tezosChainId', onlyReady(({ tezosChainId }) => <StakingPage tezosChainId={tezosChainId!} />)],
+  ['/earn-tez/:tezosChainId', onlyReady(({ tezosChainId }) => <EarnTezPage tezosChainId={tezosChainId!} />)],
+  [
+    '/token/:chainKind?/:chainId?/:assetSlug?',
+    onlyReady(({ chainKind, chainId, assetSlug }) => (
+      <TokenPage chainKind={chainKind!} chainId={chainId!} assetSlug={assetSlug!} />
+    ))
+  ],
   [
     '/collectible/:chainKind?/:chainId?/:assetSlug?',
     onlyReady(({ chainKind, chainId, assetSlug }) => (

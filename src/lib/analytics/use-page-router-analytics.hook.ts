@@ -4,7 +4,7 @@ import { fromAssetSlug } from 'lib/assets';
 
 import { useAnalytics } from './use-analytics.hook';
 
-const pageRoutesWithToken = ['/explore', '/send', '/collectible'];
+const pageRoutesWithToken = ['/send', '/token', '/collectible'];
 const pageRoutesWithQueryParams = ['/swap'];
 
 export const usePageRouterAnalytics = (pathname: string, search: string, isContextReady: boolean) => {

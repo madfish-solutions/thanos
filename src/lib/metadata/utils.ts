@@ -7,20 +7,19 @@ import {
   AssetMetadataBase,
   TokenMetadata,
   TezosTokenStandardsEnum,
-  EvmTokenMetadata,
   EvmCollectibleMetadata,
-  EvmAssetMetadata,
-  EvmAssetMetadataBase
+  EvmAssetMetadataBase,
+  EvmAssetMetadata
 } from './types';
 
-export function getAssetSymbol(metadata: AssetMetadataBase | EvmAssetMetadataBase | nullish, short = false) {
+export function getAssetSymbol(metadata: EvmAssetMetadataBase | AssetMetadataBase | nullish, short = false) {
   if (!metadata?.symbol) return '???';
   if (!short) return metadata.symbol;
 
   return metadata.symbol === 'tez' ? TEZOS_SYMBOL : metadata.symbol.substring(0, 5);
 }
 
-export function getTokenName(metadata: EvmTokenMetadata | AssetMetadataBase | nullish) {
+export function getTokenName(metadata: EvmAssetMetadataBase | AssetMetadataBase | nullish) {
   return metadata?.name || 'Unknown Token';
 }
 

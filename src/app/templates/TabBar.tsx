@@ -12,7 +12,7 @@ interface Props {
   withOutline?: boolean;
 }
 
-export interface TabsBarTabInterface extends TestIDProps {
+interface TabsBarTabInterface extends TestIDProps {
   name: string;
   titleI18nKey: TID;
 }

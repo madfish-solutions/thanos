@@ -7,7 +7,7 @@ export const toExploreAssetLink = (
   chainKind: TempleChainKind,
   chainId: number | string,
   assetSlug: string
-) => `/${isCollectible ? 'collectible' : 'explore'}/${chainKind}/${chainId}/${assetSlug}`;
+) => `/${isCollectible ? 'collectible' : 'token'}/${chainKind}/${chainId}/${assetSlug}`;
 
 export const getTokensViewWithPromo = (tokensJsx: ReactNode[], promoJsx: ReactNode, slugsCount = tokensJsx.length) => {
   if (!promoJsx) return tokensJsx;
