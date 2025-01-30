@@ -5,12 +5,7 @@ import BigNumber from 'bignumber.js';
 import useSWR, { unstable_serialize, useSWRConfig } from 'swr';
 
 import { BoundaryError } from 'app/ErrorBoundary';
-import {
-  BakingBadBaker,
-  BakingBadBakerValueHistoryItem,
-  bakingBadGetBaker,
-  getAllBakersBakingBad
-} from 'lib/apis/baking-bad';
+import { BakingBadBaker, bakingBadGetBaker, getAllBakersBakingBad } from 'lib/apis/baking-bad';
 import { getAccountStatsFromTzkt, isKnownChainId, TzktRewardsEntry, TzktAccountType } from 'lib/apis/tzkt';
 import { t } from 'lib/i18n';
 import { useRetryableSWR } from 'lib/swr';
@@ -80,91 +75,21 @@ export function useDelegate(address: string, suspense = true, shouldPreventError
   });
 }
 
-type RewardConfig = Record<
-  | 'blocks'
-  | 'endorses'
-  | 'fees'
-  | 'accusationRewards'
-  | 'accusationLostDeposits'
-  | 'accusationLostRewards'
-  | 'accusationLostFees'
-  | 'revelationRewards'
-  | 'revelationLostRewards'
-  | 'revelationLostFees'
-  | 'missedBlocks'
-  | 'stolenBlocks'
-  | 'missedEndorses'
-  | 'lowPriorityEndorses',
-  boolean
->;
-export type Baker = Pick<
-  BakingBadBaker,
-  'address' | 'name' | 'fee' | 'freeSpace' | 'minDelegation' | 'stakingBalance'
-> & {
+export type Baker = BakingBadBaker & {
   logo?: string;
-  feeHistory?: BakingBadBakerValueHistoryItem<number>[];
-  rewardConfigHistory: BakingBadBakerValueHistoryItem<RewardConfig>[];
 };
-
-const defaultRewardConfigHistory = [
-  {
-    cycle: 0,
-    value: {
-      blocks: true,
-      endorses: true,
-      fees: true,
-      accusationRewards: true,
-      accusationLostDeposits: true,
-      accusationLostRewards: true,
-      accusationLostFees: true,
-      revelationRewards: true,
-      revelationLostRewards: true,
-      revelationLostFees: true,
-      missedBlocks: true,
-      stolenBlocks: true,
-      missedEndorses: true,
-      lowPriorityEndorses: true
-    }
-  }
-];
 
 export function useKnownBaker(address: string | null, suspense = true) {
   const net = useNetwork();
   const fetchBaker = useCallback(async (): Promise<Baker | null> => {
     if (!address) return null;
     try {
-      const bakingBadBaker = await bakingBadGetBaker({ address, configs: true });
+      const bakingBadBaker = await bakingBadGetBaker({ address });
 
-      if (typeof bakingBadBaker === 'object') {
+      if (bakingBadBaker) {
         return {
-          address: bakingBadBaker.address,
-          name: bakingBadBaker.name,
-          logo: bakingBadBaker.logo ? bakingBadBaker.logo : undefined,
-          fee: bakingBadBaker.fee,
-          freeSpace: bakingBadBaker.freeSpace,
-          stakingBalance: bakingBadBaker.stakingBalance,
-          feeHistory: bakingBadBaker.config?.fee,
-          minDelegation: bakingBadBaker.minDelegation,
-          rewardConfigHistory:
-            bakingBadBaker.config?.rewardStruct.map(({ cycle, value: rewardStruct }) => ({
-              cycle,
-              value: {
-                blocks: (rewardStruct & 1) > 0,
-                endorses: (rewardStruct & 2) > 0,
-                fees: (rewardStruct & 4) > 0,
-                accusationRewards: (rewardStruct & 8) > 0,
-                accusationLostDeposits: (rewardStruct & 16) > 0,
-                accusationLostRewards: (rewardStruct & 32) > 0,
-                accusationLostFees: (rewardStruct & 64) > 0,
-                revelationRewards: (rewardStruct & 128) > 0,
-                revelationLostRewards: (rewardStruct & 256) > 0,
-                revelationLostFees: (rewardStruct & 512) > 0,
-                missedBlocks: (rewardStruct & 1024) > 0,
-                stolenBlocks: (rewardStruct & 2048) > 0,
-                missedEndorses: (rewardStruct & 4096) > 0,
-                lowPriorityEndorses: (rewardStruct & 8192) > 0
-              }
-            })) ?? defaultRewardConfigHistory
+          ...bakingBadBaker,
+          logo: `https://services.tzkt.io/v1/avatars/${bakingBadBaker.address}`
         };
       }
 
@@ -203,9 +128,8 @@ type RewardsStatsCalculationParams = {
   BigNumber
 >;
 
-function getBakingEfficiency({ rewardsEntry, bakerDetails }: RewardsStatsCalculationParams) {
+function getBakingEfficiency({ rewardsEntry }: RewardsStatsCalculationParams) {
   const {
-    cycle,
     ownBlockRewards,
     extraBlockRewards,
     futureBlockRewards,
@@ -226,25 +150,14 @@ function getBakingEfficiency({ rewardsEntry, bakerDetails }: RewardsStatsCalcula
     missedOwnBlockFees,
     missedOwnBlockRewards
   } = rewardsEntry;
-  let rewardConfig = defaultRewardConfigHistory[0].value;
-  if (bakerDetails?.rewardConfigHistory) {
-    const { rewardConfigHistory } = bakerDetails;
-    for (const historyEntry of rewardConfigHistory) {
-      if (cycle >= historyEntry.cycle) {
-        rewardConfig = historyEntry.value;
-        break;
-      }
-    }
-  }
-  const totalFutureRewards = new BigNumber(rewardConfig.endorses ? futureEndorsementRewards : 0).plus(
-    rewardConfig.blocks ? futureBlockRewards : 0
-  );
-  const totalCurrentRewards = new BigNumber(
-    rewardConfig.blocks ? new BigNumber(extraBlockRewards).plus(ownBlockRewards) : 0
-  )
-    .plus(rewardConfig.endorses ? new BigNumber(endorsementRewards).plus(doubleEndorsingRewards) : 0)
-    .plus(rewardConfig.fees ? new BigNumber(ownBlockFees).plus(extraBlockFees) : 0)
-    .plus(rewardConfig.revelationRewards ? revelationRewards : 0)
+  const totalFutureRewards = new BigNumber(futureEndorsementRewards).plus(futureBlockRewards);
+  const totalCurrentRewards = new BigNumber(extraBlockRewards)
+    .plus(ownBlockRewards)
+    .plus(endorsementRewards)
+    .plus(doubleEndorsingRewards)
+    .plus(ownBlockFees)
+    .plus(extraBlockFees)
+    .plus(revelationRewards)
     .plus(doubleBakingRewards);
   const totalRewards = totalFutureRewards.plus(totalCurrentRewards);
 
@@ -309,17 +222,7 @@ export function getRewardsStats(params: RewardsStatsCalculationParams) {
   if (totalFutureRewards.plus(totalCurrentRewards).gt(0)) {
     luck = calculateLuck(params, totalRewards);
   }
-  let bakerFeePart = bakerDetails?.fee ?? 0;
-  if (bakerDetails?.feeHistory) {
-    const { feeHistory } = bakerDetails;
-    for (let i = 0; i < feeHistory.length; i++) {
-      const historyEntry = feeHistory[i];
-      if (cycle >= historyEntry.cycle) {
-        bakerFeePart = historyEntry.value;
-        break;
-      }
-    }
-  }
+  const bakerFeePart = bakerDetails?.delegation.fee ?? 0;
   const bakerFee = rewards.multipliedBy(bakerFeePart);
   return {
     balance,

@@ -141,7 +141,7 @@ const BakerBannerComponent = React.memo<BakerBannerComponentProps>(({ balanceNum
     <>
       <BakerCard bakerPkh={baker.address} hideAddress showBakerTag className={clsx(BAKER_BANNER_CLASSNAME, 'mb-6')} />
 
-      {!tzError && baker.minDelegation > balanceNum && (
+      {!tzError && baker.delegation.minBalance > balanceNum && (
         <Alert
           type="warning"
           title={t('minDelegationAmountTitle')}
@@ -150,7 +150,7 @@ const BakerBannerComponent = React.memo<BakerBannerComponentProps>(({ balanceNum
               id="minDelegationAmountDescription"
               substitutions={[
                 <span className="font-normal" key="minDelegationsAmount">
-                  <Money>{baker.minDelegation}</Money> <span style={{ fontSize: '0.75em' }}>{symbol}</span>
+                  <Money>{baker.delegation.minBalance}</Money> <span style={{ fontSize: '0.75em' }}>{symbol}</span>
                 </span>
               ]}
             />
