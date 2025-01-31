@@ -9,6 +9,7 @@ import { toastError } from 'app/toaster';
 import { useFormAnalytics } from 'lib/analytics';
 import { isTezAsset, TEZ_TOKEN_SLUG } from 'lib/assets';
 import { useTezosAssetBalance } from 'lib/balances';
+import { RECOMMENDED_ADD_TEZ_GAS_FEE } from 'lib/constants';
 import { useAssetFiatCurrencyPrice } from 'lib/fiat-currency';
 import { toLocalFixed, t } from 'lib/i18n';
 import { useTezosAssetMetadata, getAssetSymbol } from 'lib/metadata';
@@ -31,8 +32,6 @@ import { useTezosEstimationData } from '../hooks/use-tezos-estimation-data';
 import { BaseForm } from './BaseForm';
 import { ReviewData, SendFormData } from './interfaces';
 import { getBaseFeeError, getFeeError, getMaxAmountFiat, getTezosMaxAmountToken } from './utils';
-
-const RECOMMENDED_ADD_FEE = 0.0001;
 
 interface Props {
   chainId: string;
@@ -130,7 +129,7 @@ export const TezosForm: FC<Props> = ({ chainId, assetSlug, onSelectAssetClick, o
     }
 
     const maxAmountAsset = isTezAsset(assetSlug)
-      ? getTezosMaxAmountToken(account.type, balance, estimationData.baseFee, RECOMMENDED_ADD_FEE)
+      ? getTezosMaxAmountToken(account.type, balance, estimationData.baseFee, RECOMMENDED_ADD_TEZ_GAS_FEE)
       : balance;
 
     return shouldUseFiat ? getMaxAmountFiat(assetPrice.toNumber(), maxAmountAsset) : maxAmountAsset;

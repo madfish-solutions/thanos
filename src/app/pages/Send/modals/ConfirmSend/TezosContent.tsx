@@ -1,33 +1,27 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useState } from 'react';
 
-import { localForger } from '@taquito/local-forging';
-import { TezosToolkit, TransactionOperation, TransactionWalletOperation } from '@taquito/taquito';
-import BigNumber from 'bignumber.js';
-import { FormProvider, useForm } from 'react-hook-form-v7';
-import { useDebounce } from 'use-debounce';
+import { OpKind, TransferParams, WalletParamsWithKind } from '@taquito/taquito';
+import { FormProvider } from 'react-hook-form-v7';
 
 import { CLOSE_ANIMATION_TIMEOUT } from 'app/atoms/PageModal';
 import { TezosReviewData } from 'app/pages/Send/form/interfaces';
-import { TezosEstimationData, useTezosEstimationData } from 'app/pages/Send/hooks/use-tezos-estimation-data';
+import { useTezosEstimationData } from 'app/pages/Send/hooks/use-tezos-estimation-data';
+import { TezosTxParamsFormData } from 'app/templates/TransactionTabs/types';
+import { useTezosEstimationForm } from 'app/templates/TransactionTabs/use-tezos-estimation-form';
 import { toastError, toastSuccess } from 'app/toaster';
 import { TEZ_TOKEN_SLUG } from 'lib/assets';
 import { toTransferParams } from 'lib/assets/contract.utils';
 import { useTezosAssetBalance } from 'lib/balances';
-import { AssetMetadataBase, useTezosAssetMetadata } from 'lib/metadata';
+import { useTezosAssetMetadata } from 'lib/metadata';
 import { transferImplicit, transferToContract } from 'lib/michelson';
+import { useTypedSWR } from 'lib/swr';
 import { loadContract } from 'lib/temple/contract';
-import { mutezToTz, tzToMutez } from 'lib/temple/helpers';
-import { ReadOnlySigner } from 'lib/temple/read-only-signer';
+import { tzToMutez } from 'lib/temple/helpers';
 import { isTezosContractAddress } from 'lib/tezos';
 import { ZERO } from 'lib/utils/numbers';
 import { getTezosToolkitWithSigner } from 'temple/front';
-import { getTezosFastRpcClient, michelEncoder } from 'temple/tezos';
 
-import { BaseContent, Tab } from './BaseContent';
-import { DEFAULT_INPUT_DEBOUNCE } from './contants';
-import { useTezosEstimationDataState } from './context';
-import { DisplayedFeeOptions, FeeOptionLabel, TezosTxParamsFormData } from './types';
-import { getTezosFeeOption } from './utils';
+import { BaseContent } from './BaseContent';
 
 interface TezosContentProps {
   data: TezosReviewData;
@@ -43,16 +37,6 @@ export const TezosContent: FC<TezosContentProps> = ({ data, onClose }) => {
 
   const accountPkh = account.address;
 
-  const form = useForm<TezosTxParamsFormData>({ mode: 'onChange' });
-  const { watch, formState, setValue } = form;
-
-  const gasFeeValue = watch('gasFee');
-
-  const [debouncedGasFee] = useDebounce(gasFeeValue, DEFAULT_INPUT_DEBOUNCE);
-  const [debouncedStorageLimit] = useDebounce(watch('storageLimit'), DEFAULT_INPUT_DEBOUNCE);
-
-  const [tab, setTab] = useState<Tab>('details');
-  const [selectedFeeOption, setSelectedFeeOption] = useState<FeeOptionLabel | null>('mid');
   const [latestSubmitError, setLatestSubmitError] = useState<string | nullish>(null);
 
   const { value: balance = ZERO } = useTezosAssetBalance(assetSlug, accountPkh, network);
@@ -73,136 +57,43 @@ export const TezosContent: FC<TezosContentProps> = ({ data, onClose }) => {
     true
   );
 
-  const { setData } = useTezosEstimationDataState();
+  const getBasicSendParams = useCallback(async (): Promise<WalletParamsWithKind[]> => {
+    let transferParams: TransferParams;
 
-  useEffect(() => {
-    if (estimationData) setData(estimationData);
-  }, [estimationData, setData]);
+    if (isTezosContractAddress(accountPkh)) {
+      const michelsonLambda = isTezosContractAddress(to) ? transferToContract : transferImplicit;
 
-  const displayedFeeOptions = useMemo<DisplayedFeeOptions | undefined>(() => {
-    const baseFee = estimationData?.baseFee;
-
-    if (!(baseFee instanceof BigNumber)) return;
-
-    return {
-      slow: getTezosFeeOption('slow', baseFee),
-      mid: getTezosFeeOption('mid', baseFee),
-      fast: getTezosFeeOption('fast', baseFee)
-    };
-  }, [estimationData]);
-
-  const displayedFee = useMemo(() => {
-    if (debouncedGasFee) return debouncedGasFee;
-
-    if (displayedFeeOptions && selectedFeeOption) return displayedFeeOptions[selectedFeeOption];
-
-    return;
-  }, [selectedFeeOption, debouncedGasFee, displayedFeeOptions]);
-
-  const displayedStorageFee = useMemo(() => {
-    if (!estimationData) return;
-
-    const estimates = estimationData.estimates;
-
-    const storageLimit = debouncedStorageLimit || estimates.storageLimit;
-    // @ts-expect-error
-    const minimalFeePerStorageByteMutez = estimates.minimalFeePerStorageByteMutez;
-
-    return mutezToTz(new BigNumber(storageLimit).times(minimalFeePerStorageByteMutez)).toString();
-  }, [estimationData, debouncedStorageLimit]);
-
-  useEffect(() => {
-    if (gasFeeValue && selectedFeeOption) setSelectedFeeOption(null);
-  }, [gasFeeValue, selectedFeeOption]);
-
-  const submitOperation = useCallback(
-    async (
-      tezos: TezosToolkit,
-      gasFee: string,
-      storageLimit: string,
-      assetMetadata: AssetMetadataBase,
-      estimationData?: TezosEstimationData,
-      displayedFeeOptions?: DisplayedFeeOptions
-    ) => {
-      if (!estimationData || !displayedFeeOptions) return;
-
-      let operation: TransactionWalletOperation | TransactionOperation;
-
-      if (isTezosContractAddress(accountPkh)) {
-        const michelsonLambda = isTezosContractAddress(to) ? transferToContract : transferImplicit;
-
-        const contract = await loadContract(tezos, accountPkh);
-        operation = await contract.methodsObject.do(michelsonLambda(to, tzToMutez(amount))).send({ amount: 0 });
-      } else {
-        const transferParams = await toTransferParams(tezos, assetSlug, assetMetadata, accountPkh, to, amount);
-        operation = await tezos.wallet
-          .transfer({
-            ...transferParams,
-            fee: tzToMutez(
-              gasFee || (selectedFeeOption ? displayedFeeOptions[selectedFeeOption] : displayedFeeOptions.mid)
-            ).toNumber(),
-            storageLimit: storageLimit ? Number(storageLimit) : estimationData.estimates.storageLimit
-          })
-          .send();
-      }
-
-      return operation;
-    },
-    [accountPkh, amount, assetSlug, selectedFeeOption, to]
-  );
-
-  const setRawTransaction = useCallback(async () => {
-    try {
-      const sourcePublicKey = await tezos.wallet.getPK();
-
-      let bytesToSign: string | undefined;
-      const signer = new ReadOnlySigner(accountPkh, sourcePublicKey, digest => {
-        bytesToSign = digest;
-      });
-
-      const readOnlyTezos = new TezosToolkit(getTezosFastRpcClient(network.rpcBaseURL));
-      readOnlyTezos.setSignerProvider(signer);
-      readOnlyTezos.setPackerProvider(michelEncoder);
-
-      await submitOperation(
-        readOnlyTezos,
-        debouncedGasFee,
-        debouncedStorageLimit,
-        assetMetadata,
-        estimationData,
-        displayedFeeOptions
-      ).catch(() => null);
-
-      if (bytesToSign) {
-        const rawToSign = await localForger.parse(bytesToSign).catch(() => null);
-        if (rawToSign) setValue('raw', rawToSign);
-        setValue('bytes', bytesToSign);
-      }
-    } catch (err: any) {
-      console.error(err);
+      const contract = await loadContract(tezos, accountPkh);
+      transferParams = contract.methodsObject.do(michelsonLambda(to, tzToMutez(amount))).toTransferParams();
+    } else {
+      transferParams = await toTransferParams(tezos, assetSlug, assetMetadata, accountPkh, to, amount);
     }
-  }, [
-    accountPkh,
-    assetMetadata,
-    displayedFeeOptions,
-    estimationData,
-    debouncedGasFee,
-    network.rpcBaseURL,
-    setValue,
-    debouncedStorageLimit,
-    submitOperation,
-    tezos
-  ]);
 
-  useEffect(() => void setRawTransaction(), [setRawTransaction]);
+    return [
+      {
+        kind: OpKind.TRANSACTION,
+        ...transferParams
+      }
+    ];
+  }, [accountPkh, amount, assetMetadata, assetSlug, tezos, to]);
 
-  const handleFeeOptionSelect = useCallback(
-    (label: FeeOptionLabel) => {
-      setSelectedFeeOption(label);
-      setValue('gasFee', '', { shouldValidate: true });
-    },
-    [setValue]
+  const { data: basicSendParams } = useTypedSWR(
+    ['tezos-basic-send-params', accountPkh, amount, assetSlug, to, network.rpcBaseURL, account.ownerAddress],
+    getBasicSendParams
   );
+
+  const {
+    form,
+    tab,
+    setTab,
+    selectedFeeOption,
+    handleFeeOptionSelect,
+    submitOperation,
+    displayedFeeOptions,
+    displayedFee,
+    displayedStorageFee
+  } = useTezosEstimationForm(estimationData, basicSendParams, account, network.rpcBaseURL, network.chainId);
+  const { formState } = form;
 
   const onSubmit = useCallback(
     async ({ gasFee, storageLimit }: TezosTxParamsFormData) => {
@@ -219,8 +110,7 @@ export const TezosContent: FC<TezosContentProps> = ({ data, onClose }) => {
           tezos,
           gasFee,
           storageLimit,
-          assetMetadata,
-          estimationData,
+          estimationData.revealFee,
           displayedFeeOptions
         );
 
@@ -238,16 +128,7 @@ export const TezosContent: FC<TezosContentProps> = ({ data, onClose }) => {
         setTab('error');
       }
     },
-    [
-      assetMetadata,
-      displayedFeeOptions,
-      estimationData,
-      formState.isSubmitting,
-      onClose,
-      onConfirm,
-      submitOperation,
-      tezos
-    ]
+    [displayedFeeOptions, estimationData, formState.isSubmitting, onClose, onConfirm, setTab, submitOperation, tezos]
   );
 
   return (

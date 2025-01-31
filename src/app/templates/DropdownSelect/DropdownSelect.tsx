@@ -1,14 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  ReactNode,
-  FC,
-  Dispatch,
-  SetStateAction,
-  useMemo,
-  useRef,
-  useCallback,
-  RefObject
-} from 'react';
+import React, { ChangeEventHandler, ReactNode, FC, useMemo, useRef, useCallback, RefObject } from 'react';
 
 import { isDefined } from '@rnw-community/shared';
 import classNames from 'clsx';
@@ -119,7 +109,7 @@ interface SelectOptionsPropsBase<Type> {
 }
 interface SelectOptionsProps<Type> extends SelectOptionsPropsBase<Type> {
   opened: boolean;
-  setOpened: Dispatch<SetStateAction<boolean>>;
+  setOpened: ReactSetStateFn<boolean>;
 }
 
 interface SelectOptionProps<Type> {

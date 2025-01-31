@@ -2,14 +2,14 @@ import memoizee from 'memoizee';
 import { Transport, Chain, createPublicClient, http, PublicClient } from 'viem';
 
 import { rejectOnTimeout } from 'lib/utils';
-import { EvmChain } from 'temple/front';
+import type { EvmChain } from 'temple/front';
 
 import { getReadOnlyEvm } from './get-read-only-evm';
 import { getViemChainsList } from './utils';
 
 export { getReadOnlyEvm } from './get-read-only-evm';
 
-type ChainPublicClient = PublicClient<Transport, Pick<Chain, 'id' | 'name' | 'nativeCurrency' | 'rpcUrls'>>;
+export type ChainPublicClient = PublicClient<Transport, Pick<Chain, 'id' | 'name' | 'nativeCurrency' | 'rpcUrls'>>;
 
 /**
  * Some Viem Client methods will need chain definition to execute, use below fn in those cases

@@ -5,7 +5,7 @@ import { CompositeForger, RpcForger, Signer, TezosOperationError, TezosToolkit }
 import * as TaquitoUtils from '@taquito/utils';
 import * as Bip39 from 'bip39';
 import { nanoid } from 'nanoid';
-import { createWalletClient, http, PrivateKeyAccount, TypedDataDefinition } from 'viem';
+import { createWalletClient, http, PrivateKeyAccount, TransactionRequest, TypedDataDefinition } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import type * as WasmThemisPackageInterface from 'wasm-themis';
 
@@ -30,7 +30,6 @@ import { StoredAccount, TempleAccountType, TempleSettings, WalletSpecs } from 'l
 import { isTruthy } from 'lib/utils';
 import { getAccountAddressForChain, getAccountAddressForEvm, getAccountAddressForTezos } from 'temple/accounts';
 import { TypedDataV1, typedV1SignatureHash } from 'temple/evm/typed-data-v1';
-import { EvmTxParams } from 'temple/evm/types';
 import { EvmChain } from 'temple/front';
 import { michelEncoder, getTezosFastRpcClient } from 'temple/tezos';
 import { TempleChainKind } from 'temple/types';
@@ -901,7 +900,11 @@ export class Vault {
     }
   }
 
-  async sendEvmTransaction(accPublicKeyHash: string, network: EvmChain, txParams: EvmTxParams) {
+  async sendEvmTransaction(
+    accPublicKeyHash: string,
+    network: Pick<EvmChain, 'chainId' | 'name' | 'currency' | 'rpcBaseURL'>,
+    txParams: TransactionRequest
+  ) {
     return this.withSigningEvmAccount(accPublicKeyHash, async account => {
       const client = createWalletClient({
         account,

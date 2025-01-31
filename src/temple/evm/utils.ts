@@ -1,26 +1,113 @@
 import memoizee from 'memoizee';
+import { toHex, type RpcTransactionRequest, type TransactionRequest } from 'viem';
 import * as ViemChains from 'viem/chains';
+import type { AuthorizationList, RpcAuthorizationList } from 'viem/experimental';
 
-import { EvmTxParams, SerializableEvmTxParams, WithSerializedBigint } from './types';
+import { EvmEstimationDataWithFallback, SerializedEvmEstimationDataWithFallback } from 'lib/temple/types';
+
+import type { EvmEstimationData, SerializedEvmEstimationData } from './estimate';
 
 export const getViemChainsList = memoizee(() => Object.values(ViemChains));
 
-function serializeBigints<T extends StringRecord<unknown>>(input: T) {
-  const result = {} as WithSerializedBigint<T>;
-  for (const key in input) {
-    const value = input[key];
-    // @ts-expect-error
-    result[key] = typeof value === 'bigint' ? value.toString() : value;
+export function parseTransactionRequest(req: RpcTransactionRequest): TransactionRequest {
+  if (req.type === '0x0') {
+    const { gas, value, gasPrice, type, nonce, ...restProps } = req;
+
+    return {
+      ...restProps,
+      ...toBigintRecord({ gas, value, gasPrice }),
+      nonce: parseNonce(nonce),
+      type: 'legacy'
+    };
   }
 
-  return result;
+  if (req.type === '0x1') {
+    const { gas, value, gasPrice, type, nonce, ...restProps } = req;
+
+    return {
+      ...restProps,
+      ...toBigintRecord({ gas, value, gasPrice }),
+      nonce: parseNonce(nonce),
+      type: 'eip2930'
+    };
+  }
+
+  if (req.type === '0x3' || req.blobs) {
+    const { gas, value, maxFeePerGas, maxPriorityFeePerGas, maxFeePerBlobGas, type, nonce, ...restProps } = req;
+
+    return {
+      ...restProps,
+      ...toBigintRecord({ gas, value, maxFeePerGas, maxPriorityFeePerGas, maxFeePerBlobGas }),
+      nonce: parseNonce(nonce),
+      type: 'eip4844'
+    };
+  }
+
+  if (req.type === '0x4' || req.authorizationList) {
+    const { gas, value, maxFeePerGas, maxPriorityFeePerGas, authorizationList, type, nonce, ...restProps } = req;
+
+    return {
+      ...restProps,
+      ...toBigintRecord({ gas, value, maxFeePerGas, maxPriorityFeePerGas }),
+      authorizationList: authorizationList && parseAuthorizationList(authorizationList),
+      nonce: parseNonce(nonce),
+      type: 'eip7702'
+    };
+  }
+
+  if (req.type === '0x2' || req.maxFeePerGas || req.maxPriorityFeePerGas) {
+    const { gas, value, maxFeePerGas, maxPriorityFeePerGas, type, nonce, blobs, authorizationList, ...restProps } = req;
+
+    return {
+      ...restProps,
+      ...toBigintRecord({ gas, value, maxFeePerGas, maxPriorityFeePerGas }),
+      nonce: parseNonce(nonce),
+      type: 'eip1559'
+    };
+  }
+
+  const {
+    gas,
+    value,
+    gasPrice,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+    maxFeePerBlobGas,
+    type,
+    nonce,
+    authorizationList,
+    ...rest
+  } = req;
+
+  return {
+    ...rest,
+    ...toBigintRecord({ gas, value, gasPrice, maxFeePerGas, maxPriorityFeePerGas, maxFeePerBlobGas }),
+    nonce: parseNonce(nonce)
+  };
+}
+
+function parseNonce(nonce: string | undefined) {
+  return nonce === undefined ? undefined : Number(nonce);
+}
+
+function parseAuthorizationList(authorizationList: RpcAuthorizationList): AuthorizationList<number, boolean> {
+  return authorizationList.map(authorization => ({
+    contractAddress: authorization.address,
+    r: authorization.r,
+    s: authorization.s,
+    chainId: Number(authorization.chainId),
+    nonce: Number(authorization.nonce),
+    yParity: authorization.yParity === undefined ? undefined : Number(authorization.yParity),
+    // @ts-expect-error: `formatAuthorizationList` includes `v` in the result although it is not specified in the type
+    v: authorization.v === undefined ? undefined : BigInt(authorization.v)
+  }));
 }
 
 type DeserializedBigints<T extends Partial<StringRecord>> = {
-  [K in keyof T]: Replace<T[K], string, bigint>;
+  [K in keyof T]: Replace<Replace<T[K], string, bigint>, HexString, bigint>;
 };
 
-function toBigintRecord<T extends Partial<StringRecord>>(input: T): DeserializedBigints<T> {
+export function toBigintRecord<T extends Partial<StringRecord>>(input: T): DeserializedBigints<T> {
   const result = {} as DeserializedBigints<T>;
   for (const key in input) {
     const value = input[key];
@@ -31,78 +118,30 @@ function toBigintRecord<T extends Partial<StringRecord>>(input: T): Deserialized
   return result;
 }
 
-export function toSerializableEvmTxParams(params: EvmTxParams): SerializableEvmTxParams {
-  switch (params.type) {
-    case 'legacy':
-    case 'eip2930':
-    case 'eip1559':
-      return serializeBigints(params);
-    // EIP4844 type is left for the case a dApp needs it
-    case 'eip4844':
-      const serializedBlobs = params.blobs.map(
-        (blob): HexString => (typeof blob === 'string' ? blob : `0x${Buffer.from(blob).toString('hex')}`)
-      );
-      return {
-        ...serializeBigints(params),
-        blobs: serializedBlobs
-      };
-    case 'eip7702':
-      const serializedAutorizationList = params.authorizationList?.map(auth => serializeBigints(auth));
-      return {
-        ...serializeBigints(params),
-        authorizationList: serializedAutorizationList
-      };
-    default:
-      throw new Error(`Unsupported EVM transaction type: ${params.type}`);
-  }
-}
-
-export function fromSerializableEvmTxParams(params: SerializableEvmTxParams): EvmTxParams {
-  if (params.type === 'legacy' || params.type === 'eip2930') {
-    const { gas, value, gasPrice, ...restLegacy } = params;
-
-    return {
-      ...restLegacy,
-      ...toBigintRecord({ gas, value, gasPrice })
-    };
-  }
-
-  if (params.type === 'eip1559') {
-    const { gas, value, maxFeePerGas, maxPriorityFeePerGas, ...restProps } = params;
-
-    return {
-      ...restProps,
-      ...toBigintRecord({ gas, value, maxFeePerGas, maxPriorityFeePerGas })
-    };
-  }
-
-  if (params.type === 'eip4844') {
-    const { gas, value, maxFeePerGas, maxPriorityFeePerGas, maxFeePerBlobGas, ...restProps } = params;
-
-    return {
-      ...restProps,
-      ...toBigintRecord({ gas, value, maxFeePerGas, maxPriorityFeePerGas, maxFeePerBlobGas })
-    };
-  }
-
-  if (params.type === 'eip7702') {
-    const { gas, value, maxFeePerGas, maxPriorityFeePerGas, authorizationList, ...restProps } = params;
-
-    return {
-      ...restProps,
-      ...toBigintRecord({ gas, value, maxFeePerGas, maxPriorityFeePerGas }),
-      authorizationList: authorizationList?.map(({ v, ...restAuthProps }) => ({
-        ...restAuthProps,
-        ...toBigintRecord({ v })
-      }))
-    };
-  }
-
-  throw new Error(`Unsupported EVM transaction type: ${params.type}`);
-}
-
 export function getGasPriceStep(averageGasPrice: bigint) {
   const repeatCount = averageGasPrice.toString().length - 2;
 
   return BigInt(`1${'0'.repeat(repeatCount > 0 ? repeatCount : 0)}`);
 }
+
+export type SerializedBigints<T extends object> = {
+  [K in keyof T]: Replace<T[K], bigint, HexString>;
+};
+
+export function serializeBigints<T extends object>(input: T): SerializedBigints<T> {
+  const result = {} as SerializedBigints<T>;
+  for (const key in input) {
+    const value = input[key];
+    // @ts-expect-error
+    result[key] = typeof value === 'bigint' ? toHex(value) : value;
+  }
+
+  return result;
+}
+
+export const isEvmEstimationData = (data: EvmEstimationDataWithFallback | undefined): data is EvmEstimationData =>
+  data !== undefined && 'gas' in data;
+
+export const isSerializedEvmEstimationData = (
+  data: SerializedEvmEstimationDataWithFallback
+): data is SerializedEvmEstimationData => 'gas' in data;

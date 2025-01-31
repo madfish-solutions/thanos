@@ -1,5 +1,6 @@
 import React, { memo, useMemo } from 'react';
 
+import { t } from 'lib/i18n';
 import Popper from 'lib/ui/Popper';
 import { useAllEvmChains, useAllTezosChains } from 'temple/front';
 import { TempleChainKind } from 'temple/types';
@@ -14,7 +15,7 @@ export const NetworkPopper = memo<NetworkPopperProps>(
     const allEvmChains = useAllEvmChains();
 
     const selectedOptionName = useMemo(() => {
-      if (!selectedOption) return ALL_NETWORKS;
+      if (!selectedOption) return t(ALL_NETWORKS);
 
       if (selectedOption.kind === TempleChainKind.Tezos) {
         return allTezosChains[selectedOption.chainId]?.name;

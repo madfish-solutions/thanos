@@ -134,3 +134,16 @@ export function getDerivationPath(chainName: TempleChainKind, index: number) {
 
   return `m/44'/1729'/${index}'/0'`;
 }
+
+export function buildFinalTezosOpParams(opParams: any[], modifiedTotalFee?: number, modifiedStorageLimit?: number) {
+  if (modifiedTotalFee !== undefined) {
+    opParams = opParams.map(op => ({ ...op, fee: 0 }));
+    opParams[0].fee = modifiedTotalFee;
+  }
+
+  if (modifiedStorageLimit !== undefined && opParams.length < 2) {
+    opParams[0].storageLimit = modifiedStorageLimit;
+  }
+
+  return opParams;
+}

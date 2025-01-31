@@ -1,9 +1,7 @@
 import React, {
-  Dispatch,
   memo,
   ReactElement,
   RefObject,
-  SetStateAction,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -20,7 +18,7 @@ import { isTruthy } from 'lib/utils';
 
 export interface PopperRenderProps {
   opened: boolean;
-  setOpened: Dispatch<SetStateAction<boolean>>;
+  setOpened: ReactSetStateFn<boolean>;
   toggleOpened: () => void;
 }
 type RenderProp<P> = (props: P) => ReactElement;

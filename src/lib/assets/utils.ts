@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { getAddress } from 'viem';
 
 import type { AssetMetadataBase } from 'lib/metadata';
 import { isTezosDcpChainId } from 'temple/networks';
@@ -17,7 +18,7 @@ export const toTezosAssetSlug = (contract: string, id?: string) =>
   contract === TEZ_TOKEN_SLUG ? TEZ_TOKEN_SLUG : toTokenSlug(contract, id);
 
 export const toEvmAssetSlug = (contract: string, id?: string) =>
-  contract === EVM_TOKEN_SLUG ? EVM_TOKEN_SLUG : toTokenSlug(contract, id);
+  contract === EVM_TOKEN_SLUG ? EVM_TOKEN_SLUG : toTokenSlug(getAddress(contract), id);
 
 export const fromAssetSlug = <T = string>(slug: string) => slug.split('_') as [contract: T, tokenId?: string];
 

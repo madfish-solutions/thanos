@@ -18,6 +18,7 @@ import {
   TempleDAppBroadcastResponse
 } from '@temple-wallet/dapp/dist/types';
 import { nanoid } from 'nanoid';
+import { v4 as uuid } from 'uuid';
 
 import {
   TezosDAppNetwork,
@@ -30,12 +31,14 @@ import { CUSTOM_TEZOS_NETWORKS_STORAGE_KEY, TEZOS_CHAINS_SPECS_STORAGE_KEY } fro
 import { fetchFromStorage } from 'lib/storage';
 import { addLocalOperation } from 'lib/temple/activity';
 import * as Beacon from 'lib/temple/beacon';
+import { buildFinalTezosOpParams } from 'lib/temple/helpers';
 import {
   TempleMessageType,
   TempleRequest,
   TempleNotification,
   TEZOS_MAINNET_CHAIN_ID,
-  TempleTezosChainId
+  TempleTezosChainId,
+  TempleTezosDAppPayload
 } from 'lib/temple/types';
 import { isValidTezosAddress } from 'lib/tezos';
 import { TezosChainSpecs } from 'temple/front/chains-specs';
@@ -44,7 +47,7 @@ import { loadTezosChainId } from 'temple/tezos';
 import { TempleChainKind } from 'temple/types';
 
 import { intercom } from './defaults';
-import { buildFinalOpParams, dryRunOpParams } from './dryrun';
+import { dryRunOpParams } from './dryrun';
 import { RequestConfirmParams, requestConfirm as genericRequestConfirm } from './request-confirm';
 import { withUnlocked } from './store';
 
@@ -196,14 +199,15 @@ const handleIntercomRequest = async (
   resolve: any,
   reject: any
 ) => {
-  if (confirmReq?.type === TempleMessageType.DAppOpsConfirmationRequest && confirmReq?.id === id) {
-    if (confirmReq.confirmed) {
+  if (confirmReq?.type === TempleMessageType.DAppTezosOpsConfirmationRequest && confirmReq?.id === id) {
+    const { modifiedStorageLimit, modifiedTotalFee, confirmed } = confirmReq;
+    if (confirmed) {
       try {
         const op = await withUnlocked(({ vault }) =>
           vault.sendOperations(
             dApp.pkh,
             networkRpc,
-            buildFinalOpParams(req.opParams, confirmReq.modifiedTotalFee, confirmReq.modifiedStorageLimit)
+            buildFinalTezosOpParams(req.opParams, modifiedTotalFee, modifiedStorageLimit)
           )
         );
 
@@ -267,16 +271,21 @@ const generatePromisifySign = async (resolve: any, reject: any, dApp: TezosDAppS
 
   let preview: any;
   try {
-    const value = valueDecoder(Uint8ArrayConsumer.fromHexString(req.payload.slice(2)));
-    const parsed = emitMicheline(value, {
-      indent: '  ',
-      newline: '\n'
-    }).slice(1, -1);
-
-    if (req.payload.match(TEZ_MSG_SIGN_PATTERN)) {
-      preview = value.string;
+    if (req.payload.startsWith('03')) {
+      const parsed = await localForger.parse(req.payload.slice(2));
+      if (parsed.contents.length > 0) {
+        preview = parsed;
+      }
     } else {
-      if (parsed.length > 0) {
+      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(req.payload.slice(2)));
+      const parsed = emitMicheline(value, {
+        indent: '  ',
+        newline: '\n'
+      }).slice(1, -1);
+
+      if (req.payload.match(TEZ_MSG_SIGN_PATTERN)) {
+        preview = value.string;
+      } else if (parsed.length > 0) {
         preview = parsed;
       } else {
         const parsed = await localForger.parse(req.payload);
@@ -365,12 +374,38 @@ async function setDApp(origin: string, permissions: TezosDAppSession) {
 
 export async function removeDApps(origins: string[]) {
   const result = await genericRemoveDApps(TempleChainKind.Tezos, origins);
+  const messageBeforeEncryption = Beacon.encodeMessage({
+    id: uuid(),
+    version: '4',
+    senderId: await Beacon.getSenderId(),
+    type: 'disconnect'
+  });
+  const encryptionResults = await Promise.allSettled(
+    origins.map(async (origin): Promise<[string, string]> => {
+      const pubKey = await Beacon.getDAppPublicKey(origin);
+
+      if (!pubKey) {
+        throw new Error('Public key not found');
+      }
+
+      return [origin, await Beacon.encryptMessage(messageBeforeEncryption, pubKey)];
+    })
+  );
   await Beacon.removeDAppPublicKey(origins);
+  const messagePayloads = Object.fromEntries(
+    encryptionResults
+      .filter((r): r is PromiseFulfilledResult<[string, string]> => r.status === 'fulfilled')
+      .map(r => r.value)
+  );
+  intercom.broadcast({
+    type: TempleMessageType.TempleTezosDAppsDisconnected,
+    messagePayloads
+  });
 
   return result;
 }
 
-async function requestConfirm(params: Omit<RequestConfirmParams, 'transformPayload'>) {
+async function requestConfirm(params: Omit<RequestConfirmParams<TempleTezosDAppPayload>, 'transformPayload'>) {
   return genericRequestConfirm({
     ...params,
     transformPayload: async payload => {
@@ -382,11 +417,16 @@ async function requestConfirm(params: Omit<RequestConfirmParams, 'transformPaylo
           sourcePublicKey: payload.sourcePublicKey
         });
         if (dryrunResult) {
-          payload = {
-            ...payload,
-            ...((dryrunResult && dryrunResult.result) ?? {}),
-            ...(dryrunResult.error ? { error: dryrunResult } : {})
-          };
+          const newPayload = { ...payload };
+
+          if (dryrunResult.error) {
+            newPayload.error = dryrunResult;
+          }
+          if (dryrunResult.result) {
+            newPayload.estimates = dryrunResult.result.estimates;
+          }
+
+          return newPayload;
         }
       }
       return payload;

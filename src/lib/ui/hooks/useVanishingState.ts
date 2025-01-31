@@ -1,6 +1,6 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export const useVanishingState = <S = string>(timeout = 20_000): [S | null, Dispatch<SetStateAction<S | null>>] => {
+export const useVanishingState = <S = string>(timeout = 20_000): [S | null, ReactSetStateFn<S | null>] => {
   const [state, setState] = useState<S | null>(null);
 
   useEffect(() => {

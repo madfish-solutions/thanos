@@ -43,7 +43,10 @@ export const App: FC<Props> = ({ env }) => (
           <AwaitFonts>
             <BootAnimation>
               {env.confirmWindow ? (
-                <ConfirmPage />
+                <>
+                  <ConfirmPage />
+                  <ToasterProvider />
+                </>
               ) : (
                 <>
                   <AppRootHooks />

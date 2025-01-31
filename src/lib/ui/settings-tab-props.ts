@@ -1,5 +1,5 @@
-import { ReactNode, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 
 export interface SettingsTabProps {
-  setHeaderChildren: React.Dispatch<SetStateAction<ReactNode>>;
+  setHeaderChildren: ReactSetStateFn<ReactNode>;
 }

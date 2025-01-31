@@ -4,13 +4,17 @@ import ReactJson from 'react-json-view';
 
 import { CaptionAlert, CopyButton, IconBase, NoSpaceField } from 'app/atoms';
 import { ReactComponent as CopyIcon } from 'app/icons/base/copy.svg';
+import { t } from 'lib/i18n';
 
 interface ErrorTabProps {
   isEvm: boolean;
-  message: string | nullish;
+  submitError: string | nullish;
+  estimationError: string | nullish;
 }
 
-export const ErrorTab = memo<ErrorTabProps>(({ isEvm, message }) => {
+export const ErrorTab = memo<ErrorTabProps>(({ isEvm, submitError, estimationError }) => {
+  const message = submitError || estimationError;
+  const showEstimationErrorMessage = !submitError && estimationError;
   const parsedError = useMemo(() => {
     try {
       if (isEvm || !message) return null;
@@ -25,7 +29,12 @@ export const ErrorTab = memo<ErrorTabProps>(({ isEvm, message }) => {
 
   return (
     <>
-      <CaptionAlert type="error" message="Something’s not right. Please review a message." textClassName="mt-1" />
+      <CaptionAlert
+        type="error"
+        title={showEstimationErrorMessage ? t('txCouldNotBeEstimated') : undefined}
+        message={t(showEstimationErrorMessage ? 'txCouldNotBeEstimatedDescription' : 'genericTxError')}
+        textClassName="mt-1"
+      />
 
       <div className="mt-3 mb-1 flex flex-row justify-between items-center">
         <p className="p-1 text-font-description-bold">Error Message</p>

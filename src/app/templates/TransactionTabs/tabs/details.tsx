@@ -1,10 +1,10 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, ReactNode, useMemo } from 'react';
 
+import { isDefined } from '@rnw-community/shared';
 import BigNumber from 'bignumber.js';
 import clsx from 'clsx';
 
 import { IconBase } from 'app/atoms';
-import { HashChip } from 'app/atoms/HashChip';
 import Money from 'app/atoms/Money';
 import { EvmNetworkLogo, TezosNetworkLogo } from 'app/atoms/NetworkLogo';
 import { ReactComponent as ChevronRightIcon } from 'app/icons/base/chevron_right.svg';
@@ -17,16 +17,18 @@ import { TempleChainKind } from 'temple/types';
 interface Props {
   network: OneOfChains;
   assetSlug: string;
-  recipientAddress: string;
   goToFeeTab: EmptyFn;
   displayedFee?: string;
   displayedStorageFee?: string;
+  destinationName: ReactNode;
+  destinationValue: ReactNode;
 }
 
 export const DetailsTab: FC<Props> = ({
   network,
   assetSlug,
-  recipientAddress,
+  destinationName,
+  destinationValue,
   displayedFee,
   displayedStorageFee,
   goToFeeTab
@@ -49,12 +51,12 @@ export const DetailsTab: FC<Props> = ({
         </div>
       </div>
 
-      <div className="py-2 flex flex-row justify-between items-center border-b-0.5 border-lines">
-        <p className="p-1 text-font-description text-grey-1">
-          <T id="recipient" />
-        </p>
-        <HashChip hash={recipientAddress} />
-      </div>
+      {(isDefined(destinationName) || isDefined(destinationValue)) && (
+        <div className="py-2 flex flex-row justify-between items-center border-b-0.5 border-lines">
+          <p className="p-1 text-font-description text-grey-1">{destinationName}</p>
+          {destinationValue}
+        </div>
+      )}
 
       <div
         className={clsx(
@@ -91,7 +93,7 @@ interface FeesInfoProps {
 const FeesInfo: FC<FeesInfoProps> = ({ network, assetSlug, amount = '0.00', goToFeeTab }) => {
   const isEvm = network.kind === TempleChainKind.EVM;
 
-  const nativeAssetSymbol = useMemo(() => getAssetSymbol(isEvm ? network.currency : TEZOS_METADATA), [network]);
+  const nativeAssetSymbol = useMemo(() => getAssetSymbol(isEvm ? network.currency : TEZOS_METADATA), [isEvm, network]);
 
   return (
     <>

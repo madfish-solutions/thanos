@@ -1,0 +1,233 @@
+[
+  {
+    "kind": "transaction",
+    "source": "tz1XQzfabXm4LZNKnok6W41rdp35qYbti9uE",
+    "fee": "1343",
+    "counter": "47706676",
+    "gas_limit": "9263",
+    "storage_limit": "350",
+    "amount": "0",
+    "destination": "KT1Aq4wWmVanpQhq4TTfjZXB5AjFpx15iQMM",
+    "parameters": {
+      "entrypoint": "mint_artist",
+      "value": {
+        "prim": "Pair",
+        "args": [
+          { "prim": "Pair", "args": [{ "int": "21774" }, { "int": "10" }] },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "bytes": "697066733a2f2f516d516e6b62396b42625361594b674e636e3577695369754c39626e79446158647a6956684c4d43773775335477"
+              },
+              { "string": "tz1XQzfabXm4LZNKnok6W41rdp35qYbti9uE" }
+            ]
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "balance_updates": [
+        {
+          "kind": "contract",
+          "contract": "tz1XQzfabXm4LZNKnok6W41rdp35qYbti9uE",
+          "change": "-1343",
+          "origin": "block"
+        },
+        { "kind": "accumulator", "category": "block fees", "change": "1343", "origin": "block" }
+      ],
+      "operation_result": {
+        "status": "applied",
+        "storage": {
+          "prim": "Pair",
+          "args": [
+            [
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "0000ed19d2d35f18f5960b3d924df634af19b0c47e61" }, { "int": "69617" }]
+                  },
+                  { "prim": "Pair", "args": [{ "int": "24157" }, { "int": "24158" }] }
+                ]
+              },
+              { "prim": "Pair", "args": [{ "int": "0" }, { "int": "24159" }] },
+              { "int": "24160" },
+              [
+                { "bytes": "0000078694ecd15392219b7e47814ecfa11f90192642" },
+                { "bytes": "000032b7ad03806fc1ec76863deba77145ed46c98807" },
+                { "bytes": "00007fc95c97fd368cd9055610ee79e64ff9e0b5285c" }
+              ]
+            ],
+            { "int": "24161" }
+          ]
+        },
+        "consumed_milligas": "4561501",
+        "storage_size": "9150965",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "24161", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "24160", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "24159", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "24158", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "24157",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "exprug9po8kKR3rDrNdG6Lb7F5rJJESsCwQNAGWQGL8waZnzbbP2a4",
+                  "key": { "int": "21774" },
+                  "value": {
+                    "prim": "Pair",
+                    "args": [
+                      { "bytes": "01daf1841b32b4506c8e7d39f23c98557456aa23b400" },
+                      {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000812a69051b588cf08a4733016d92aecabfc70468" }, { "int": "46" }]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1Aq4wWmVanpQhq4TTfjZXB5AjFpx15iQMM",
+          "nonce": 0,
+          "amount": "0",
+          "destination": "KT1UYSCQusTGcMUrQ2FWi9pmWm9YdUxh1uA5",
+          "parameters": {
+            "entrypoint": "mint",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [{ "bytes": "0000812a69051b588cf08a4733016d92aecabfc70468" }, { "int": "10" }]
+                },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    [
+                      {
+                        "prim": "Elt",
+                        "args": [
+                          { "string": "" },
+                          {
+                            "bytes": "697066733a2f2f516d516e6b62396b42625361594b674e636e3577695369754c39626e79446158647a6956684c4d43773775335477"
+                          }
+                        ]
+                      }
+                    ],
+                    { "int": "45" }
+                  ]
+                }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "0118a49434ece5f9d5be1bcd184ba4e75773db6e4500" }, { "int": "46" }]
+                  },
+                  { "prim": "Pair", "args": [{ "int": "164164" }, { "int": "164165" }] }
+                ]
+              },
+              { "prim": "Pair", "args": [{ "int": "164166" }, { "prim": "False" }] },
+              { "int": "164167" },
+              { "int": "164168" }
+            ],
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "tz1XQzfabXm4LZNKnok6W41rdp35qYbti9uE",
+                "change": "-68250",
+                "origin": "block"
+              },
+              { "kind": "burned", "category": "storage fees", "change": "68250", "origin": "block" }
+            ],
+            "consumed_milligas": "4600503",
+            "storage_size": "19742",
+            "paid_storage_size_diff": "273",
+            "lazy_storage_diff": [
+              {
+                "kind": "big_map",
+                "id": "164168",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtzqMJjpnuV4jg63279p97YGd4tHwgUXHJ8sP9RX1N69qaSQxqx",
+                      "key": { "int": "45" },
+                      "value": { "int": "10" }
+                    }
+                  ]
+                }
+              },
+              {
+                "kind": "big_map",
+                "id": "164167",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtzqMJjpnuV4jg63279p97YGd4tHwgUXHJ8sP9RX1N69qaSQxqx",
+                      "key": { "int": "45" },
+                      "value": {
+                        "prim": "Pair",
+                        "args": [
+                          { "int": "45" },
+                          [
+                            {
+                              "prim": "Elt",
+                              "args": [
+                                { "string": "" },
+                                {
+                                  "bytes": "697066733a2f2f516d516e6b62396b42625361594b674e636e3577695369754c39626e79446158647a6956684c4d43773775335477"
+                                }
+                              ]
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "164166", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "164165", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "164164",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtncbPYSJcHZraFwu21rzvUmQAmyuA1ZdDDXSU3jz1irD1eBPNy",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000812a69051b588cf08a4733016d92aecabfc70468" }, { "int": "45" }]
+                      },
+                      "value": { "int": "10" }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]
