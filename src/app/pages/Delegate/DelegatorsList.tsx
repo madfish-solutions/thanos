@@ -71,16 +71,18 @@ export const KnownDelegatorsList = memo<Props>(({ tezosChainId, accountPkh, setV
     const toSort = Array.from(knownBakers);
     switch (sortBakersBy.key) {
       case 'fee':
-        return toSort.sort((a, b) => a.fee - b.fee);
+        return toSort.sort((a, b) => a.delegation.fee - b.delegation.fee);
 
       case 'space':
-        return toSort.sort((a, b) => b.freeSpace - a.freeSpace);
+        return toSort.sort((a, b) => b.delegation.freeSpace - a.delegation.freeSpace);
 
       case 'staking':
-        return toSort.sort((a, b) => b.stakingBalance - a.stakingBalance);
+        return toSort.sort(
+          (a, b) => b.delegation.capacity - b.delegation.freeSpace - (a.delegation.capacity - a.delegation.freeSpace)
+        );
 
       case 'min-amount':
-        return toSort.sort((a, b) => a.minDelegation - b.minDelegation);
+        return toSort.sort((a, b) => a.delegation.minBalance - b.delegation.minBalance);
 
       case 'rank':
       default:

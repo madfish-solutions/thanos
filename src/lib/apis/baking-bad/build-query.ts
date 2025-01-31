@@ -3,7 +3,7 @@ import { pick } from 'lodash';
 
 type RequestParams<T> = T & Omit<AxiosRequestConfig, 'method' | 'url' | 'params'>;
 
-export function buildQuery<P extends Record<string, unknown>, R = any>(
+export function buildQuery<P extends object, R = any>(
   api: AxiosInstance,
   method: 'GET' | 'POST',
   path: ((params: RequestParams<P>) => string) | string,

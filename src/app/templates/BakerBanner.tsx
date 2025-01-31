@@ -87,21 +87,21 @@ export const BakerCard = memo<Props>(
           <div className="flex flex-col gap-y-1">
             <T id="staking" />:
             <span className="font-medium leading-none text-blue-750">
-              <Money>{(baker.stakingBalance / 1000).toFixed(0)}</Money>K
+              <Money>{((baker.delegation.capacity - baker.delegation.freeSpace) / 1000).toFixed(0)}</Money>K
             </span>
           </div>
 
           <div className="flex flex-col gap-y-1">
             <T id="space" />:
             <span className="font-medium leading-none text-blue-750">
-              <Money>{(baker.freeSpace / 1000).toFixed(0)}</Money>K
+              <Money>{(baker.delegation.freeSpace / 1000).toFixed(0)}</Money>K
             </span>
           </div>
 
           <div className="flex flex-col gap-y-1">
             <T id="fee" />:
             <span className="font-medium leading-none text-blue-750">
-              {toLocalFormat(new BigNumber(baker.fee).times(100), {
+              {toLocalFormat(new BigNumber(baker.delegation.fee).times(100), {
                 decimalPlaces: 2
               })}
               %
@@ -111,7 +111,7 @@ export const BakerCard = memo<Props>(
           <div className="flex flex-col gap-y-1">
             <T id="minAmount" />:
             <span className="font-medium leading-none text-blue-750">
-              <Money smallFractionFont={false}>{baker.minDelegation}</Money> {symbol}
+              <Money smallFractionFont={false}>{baker.delegation.minBalance}</Money> {symbol}
             </span>
           </div>
         </div>
