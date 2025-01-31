@@ -178,6 +178,10 @@ export class TempleWeb3Provider extends EventEmitter {
         } else {
           return this.accounts;
         }
+      case 'wallet_watchAsset':
+        return this.addNewAsset(params as RequestArgs<'wallet_watchAsset'>);
+      case evmRpcMethodsNames.wallet_addEthereumChain:
+        return this.addNewChain(params as RequestArgs<'wallet_addEthereumChain'>);
       case evmRpcMethodsNames.wallet_switchEthereumChain:
         return this.handleChainChange(params as RequestArgs<'wallet_switchEthereumChain'>);
       case evmRpcMethodsNames.eth_signTypedData:
@@ -199,13 +203,11 @@ export class TempleWeb3Provider extends EventEmitter {
       case 'eth_sendRawTransaction':
       case 'eth_signTransaction':
       case 'eth_syncing':
-      case 'wallet_addEthereumChain':
       case 'wallet_getCallsStatus':
       case 'wallet_getCapabilities':
       case 'wallet_sendCalls':
       case 'wallet_sendTransaction':
       case 'wallet_showCallsStatus':
-      case 'wallet_watchAsset':
       case 'eth_sign':
         throw new ErrorWithCode(EVMErrorCodes.METHOD_NOT_SUPPORTED, 'Method not supported');
       default:
@@ -234,6 +236,14 @@ export class TempleWeb3Provider extends EventEmitter {
       identity,
       args.method === 'eth_signTypedData_v3' || args.method === 'eth_signTypedData_v4' ? args.params[0] : args.params[1]
     );
+  }
+
+  private addNewAsset(args: RequestArgs<'wallet_watchAsset'>) {
+    return this.handleRequest(args, noop, () => true, undefined);
+  }
+
+  private addNewChain(args: RequestArgs<'wallet_addEthereumChain'>) {
+    return this.handleRequest(args, noop, () => null, undefined);
   }
 
   private handleChainChange(args: RequestArgs<'wallet_switchEthereumChain'>) {

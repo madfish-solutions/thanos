@@ -14,7 +14,7 @@ import {
 import { EMPTY_FROZEN_OBJ } from 'lib/utils';
 import { TempleChainKind } from 'temple/types';
 
-import { useEvmChainsSpecs, useTezosChainsSpecs } from './chains-specs';
+import { useEvmChainsSpecs, useTezosChainsSpecs } from './use-chains-specs';
 
 export interface BlockExplorer {
   name: string;

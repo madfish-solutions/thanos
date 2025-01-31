@@ -4,11 +4,12 @@ import { nanoid } from 'nanoid';
 
 import { ArtificialError } from 'app/defaults';
 import { t } from 'lib/i18n';
+import { EvmChainSpecs, TezosChainSpecs } from 'lib/temple/chains-specs';
 import { COLORS } from 'lib/ui/colors';
 import { loadEvmChainId } from 'temple/evm';
 import { OneOfChains, useAllEvmChains, useAllTezosChains, useTempleNetworksActions } from 'temple/front';
-import { BlockExplorer, useChainBlockExplorers } from 'temple/front/block-explorers';
-import { EvmChainSpecs, TezosChainSpecs, useChainSpecs } from 'temple/front/chains-specs';
+import { BlockExplorer, useChainBlockExplorers } from 'temple/front/use-block-explorers';
+import { useChainSpecs } from 'temple/front/use-chains-specs';
 import { StoredEvmNetwork, StoredTezosNetwork } from 'temple/networks';
 import { loadTezosChainId } from 'temple/tezos';
 import { TempleChainKind } from 'temple/types';

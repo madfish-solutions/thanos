@@ -8,16 +8,17 @@ import { toastError } from 'app/toaster';
 import { EvmAssetStandard } from 'lib/evm/types';
 import { t } from 'lib/i18n';
 import { COLORS } from 'lib/ui/colors';
+import { generateEntityNameFromUrl } from 'lib/utils';
 import { loadEvmChainId } from 'temple/evm';
 import { useTempleNetworksActions } from 'temple/front';
-import { useBlockExplorers } from 'temple/front/block-explorers';
 import { ChainBase } from 'temple/front/chains';
-import { useEvmChainsSpecs, useTezosChainsSpecs } from 'temple/front/chains-specs';
+import { useBlockExplorers } from 'temple/front/use-block-explorers';
+import { useEvmChainsSpecs, useTezosChainsSpecs } from 'temple/front/use-chains-specs';
 import { loadTezosChainId } from 'temple/tezos';
 import { TempleChainKind } from 'temple/types';
 
 import { AddNetworkFormValues, ViemChain } from './types';
-import { NUMERIC_CHAIN_ID_REGEX, generateEntityNameFromUrl, makeFormValues } from './utils';
+import { NUMERIC_CHAIN_ID_REGEX, makeFormValues } from './utils';
 
 export const useAddNetwork = (
   setSubmitError: SyncFn<string>,

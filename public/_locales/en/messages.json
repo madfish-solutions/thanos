@@ -1767,6 +1767,9 @@
   "mustBeValidURL": {
     "message": "Must be a valid URL"
   },
+  "rpcURL": {
+    "message": "RPC URL"
+  },
   "rpcBaseURL": {
     "message": "RPC base URL",
     "description": "RPC = Remote Procedure Call (https://en.wikipedia.org/wiki/Remote_procedure_call)"
@@ -1775,7 +1778,7 @@
     "message": "Must be unique"
   },
   "addNetwork": {
-    "message": "Add network"
+    "message": "Add Network"
   },
   "currentNetworks": {
     "message": "Current networks"
@@ -2013,6 +2016,9 @@
   },
   "contract": {
     "message": "Contract"
+  },
+  "contractAddress": {
+    "message": "Contract Address"
   },
   "contractAddressInputDescription": {
     "message": "Address of the contract to connect."

@@ -1103,7 +1103,7 @@
     "message": "Must be unique"
   },
   "addNetwork": {
-    "message": "Add network"
+    "message": "Add Network"
   },
   "currentNetworks": {
     "message": "Current networks"

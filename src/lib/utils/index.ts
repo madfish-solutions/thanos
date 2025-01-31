@@ -1,5 +1,6 @@
 import { Mutex } from 'async-mutex';
 import EventEmitter from 'events';
+import { capitalize } from 'lodash';
 
 export { arrayBufferToString, stringToArrayBuffer, uInt8ArrayToString, stringToUInt8Array } from './buffers';
 
@@ -115,4 +116,12 @@ export const openLink = (href: string, newTab = true, noreferrer = false) => {
   if (newTab) anchor.target = '_blank';
   if (noreferrer) anchor.rel = 'noreferrer';
   anchor.click();
+};
+
+const getEntityNameTokens = (input: string) => input.split(/[^a-z0-9]/i).filter(Boolean);
+
+export const generateEntityNameFromUrl = (url: string) => {
+  const { hostname, pathname } = new URL(url);
+
+  return getEntityNameTokens(hostname).slice(0, -1).concat(getEntityNameTokens(pathname)).map(capitalize).join(' ');
 };

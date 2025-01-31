@@ -12,7 +12,7 @@ import { T, t } from 'lib/i18n';
 import { useBooleanState } from 'lib/ui/hooks';
 import { HistoryAction, navigate } from 'lib/woozie';
 import { OneOfChains, useAllEvmChains, useAllTezosChains } from 'temple/front';
-import { BlockExplorer } from 'temple/front/block-explorers';
+import { BlockExplorer } from 'temple/front/use-block-explorers';
 import { StoredEvmNetwork, StoredTezosNetwork } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 

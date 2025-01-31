@@ -6,7 +6,7 @@ import { useTempleClient } from 'lib/temple/front/client';
 import { TempleStatus, TempleState, StoredAccount, TempleSettings } from 'lib/temple/types';
 import { TempleChainKind } from 'temple/types';
 
-import { useGetActiveBlockExplorer } from '../block-explorers';
+import { useGetActiveBlockExplorer } from '../use-block-explorers';
 
 import { useReadyTempleAccounts } from './accounts';
 import { useReadyTempleTezosNetworks, useReadyTempleEvmNetworks } from './networks';

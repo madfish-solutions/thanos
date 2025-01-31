@@ -5,29 +5,41 @@ import browser, { Storage } from 'webextension-polyfill';
 
 import {
   EvmDAppSession,
+  getAllDApps,
   getDApp as genericGetDApp,
-  setDApp as genericSetDApp,
   removeDApps as genericRemoveDApps,
-  getAllDApps
+  setDApp as genericSetDApp
 } from 'app/storage/dapps';
-import { isTruthy } from 'lib/utils';
+import { EVM_TOKEN_SLUG } from 'lib/assets/defaults';
+import { BLOCKCHAIN_EXPLORERS_OVERRIDES_STORAGE_KEY, EVM_CHAINS_SPECS_STORAGE_KEY } from 'lib/constants';
+import { EvmAssetStandard } from 'lib/evm/types';
+import { fetchFromStorage, putToStorage } from 'lib/storage';
+import { COLORS } from 'lib/ui/colors';
+import { generateEntityNameFromUrl, isTruthy } from 'lib/utils';
 import { getReadOnlyEvm } from 'temple/evm';
 import { EVMErrorCodes, evmRpcMethodsNames, RETURNED_ACCOUNTS_CAVEAT_NAME } from 'temple/evm/constants';
 import { ChainsRpcUrls, EVM_CHAINS_RPC_URLS_STORAGE_KEY, getEvmChainsRpcUrls } from 'temple/evm/evm-chains-rpc-urls';
 import { ChangePermissionsPayload, ErrorWithCode } from 'temple/evm/types';
+import { BlockExplorer } from 'temple/front/use-block-explorers';
+import { EVM_DEFAULT_NETWORKS } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 
+import { DEFAULT_EVM_CHAINS_SPECS, EvmChainSpecs } from '../chains-specs';
 import {
+  AddEthereumChainParameter,
+  EvmAssetToAddMetadata,
   ETHEREUM_MAINNET_CHAIN_ID,
+  EvmChainToAddMetadata,
   TempleEvmDAppPersonalSignPayload,
   TempleEvmDAppSignPayload,
   TempleEvmDAppSignTypedPayload,
-  TempleMessageType
+  TempleMessageType,
+  WatchAssetParameters
 } from '../types';
 
 import { intercom } from './defaults';
 import { requestConfirm as genericRequestConfirm, RequestConfirmParams } from './request-confirm';
-import { withUnlocked } from './store';
+import { settingsUpdated, withUnlocked } from './store';
 import { Vault } from './vault';
 
 export async function init() {
@@ -179,6 +191,197 @@ export const connectEvm = async (origin: string, chainId: string, icon?: string)
     });
   });
 };
+
+export const addAsset = async (origin: string, currentChainId: string, params: WatchAssetParameters) =>
+  new Promise(async (resolve, reject) => {
+    const id = nanoid();
+
+    const dApp = await getDApp(origin);
+
+    if (!dApp) {
+      reject(new ErrorWithCode(EVMErrorCodes.NOT_AUTHORIZED, 'DApp not found'));
+
+      return;
+    }
+
+    if (params.type !== 'ERC20') {
+      reject(new ErrorWithCode(EVMErrorCodes.INVALID_PARAMS, `Asset type not supported. Received: ${params.type}`));
+
+      return;
+    }
+
+    const assetMetadata: EvmAssetToAddMetadata = {
+      ...params.options,
+      chainId: params.options.chainId ?? Number(currentChainId)
+    };
+
+    await requestConfirm({
+      id,
+      payload: {
+        chainType: TempleChainKind.EVM,
+        type: 'add_asset',
+        metadata: assetMetadata,
+        chainId: currentChainId,
+        origin,
+        appMeta: dApp.appMeta
+      },
+      onDecline: () => {
+        reject(new ErrorWithCode(EVMErrorCodes.USER_REJECTED_REQUEST, 'Asset adding declined'));
+      },
+      handleIntercomRequest: async (confirmReq, decline) => {
+        if (confirmReq?.type === TempleMessageType.DAppAddEvmAssetRequest && confirmReq.id === id) {
+          if (confirmReq.confirmed) {
+            resolve(null);
+          } else {
+            decline();
+          }
+
+          return {
+            type: TempleMessageType.DAppAddEvmAssetResponse
+          };
+        }
+
+        return undefined;
+      }
+    });
+  });
+
+export const addChain = async (origin: string, currentChainId: string, params: AddEthereumChainParameter) =>
+  new Promise(async (resolve, reject) => {
+    const id = nanoid();
+
+    const dApp = await getDApp(origin);
+
+    if (!dApp) {
+      reject(new ErrorWithCode(EVMErrorCodes.NOT_AUTHORIZED, 'DApp not found'));
+
+      return;
+    }
+
+    const rpcUrl = params.rpcUrls.find(url => url.startsWith('https'));
+
+    if (!rpcUrl) {
+      reject(
+        new ErrorWithCode(
+          EVMErrorCodes.INVALID_PARAMS,
+          `Expected array with at least one valid string HTTPS URL 'rpcUrls'. Received: ${params.rpcUrls}`
+        )
+      );
+
+      return;
+    }
+
+    const chainMetadata: EvmChainToAddMetadata = {
+      chainId: params.chainId,
+      name: params.chainName,
+      nativeCurrency: params.nativeCurrency,
+      rpcUrl,
+      blockExplorerUrl: params.blockExplorerUrls?.at(0)
+    };
+
+    await requestConfirm({
+      id,
+      payload: {
+        chainType: TempleChainKind.EVM,
+        type: 'add_chain',
+        metadata: chainMetadata,
+        chainId: currentChainId,
+        origin,
+        appMeta: dApp.appMeta
+      },
+      onDecline: () => {
+        reject(new ErrorWithCode(EVMErrorCodes.USER_REJECTED_REQUEST, 'Chain adding declined'));
+      },
+      handleIntercomRequest: async (confirmReq, decline) => {
+        if (confirmReq?.type === TempleMessageType.DAppAddEvmChainRequest && confirmReq.id === id) {
+          if (confirmReq.confirmed) {
+            await withUnlocked(async ({ vault }) => {
+              const chainIdNum = Number(chainMetadata.chainId);
+
+              const prevStoredSpecs = await fetchFromStorage(EVM_CHAINS_SPECS_STORAGE_KEY);
+              const prevSpecsWithFallback = prevStoredSpecs ?? {};
+
+              if (!prevSpecsWithFallback[chainIdNum] && !DEFAULT_EVM_CHAINS_SPECS[chainIdNum]) {
+                const newChainSpec: EvmChainSpecs = {
+                  name: chainMetadata.name,
+                  currency: {
+                    address: EVM_TOKEN_SLUG,
+                    standard: EvmAssetStandard.NATIVE,
+                    ...chainMetadata.nativeCurrency
+                  },
+                  testnet: confirmReq.testnet
+                };
+
+                await putToStorage(EVM_CHAINS_SPECS_STORAGE_KEY, {
+                  ...prevSpecsWithFallback,
+                  [chainIdNum]: newChainSpec
+                });
+              }
+
+              const settings = await vault.fetchSettings();
+              const customEvmNetworks = settings.customEvmNetworks ?? [];
+
+              if (
+                !customEvmNetworks.some(n => n.rpcBaseURL === rpcUrl) &&
+                !EVM_DEFAULT_NETWORKS.some(n => n.rpcBaseURL === rpcUrl)
+              ) {
+                console.log(2);
+                const updatedSettings = await vault.updateSettings({
+                  customEvmNetworks: [
+                    ...customEvmNetworks,
+                    {
+                      id,
+                      name: chainMetadata.name,
+                      chain: TempleChainKind.EVM,
+                      chainId: chainIdNum,
+                      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                      rpcBaseURL: rpcUrl,
+                      default: false
+                    }
+                  ]
+                });
+
+                settingsUpdated(updatedSettings);
+              }
+
+              if (chainMetadata.blockExplorerUrl) {
+                const prevBlockExplorersOverrides = await fetchFromStorage(BLOCKCHAIN_EXPLORERS_OVERRIDES_STORAGE_KEY);
+                const evmExplorers = prevBlockExplorersOverrides?.[TempleChainKind.EVM] ?? {};
+                const chainExplorers = evmExplorers?.[chainIdNum] ?? [];
+
+                if (!chainExplorers.some(({ url }: BlockExplorer) => url === chainMetadata.blockExplorerUrl)) {
+                  const newBlockExplorer: BlockExplorer = {
+                    id,
+                    name: generateEntityNameFromUrl(chainMetadata.blockExplorerUrl),
+                    url: chainMetadata.blockExplorerUrl,
+                    default: false
+                  };
+
+                  await putToStorage(BLOCKCHAIN_EXPLORERS_OVERRIDES_STORAGE_KEY, {
+                    ...prevBlockExplorersOverrides,
+                    [TempleChainKind.EVM]: {
+                      ...evmExplorers,
+                      [chainIdNum]: [...chainExplorers, newBlockExplorer]
+                    }
+                  });
+                }
+              }
+            });
+
+            resolve(null);
+          } else {
+            decline();
+          }
+
+          return {
+            type: TempleMessageType.DAppAddEvmChainResponse
+          };
+        }
+
+        return undefined;
+      }
+    });
+  });
 
 export const switchChain = async (origin: string, destinationChainId: number, isInternal: boolean) => {
   await assertiveGetChainRpcURLs(destinationChainId);

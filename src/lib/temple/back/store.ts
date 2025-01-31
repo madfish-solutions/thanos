@@ -63,7 +63,7 @@ export const store = createStore<StoreState>({
   .on(locked, () => ({
     // Attention!
     // Security stuff!
-    // Don't merge new state to exisitng!
+    // Don't merge new state to existing!
     // Build a new state from scratch
     // Reset all properties!
     inited: true,

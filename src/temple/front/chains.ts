@@ -4,8 +4,8 @@ import { ETHEREUM_MAINNET_CHAIN_ID, TEZOS_MAINNET_CHAIN_ID } from 'lib/temple/ty
 import type { StoredTezosNetwork, StoredEvmNetwork } from 'temple/networks';
 import type { TempleChainKind } from 'temple/types';
 
-import { BlockExplorer } from './block-explorers';
 import { useAllTezosChains, useAllEvmChains } from './ready';
+import { BlockExplorer } from './use-block-explorers';
 
 export interface BasicEvmChain {
   kind: TempleChainKind.EVM;

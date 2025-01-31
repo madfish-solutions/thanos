@@ -9,8 +9,8 @@ import { useTezosAssetBalance } from 'lib/balances';
 import { useEvmAssetBalance } from 'lib/balances/hooks';
 import { formatDate } from 'lib/i18n';
 import { EvmCollectibleMetadata } from 'lib/metadata/types';
-import { useBlockExplorerHref } from 'temple/front/block-explorers';
 import { useEvmChainByChainId } from 'temple/front/chains';
+import { useBlockExplorerHref } from 'temple/front/use-block-explorers';
 import { TezosNetworkEssentials } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 

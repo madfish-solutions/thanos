@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import { ExternalLinkChip, ExternalLinkChipProps } from 'app/atoms/ExternalLinkChip';
 import { t } from 'lib/i18n';
-import { BlockExplorerEntityType, useBlockExplorerHref } from 'temple/front/block-explorers';
+import { BlockExplorerEntityType, useBlockExplorerHref } from 'temple/front/use-block-explorers';
 import { TempleChainKind } from 'temple/types';
 
 import { OpenInExplorerChipSelectors } from './selectors';

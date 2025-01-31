@@ -14,7 +14,7 @@ import { useKnownBaker } from 'lib/temple/front';
 import { atomsToTokens } from 'lib/temple/helpers';
 import { AccountForTezos, findAccountForTezos } from 'temple/accounts';
 import { useAllAccounts, useOnTezosBlock } from 'temple/front';
-import { useBlockExplorerHref } from 'temple/front/block-explorers';
+import { useBlockExplorerHref } from 'temple/front/use-block-explorers';
 import { TezosNetworkEssentials } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 

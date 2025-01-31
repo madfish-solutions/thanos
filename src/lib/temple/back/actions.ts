@@ -45,9 +45,13 @@ import {
   removeDApps as removeEvmDApps,
   init as initEvm,
   recoverEvmMessageAddress,
-  handleEvmRpcRequest
+  handleEvmRpcRequest,
+  addChain,
+  addAsset
 } from './evm-dapp';
 import {
+  addEthAssetPayloadValidationSchema,
+  addEthChainPayloadValidationSchema,
   ethChangePermissionsPayloadValidationSchema,
   ethOldSignTypedDataValidationSchema,
   ethPersonalSignPayloadValidationSchema,
@@ -503,6 +507,14 @@ export async function processEvmDApp(origin: string, payload: EvmRequestPayload,
       break;
     case evmRpcMethodsNames.eth_requestAccounts:
       methodHandler = () => connectEvm(origin, chainId, iconUrl);
+      break;
+    case evmRpcMethodsNames.wallet_watchAsset:
+      const validatedParams = addEthAssetPayloadValidationSchema.validateSync(params);
+      methodHandler = () => addAsset(origin, chainId, validatedParams);
+      break;
+    case evmRpcMethodsNames.wallet_addEthereumChain:
+      const [chainMetadata] = addEthChainPayloadValidationSchema.validateSync(params);
+      methodHandler = () => addChain(origin, chainId, chainMetadata);
       break;
     case evmRpcMethodsNames.wallet_switchEthereumChain:
       const [{ chainId: destinationChainId }] = switchEthChainPayloadValidationSchema.validateSync(params);

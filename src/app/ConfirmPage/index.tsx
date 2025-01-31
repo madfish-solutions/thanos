@@ -7,6 +7,7 @@ import Spinner from 'app/atoms/Spinner/Spinner';
 import { SuspenseContainer } from 'app/atoms/SuspenseContainer';
 import { LAYOUT_CONTAINER_CLASSNAME } from 'app/layouts/containers';
 import Unlock from 'app/pages/Unlock/Unlock';
+import { ToasterProvider } from 'app/toaster';
 import { t } from 'lib/i18n';
 import { useRetryableSWR } from 'lib/swr';
 import { useTempleClient } from 'lib/temple/front/client';
@@ -14,6 +15,8 @@ import { TempleDAppPayload } from 'lib/temple/types';
 import { useLocation } from 'lib/woozie';
 import { TempleChainKind } from 'temple/types';
 
+import { AddAssetProvider } from './add-asset/context';
+import { AddChainDataProvider } from './add-chain/context';
 import { EvmConfirmDAppForm } from './evm-confirm-dapp-form';
 import { TezosConfirmDAppForm } from './tezos-confirm-dapp-form';
 
@@ -43,6 +46,7 @@ const ConfirmPage = memo(() => {
         }
       >
         <ConfirmDAppForm />
+        <ToasterProvider />
       </SuspenseContainer>
     </div>
   );
@@ -72,7 +76,11 @@ const ConfirmDAppForm = () => {
   const payload = data!;
 
   return payload.chainType === TempleChainKind.EVM ? (
-    <EvmConfirmDAppForm payload={payload} id={id} />
+    <AddChainDataProvider>
+      <AddAssetProvider>
+        <EvmConfirmDAppForm payload={payload} id={id} />
+      </AddAssetProvider>
+    </AddChainDataProvider>
   ) : (
     <TezosConfirmDAppForm payload={payload} id={id} />
   );
