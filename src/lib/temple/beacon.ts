@@ -161,7 +161,7 @@ export enum ErrorType {
   TOO_MANY_OPERATIONS = 'TOO_MANY_OPERATIONS', // Operation Request: Will be returned if too many operations were in the request and they were not able to fit into a single operation group.
   TRANSACTION_INVALID_ERROR = 'TRANSACTION_INVALID_ERROR', // Broadcast: Will be returned if the transaction is not parsable or is rejected by the node.
   ABORTED_ERROR = 'ABORTED_ERROR', // Permission | Operation Request | Sign Request | Broadcast: Will be returned if the request was aborted by the user or the wallet.
-  UNKNOWN_ERROR = 'UNKNOWN_ERROR' // Used as a wildcard if an unexpected error occured.
+  UNKNOWN_ERROR = 'UNKNOWN_ERROR' // Used as a wildcard if an unexpected error occurred.
 }
 
 interface ErrorResponse extends BaseMessage {

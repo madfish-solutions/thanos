@@ -42,7 +42,7 @@ export const MIGRATIONS: MigrationManifest = {
       const tokenId = String(metadata.id);
 
       // Removing all metadata with broken (exponential form) tokenId.
-      // Occured after stringifying large numbers for token IDs.
+      // Occurred after stringifying large numbers for token IDs.
       if (tokenId.includes('e')) {
         delete allTokensMetadata[slug];
         continue;
