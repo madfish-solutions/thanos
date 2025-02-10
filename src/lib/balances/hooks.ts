@@ -26,10 +26,10 @@ import { createEvmTransfersListener } from 'lib/evm/on-chain/evm-transfer-subscr
 import { EvmAssetStandard } from 'lib/evm/types';
 import { EVM_BALANCES_SYNC_INTERVAL } from 'lib/fixed-times';
 import {
-  useTezosAssetMetadata,
+  useCategorizedTezosAssetMetadata,
   useGetChainTokenOrGasMetadata,
   useGetTokenOrGasMetadata,
-  useEvmAssetMetadata
+  useEvmGenericAssetMetadata
 } from 'lib/metadata';
 import { EvmTokenMetadata } from 'lib/metadata/types';
 import { isEvmCollectible } from 'lib/metadata/utils';
@@ -193,7 +193,7 @@ function useTezosAssetRawBalance(
 
 export function useTezosAssetBalance(assetSlug: string, address: string, network: TezosNetworkEssentials) {
   const { value: rawValue, isSyncing, error, refresh } = useTezosAssetRawBalance(assetSlug, address, network);
-  const assetMetadata = useTezosAssetMetadata(assetSlug, network.chainId);
+  const assetMetadata = useCategorizedTezosAssetMetadata(assetSlug, network.chainId);
 
   const value = useMemo(
     () => (rawValue && assetMetadata ? atomsToTokens(new BigNumber(rawValue), assetMetadata.decimals) : undefined),
@@ -265,7 +265,7 @@ function useEvmAssetRawBalance(
 }
 
 export function useEvmAssetBalance(assetSlug: string, address: HexString, network: EvmNetworkEssentials) {
-  const metadata = useEvmAssetMetadata(assetSlug, network.chainId);
+  const metadata = useEvmGenericAssetMetadata(assetSlug, network.chainId);
 
   const {
     value: rawValue,

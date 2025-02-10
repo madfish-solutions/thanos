@@ -1,4 +1,11 @@
-import { ActivityOperKindEnum, Activity, ActivityOperTransferType, TezosOperation, EvmOperation } from 'lib/activity';
+import {
+  ActivityOperKindEnum,
+  Activity,
+  ActivityOperTransferType,
+  TezosOperation,
+  EvmOperation,
+  TezosActivity
+} from 'lib/activity';
 
 export type FaceKind = ActivityOperKindEnum | 'bundle';
 
@@ -37,4 +44,8 @@ export function getActivityFilterKind(activity: Activity): FilterKind {
   }
 
   return null;
+}
+
+export function isTezosActivity(activity: Activity): activity is TezosActivity {
+  return 'oldestTzktOperation' in activity;
 }

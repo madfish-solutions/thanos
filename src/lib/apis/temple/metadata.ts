@@ -34,7 +34,7 @@ export interface TokenMetadataResponse {
 
 export const fetchOneTokenMetadata = (chainId: MetadataApiChainId, address: string, id: string) =>
   getApi(chainId)
-    .get<TokenMetadataResponse>(`/metadata/${address}/${id}`)
+    .get<TokenMetadataResponse>(`/metadata/${address}/${id || '0'}`)
     .then(({ data }) => (data.name === 'Unknown Token' ? undefined : data));
 
 export const METADATA_API_LOAD_CHUNK_SIZE = 50;

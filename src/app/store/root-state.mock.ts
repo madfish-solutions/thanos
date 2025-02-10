@@ -10,6 +10,7 @@ import { mockDAppsState } from './d-apps/state.mock';
 import { mockEvmAssetsState } from './evm/assets/state.mock';
 import { mockEvmBalancesState } from './evm/balances/state.mock';
 import { mockEvmCollectiblesMetadataState } from './evm/collectibles-metadata/state.mock';
+import { mockNoCategoryEvmAssetsMetadataState } from './evm/no-category-assets-metadata/state.mock';
 import { mockEvmLoadingState } from './evm/state.mock';
 import { mockEvmTokensExchangeRatesState } from './evm/tokens-exchange-rates/state.mock';
 import { mockEvmTokensMetadataState } from './evm/tokens-metadata/state.mock';
@@ -23,6 +24,7 @@ import { mockAssetsState } from './tezos/assets/state.mock';
 import { mockBalancesState } from './tezos/balances/state.mock';
 import { mockCollectiblesState } from './tezos/collectibles/state.mock';
 import { mockCollectiblesMetadataState } from './tezos/collectibles-metadata/state.mock';
+import { mockNoCategoryTezosAssetsMetadataState } from './tezos/no-category-assets-metadata/state.mock';
 import { mockTokensMetadataState } from './tezos/tokens-metadata/state.mock';
 
 // ts-prune-ignore-next
@@ -38,6 +40,7 @@ export const mockRootState: RootState = {
   assets: mockAssetsState,
   tokensMetadata: mockTokensMetadataState,
   collectiblesMetadata: mockCollectiblesMetadataState,
+  noCategoryAssetMetadata: mockNoCategoryTezosAssetsMetadataState,
   abTesting: mockABTestingState,
   cryptoExchange: mockCryptoExchangeState,
   buyWithCreditCard: mockBuyWithCreditCardState,
@@ -50,5 +53,6 @@ export const mockRootState: RootState = {
   evmTokensMetadata: mockEvmTokensMetadataState,
   evmCollectiblesMetadata: mockEvmCollectiblesMetadataState,
   evmTokensExchangeRates: mockEvmTokensExchangeRatesState,
+  evmNoCategoryAssetMetadata: mockNoCategoryEvmAssetsMetadataState,
   assetsFilterOptions: mockAssetsFilterOptionsState
 };

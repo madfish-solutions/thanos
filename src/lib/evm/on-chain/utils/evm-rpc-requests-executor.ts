@@ -1,89 +1,71 @@
-import { isDefined } from '@rnw-community/shared';
-import { Mutex } from 'async-mutex';
-import { omit } from 'lodash';
-
-import { EVM_RPC_REQUESTS_INTERVAL } from 'lib/fixed-times';
-import { QueueOfUnique } from 'lib/utils/queue-of-unique';
+import { Mutex, Semaphore } from 'async-mutex';
 
 export class RequestAlreadyPendingError extends Error {}
 
-export interface ExecutionQueueCallbacks<R> {
-  onSuccess: SyncFn<R>;
-  onError: SyncFn<Error>;
-}
-
-type Payload<T extends ExecutionQueueCallbacks<R>, R> = Omit<T, 'onSuccess' | 'onError'>;
-
-export abstract class EvmRpcRequestsExecutor<T extends ExecutionQueueCallbacks<R>, R, K extends string | number> {
-  private requestsQueues = new Map<K, QueueOfUnique<T>>();
+export abstract class EvmRpcRequestsExecutor<T extends object, R, K extends string | number> {
+  private requestsPools = new Map<K, { semaphore: Semaphore; pendingRequests: T[] }>();
   private mapMutex = new Mutex();
-  private requestInterval: NodeJS.Timer;
 
-  constructor() {
-    this.executeNextRequests = this.executeNextRequests.bind(this);
-    this.requestInterval = setInterval(() => this.executeNextRequests(), EVM_RPC_REQUESTS_INTERVAL);
-  }
+  constructor(private readonly rps = 15) {}
 
-  protected abstract getQueueKey(payload: Payload<T, R>): K;
-  protected abstract requestsAreSame(a: Payload<T, R>, b: Payload<T, R>): boolean;
-  protected abstract getResult(payload: Payload<T, R>): Promise<R>;
+  protected abstract getRequestsPoolKey(payload: T): K;
+  protected abstract requestsAreSame(a: T, b: T): boolean;
+  protected abstract getResult(payload: T): Promise<R>;
 
-  async queueIsEmpty(key: K) {
+  async poolIsEmpty(key: K) {
     return this.mapMutex.runExclusive(async () => {
-      const queue = this.requestsQueues.get(key);
-      return !queue || (await queue.length()) === 0;
+      const pool = this.requestsPools.get(key);
+      return !pool || pool.pendingRequests.length === 0;
     });
   }
 
-  async executeRequest(payload: Payload<T, R>) {
-    const chainId = this.getQueueKey(payload);
-
-    return new Promise<R>(async (resolve, reject) => {
-      const queue = await this.mapMutex.runExclusive(async () => {
-        let result = this.requestsQueues.get(chainId);
-        if (!result) {
-          result = new QueueOfUnique<T>((a, b) =>
-            this.requestsAreSame(omit(a, 'onSuccess', 'onError'), omit(b, 'onSuccess', 'onError'))
-          );
-          this.requestsQueues.set(chainId, result);
+  async allPoolsAreEmpty() {
+    return this.mapMutex.runExclusive(() => {
+      for (const key of this.requestsPools.keys()) {
+        const pool = this.requestsPools.get(key);
+        if (pool && pool.pendingRequests.length > 0) {
+          return false;
         }
-
-        return result;
-      });
-
-      const hasBeenPushed = await queue.push({
-        ...payload,
-        onSuccess: resolve,
-        onError: reject
-      } as T);
-
-      if (!hasBeenPushed) {
-        reject(new RequestAlreadyPendingError());
       }
+
+      return true;
     });
   }
 
-  finalize() {
-    clearInterval(this.requestInterval);
-  }
+  async executeRequest(payload: T) {
+    const chainId = this.getRequestsPoolKey(payload);
 
-  private async executeNextRequests() {
-    const requests = await this.mapMutex.runExclusive(() => {
-      const requestsPromises: Promise<T | undefined>[] = [];
-      this.requestsQueues.forEach(queue => requestsPromises.push(queue.pop()));
+    const { pool, alreadyPending } = await this.mapMutex.runExclusive(async () => {
+      let pool = this.requestsPools.get(chainId);
+      if (!pool) {
+        pool = {
+          semaphore: new Semaphore(this.rps),
+          pendingRequests: []
+        };
+        this.requestsPools.set(chainId, pool);
+      }
 
-      return Promise.all(requestsPromises).then(requests => requests.filter(isDefined));
+      const alreadyPending = pool.pendingRequests.some(pendingRequest => this.requestsAreSame(pendingRequest, payload));
+      if (!alreadyPending) {
+        pool.pendingRequests.push(payload);
+      }
+
+      return { pool, alreadyPending };
     });
 
-    return Promise.all(
-      requests.map(async ({ onSuccess, onError, ...payload }) => {
-        try {
-          const result = await this.getResult(payload);
-          onSuccess(result);
-        } catch (err: any) {
-          onError(err);
-        }
-      })
-    );
+    if (alreadyPending) {
+      throw new RequestAlreadyPendingError();
+    }
+
+    const [, release] = await pool.semaphore.acquire();
+    setTimeout(release, 1000);
+
+    return this.getResult(payload).finally(() => {
+      this.mapMutex.runExclusive(() => {
+        pool.pendingRequests = pool.pendingRequests.filter(
+          pendingRequest => !this.requestsAreSame(pendingRequest, payload)
+        );
+      });
+    });
   }
 }

@@ -1,7 +1,8 @@
 import { tokenToSlug } from 'lib/assets';
 
+import { mockFA1_2TokenMetadata, mockFA2TokenMetadata } from '../utils';
+
 import { TokensMetadataState } from './state';
-import { mockFA1_2TokenMetadata, mockFA2TokenMetadata } from './utils';
 
 export const mockTokensMetadataState: TokensMetadataState = {
   metadataRecord: {

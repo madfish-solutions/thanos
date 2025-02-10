@@ -3,7 +3,6 @@ import React, { memo, useMemo } from 'react';
 import { PageModal } from 'app/atoms/PageModal';
 import { TezosActivity } from 'lib/activity';
 import { isTransferActivityOperKind } from 'lib/activity/utils';
-import { useGetChainTokenOrGasMetadata } from 'lib/metadata';
 import { useBooleanState } from 'lib/ui/hooks';
 import { ZERO } from 'lib/utils/numbers';
 import { makeBlockExplorerHref } from 'temple/front/block-explorers';
@@ -14,6 +13,7 @@ import { TempleChainKind } from 'temple/types';
 import { ActivityOperationBaseComponent } from './ActivityOperationBase';
 import { BundleModalContent } from './BundleModal';
 import { TezosActivityOperationComponent, buildTezosOperationAsset } from './TezosActivityOperation';
+import { getBatchActivityFaceSlugsCandidates, useGetAssetMetadataForTezosBatch } from './utils';
 
 interface Props {
   activity: TezosActivity;
@@ -70,19 +70,11 @@ const TezosActivityBatchComponent = memo<BatchProps>(({ activity, chain, assetSl
 
   const { hash, operations, status } = activity;
 
-  const getMetadata = useGetChainTokenOrGasMetadata(chain.chainId);
+  const getMetadata = useGetAssetMetadataForTezosBatch(chain.chainId);
 
   const batchAsset = useMemo(() => {
     const faceSlug =
-      assetSlug ||
-      operations.find(
-        ({ kind, assetSlug, amountSigned }) =>
-          assetSlug &&
-          amountSigned &&
-          Number(amountSigned) !== 0 &&
-          isTransferActivityOperKind(kind) &&
-          getMetadata(assetSlug)
-      )?.assetSlug;
+      assetSlug || getBatchActivityFaceSlugsCandidates(operations).find(assetSlug => getMetadata(assetSlug));
 
     if (!faceSlug) return;
 

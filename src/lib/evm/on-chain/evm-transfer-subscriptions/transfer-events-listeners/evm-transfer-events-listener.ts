@@ -6,11 +6,7 @@ import { erc20TransferEvent } from 'lib/abi/erc20';
 import { erc721TransferEvent } from 'lib/abi/erc721';
 import { getReadOnlyEvm } from 'temple/evm';
 
-import {
-  EvmRpcRequestsExecutor,
-  ExecutionQueueCallbacks,
-  RequestAlreadyPendingError
-} from '../../utils/evm-rpc-requests-executor';
+import { EvmRpcRequestsExecutor, RequestAlreadyPendingError } from '../../utils/evm-rpc-requests-executor';
 import { EvmHttpRpcListener } from '../evm-http-rpc-listener';
 
 export type TransferEvent = OneOf<
@@ -26,11 +22,11 @@ interface TransfersSubscriptionPayload {
 }
 
 class EvmTransferEventsSubscriptionExecutor extends EvmRpcRequestsExecutor<
-  TransfersSubscriptionPayload & ExecutionQueueCallbacks<EmptyFn>,
+  TransfersSubscriptionPayload,
   EmptyFn,
   string
 > {
-  protected getQueueKey(payload: TransfersSubscriptionPayload) {
+  protected getRequestsPoolKey(payload: TransfersSubscriptionPayload) {
     return payload.rpcUrl;
   }
 

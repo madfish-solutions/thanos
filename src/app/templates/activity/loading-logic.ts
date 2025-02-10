@@ -48,3 +48,11 @@ export function useActivitiesLoadingLogic<A>(
     loadNext
   };
 }
+
+/* interface ActivityFragment<A, C> {
+  activities: A[];
+  oldestCursor?: C;
+  newestCursor?: C;
+}
+
+export function useActivitiesLoadingLogicV2<A, P>(fragments: ActivityFragment<A, P>[]) {} */

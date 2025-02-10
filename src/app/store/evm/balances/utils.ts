@@ -6,7 +6,7 @@ import { isNativeTokenAddress } from 'lib/apis/temple/endpoints/evm/api.utils';
 import { toTokenSlug } from 'lib/assets';
 import { EVM_TOKEN_SLUG } from 'lib/assets/defaults';
 import { fetchEvmRawBalance } from 'lib/evm/on-chain/balance';
-import { EvmRpcRequestsExecutor, ExecutionQueueCallbacks } from 'lib/evm/on-chain/utils/evm-rpc-requests-executor';
+import { EvmRpcRequestsExecutor } from 'lib/evm/on-chain/utils/evm-rpc-requests-executor';
 import { isPositiveCollectibleBalance, isPositiveTokenBalance } from 'lib/utils/evm.utils';
 
 import { LoadOnChainBalancePayload } from './actions';
@@ -37,12 +37,8 @@ export const getTokenSlugBalanceRecord = (data: BalanceItem[], chainId: number) 
     return acc;
   }, {});
 
-class EvmOnChainBalancesRequestsExecutor extends EvmRpcRequestsExecutor<
-  LoadOnChainBalancePayload & ExecutionQueueCallbacks<BigNumber>,
-  BigNumber,
-  number
-> {
-  protected getQueueKey(payload: LoadOnChainBalancePayload) {
+class EvmOnChainBalancesRequestsExecutor extends EvmRpcRequestsExecutor<LoadOnChainBalancePayload, BigNumber, number> {
+  protected getRequestsPoolKey(payload: LoadOnChainBalancePayload) {
     return payload.network.chainId;
   }
 

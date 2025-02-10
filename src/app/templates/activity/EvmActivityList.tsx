@@ -5,11 +5,13 @@ import { EvmActivity } from 'lib/activity';
 import { getEvmActivities } from 'lib/activity/evm/fetch';
 import { useAccountAddressForEvm } from 'temple/front';
 import { useEvmChainByChainId } from 'temple/front/chains';
+import { TempleChainKind } from 'temple/types';
 
 import { EvmActivityComponent } from './ActivityItem';
 import { ActivityListView } from './ActivityListView';
 import { ActivitiesDateGroup, useGroupingByDate } from './grouping-by-date';
 import { RETRY_AFTER_ERROR_TIMEOUT, useActivitiesLoadingLogic } from './loading-logic';
+import { useAssetsFromActivitiesCheck } from './use-assets-from-activites-check';
 import { FilterKind, getActivityFilterKind } from './utils';
 
 interface Props {
@@ -84,6 +86,16 @@ export const EvmActivityList: FC<Props> = ({ chainId, assetSlug, filterKind }) =
       )),
     [groupedActivities, network, assetSlug]
   );
+
+  const evmAssetsCheckConfig = useMemo(
+    () => ({
+      activities: displayActivities,
+      evmAccountPkh: accountAddress,
+      mainAsset: assetSlug ? { chainKind: TempleChainKind.EVM, chainId, slug: assetSlug } : undefined
+    }),
+    [accountAddress, assetSlug, chainId, displayActivities]
+  );
+  useAssetsFromActivitiesCheck(evmAssetsCheckConfig);
 
   return (
     <ActivityListView

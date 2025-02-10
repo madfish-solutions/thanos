@@ -16,8 +16,8 @@ import { TEZ_TOKEN_SLUG } from 'lib/assets';
 import { useTezosAssetBalance } from 'lib/balances';
 import { T, t, toLocalFormat } from 'lib/i18n';
 import {
-  useTezosAssetMetadata,
-  useGetAssetMetadata,
+  useCategorizedTezosAssetMetadata,
+  useGetCategorizedAssetMetadata,
   AssetMetadataBase,
   useTezosTokensMetadataPresenceCheck
 } from 'lib/metadata';
@@ -58,12 +58,12 @@ export const SwapFormInput: FC<SwapFormInputProps> = ({
   const isTezosSlug = assetSlug === TEZ_TOKEN_SLUG;
   const assetSlugWithFallback = assetSlug ?? TEZ_TOKEN_SLUG;
 
-  const assetMetadataWithFallback = useTezosAssetMetadata(assetSlugWithFallback, network.chainId)!;
+  const assetMetadataWithFallback = useCategorizedTezosAssetMetadata(assetSlugWithFallback, network.chainId)!;
   const assetMetadata = useMemo(
     () => (assetSlug ? assetMetadataWithFallback : EMPTY_BASE_METADATA),
     [assetSlug, assetMetadataWithFallback]
   );
-  const getTokenMetadata = useGetAssetMetadata(network.chainId);
+  const getTokenMetadata = useGetCategorizedAssetMetadata(network.chainId);
 
   const { value: balance } = useTezosAssetBalance(assetSlugWithFallback, publicKeyHash, network);
 

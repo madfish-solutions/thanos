@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import { useEvmTokenMetadataSelector } from 'app/store/evm/tokens-metadata/selectors';
 import { setAnotherSelector, setTestID } from 'lib/analytics';
-import { getAssetSymbol, useTezosAssetMetadata } from 'lib/metadata';
+import { getAssetSymbol, useCategorizedTezosAssetMetadata } from 'lib/metadata';
 import { isEvmNativeTokenSlug } from 'lib/utils/evm.utils';
 import { useEvmChainByChainId } from 'temple/front/chains';
 
@@ -20,7 +20,7 @@ interface EvmProps extends BaseProps {
 }
 
 export const TezosPageTitle = memo<TezosProps>(({ assetSlug, tezosChainId }) => {
-  const assetMetadata = useTezosAssetMetadata(assetSlug, tezosChainId);
+  const assetMetadata = useCategorizedTezosAssetMetadata(assetSlug, tezosChainId);
   const assetSymbol = getAssetSymbol(assetMetadata);
 
   return <BaseTitle assetSymbol={assetSymbol} />;

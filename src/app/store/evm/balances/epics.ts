@@ -17,7 +17,7 @@ const loadEvmBalanceOnChainEpic: Epic = action$ =>
 
       return from(evmOnChainBalancesRequestsExecutor.executeRequest(payload)).pipe(
         switchMap(balance =>
-          forkJoin([Promise.resolve(balance), evmOnChainBalancesRequestsExecutor.queueIsEmpty(network.chainId)])
+          forkJoin([Promise.resolve(balance), evmOnChainBalancesRequestsExecutor.poolIsEmpty(network.chainId)])
         ),
         switchMap(([balance, queueIsEmpty]) => {
           const updateBalanceObservable = of(

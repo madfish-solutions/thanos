@@ -20,7 +20,7 @@ import { fetchRoute3SwapParams } from 'lib/apis/route3/fetch-route3-swap-params'
 import { TEZ_TOKEN_SLUG } from 'lib/assets';
 import { KNOWN_TOKENS_SLUGS } from 'lib/assets/known-tokens';
 import { T, t } from 'lib/i18n';
-import { useTezosAssetMetadata, useGetAssetMetadata } from 'lib/metadata';
+import { useCategorizedTezosAssetMetadata, useGetCategorizedAssetMetadata } from 'lib/metadata';
 import {
   BURN_ADDREESS,
   ROUTING_FEE_ADDRESS,
@@ -77,7 +77,7 @@ export const SwapForm = memo<Props>(({ publicKeyHash }) => {
   const { data: route3Tokens } = useSwapTokensSelector();
   const swapParams = useSwapParamsSelector();
   const allUsdToTokenRates = useSelector(state => state.currency.usdToTokenRates.data);
-  const getTokenMetadata = useGetAssetMetadata(TEZOS_MAINNET_CHAIN_ID);
+  const getTokenMetadata = useGetCategorizedAssetMetadata(TEZOS_MAINNET_CHAIN_ID);
   const prevOutputRef = useRef(swapParams.data.output);
 
   const formAnalytics = useFormAnalytics('SwapForm');
@@ -98,8 +98,14 @@ export const SwapForm = memo<Props>(({ publicKeyHash }) => {
   const fromRoute3Token = useSwapTokenSelector(inputValue.assetSlug ?? '');
   const toRoute3Token = useSwapTokenSelector(outputValue.assetSlug ?? '');
 
-  const inputAssetMetadata = useTezosAssetMetadata(inputValue.assetSlug ?? TEZ_TOKEN_SLUG, TEZOS_MAINNET_CHAIN_ID)!;
-  const outputAssetMetadata = useTezosAssetMetadata(outputValue.assetSlug ?? TEZ_TOKEN_SLUG, TEZOS_MAINNET_CHAIN_ID)!;
+  const inputAssetMetadata = useCategorizedTezosAssetMetadata(
+    inputValue.assetSlug ?? TEZ_TOKEN_SLUG,
+    TEZOS_MAINNET_CHAIN_ID
+  )!;
+  const outputAssetMetadata = useCategorizedTezosAssetMetadata(
+    outputValue.assetSlug ?? TEZ_TOKEN_SLUG,
+    TEZOS_MAINNET_CHAIN_ID
+  )!;
 
   const [error, setError] = useState<Error>();
   const [operation, setOperation] = useState<BatchWalletOperation>();

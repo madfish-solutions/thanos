@@ -11,7 +11,7 @@ import { isTezAsset, TEZ_TOKEN_SLUG } from 'lib/assets';
 import { useTezosAssetBalance } from 'lib/balances';
 import { useAssetFiatCurrencyPrice } from 'lib/fiat-currency';
 import { toLocalFixed, t } from 'lib/i18n';
-import { useTezosAssetMetadata, getAssetSymbol } from 'lib/metadata';
+import { useCategorizedTezosAssetMetadata, getAssetSymbol } from 'lib/metadata';
 import { validateRecipient as validateAddress } from 'lib/temple/front';
 import { isValidTezosAddress, isTezosContractAddress } from 'lib/tezos';
 import { useSafeState } from 'lib/ui/hooks';
@@ -47,7 +47,7 @@ export const TezosForm: FC<Props> = ({ chainId, assetSlug, onSelectAssetClick, o
 
   if (!account || !network) throw new DeadEndBoundaryError();
 
-  const assetMetadata = useTezosAssetMetadata(assetSlug, chainId);
+  const assetMetadata = useCategorizedTezosAssetMetadata(assetSlug, chainId);
 
   if (!assetMetadata) throw new Error('Metadata not found');
 

@@ -27,7 +27,6 @@ export const fetchEvmCollectiblesMetadataFromChain = async (
     handleFetchedMetadata<EvmCollectibleMetadata | undefined>(fetchedMetadata, collectibleSlugs)
   );
 
-// ts-prune-ignore-next
 export const fetchEvmAssetMetadataFromChain = async (network: EvmNetworkEssentials, assetSlug: string) => {
   const [contractAddress, tokenIdStr] = fromAssetSlug<HexString>(assetSlug);
 

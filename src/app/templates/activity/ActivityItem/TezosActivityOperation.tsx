@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 
 import { ActivityOperKindEnum, TezosOperation, ActivityStatus } from 'lib/activity';
 import { fromAssetSlug } from 'lib/assets';
-import { AssetMetadataBase, isTezosCollectibleMetadata, useTezosAssetMetadata } from 'lib/metadata';
+import { AssetMetadataBase, isTezosCollectibleMetadata, useGenericTezosAssetMetadata } from 'lib/metadata';
 import { BasicTezosChain } from 'temple/front/chains';
 
 import { getActivityOperTransferType } from '../utils';
@@ -23,7 +23,7 @@ interface Props {
 export const TezosActivityOperationComponent = memo<Props>(
   ({ hash, operation, chain, blockExplorerUrl, status, withoutAssetIcon, withoutOperHashChip }) => {
     const assetSlug = operation?.assetSlug;
-    const assetMetadata = useTezosAssetMetadata(assetSlug ?? '', chain.chainId);
+    const assetMetadata = useGenericTezosAssetMetadata(assetSlug ?? '', chain.chainId);
 
     const asset = useMemo(
       () => (assetSlug ? buildTezosOperationAsset(assetSlug, assetMetadata, operation.amountSigned) : undefined),

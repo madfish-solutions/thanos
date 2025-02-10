@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 
 import { ActivityOperKindEnum, EvmOperation, ActivityStatus } from 'lib/activity';
 import { toEvmAssetSlug } from 'lib/assets/utils';
-import { useEvmAssetMetadata } from 'lib/metadata';
+import { useEvmGenericAssetMetadata } from 'lib/metadata';
 import { BasicEvmChain } from 'temple/front/chains';
 
 import { getActivityOperTransferType } from '../utils';
@@ -25,7 +25,7 @@ export const EvmActivityOperationComponent = memo<Props>(
     const assetBase = operation?.asset;
     const assetSlug = assetBase?.contract ? toEvmAssetSlug(assetBase.contract) : undefined;
 
-    const assetMetadata = useEvmAssetMetadata(assetSlug ?? '', chain.chainId);
+    const assetMetadata = useEvmGenericAssetMetadata(assetSlug ?? '', chain.chainId);
 
     const asset = useMemo(() => {
       if (!assetBase) return;

@@ -6,11 +6,13 @@ import { parseTezosOperationsGroup } from 'lib/activity/tezos';
 import fetchTezosOperationsGroups from 'lib/activity/tezos/fetch';
 import { isKnownChainId } from 'lib/apis/tzkt/api';
 import { useAccountAddressForTezos, useTezosChainByChainId } from 'temple/front';
+import { TempleChainKind } from 'temple/types';
 
 import { TezosActivityComponent } from './ActivityItem';
 import { ActivityListView } from './ActivityListView';
 import { ActivitiesDateGroup, useGroupingByDate } from './grouping-by-date';
 import { RETRY_AFTER_ERROR_TIMEOUT, useActivitiesLoadingLogic } from './loading-logic';
+import { useAssetsFromActivitiesCheck } from './use-assets-from-activites-check';
 import { FilterKind, getActivityFilterKind } from './utils';
 
 interface Props {
@@ -85,6 +87,16 @@ export const TezosActivityList = memo<Props>(({ tezosChainId, assetSlug, filterK
   );
 
   const groupedActivities = useGroupingByDate(displayActivities);
+
+  const tezosAssetsCheckConfig = useMemo(
+    () => ({
+      activities: displayActivities,
+      tezAccountPkh: accountAddress,
+      mainAsset: assetSlug ? { chainKind: TempleChainKind.Tezos, chainId, slug: assetSlug } : undefined
+    }),
+    [accountAddress, assetSlug, chainId, displayActivities]
+  );
+  useAssetsFromActivitiesCheck(tezosAssetsCheckConfig);
 
   const contentJsx = useMemo(
     () =>

@@ -5,7 +5,7 @@ import classNames from 'clsx';
 import { TezosAssetIcon } from 'app/templates/AssetIcon';
 import { AssetItemContent } from 'app/templates/AssetItemContent';
 import { setAnotherSelector, setTestID } from 'lib/analytics';
-import { useTezosAssetMetadata } from 'lib/metadata';
+import { useCategorizedTezosAssetMetadata } from 'lib/metadata';
 import { isTruthy } from 'lib/utils';
 import { TezosNetworkEssentials } from 'temple/networks';
 
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const AssetOption: FC<Props> = ({ network, assetSlug, selected, accountPkh }) => {
-  const assetMetadata = useTezosAssetMetadata(assetSlug, network.chainId);
+  const assetMetadata = useCategorizedTezosAssetMetadata(assetSlug, network.chainId);
 
   if (!isTruthy(assetMetadata)) return null;
 

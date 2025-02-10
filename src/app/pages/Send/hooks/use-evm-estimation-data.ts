@@ -5,7 +5,7 @@ import { FeeValuesEIP1559, FeeValuesLegacy, TransactionRequest } from 'viem';
 
 import { toastError } from 'app/toaster';
 import { isNativeTokenAddress } from 'lib/apis/temple/endpoints/evm/api.utils';
-import { useEvmAssetMetadata } from 'lib/metadata';
+import { useEvmCategorizedAssetMetadata } from 'lib/metadata';
 import { useTypedSWR } from 'lib/swr';
 import { getReadOnlyEvmForNetwork } from 'temple/evm';
 import { EvmChain } from 'temple/front';
@@ -42,7 +42,7 @@ export const useEvmEstimationData = (
   toFilled?: boolean,
   amount?: string
 ) => {
-  const assetMetadata = useEvmAssetMetadata(assetSlug, network.chainId);
+  const assetMetadata = useEvmCategorizedAssetMetadata(assetSlug, network.chainId);
 
   const estimate = useCallback(async (): Promise<EvmEstimationData | undefined> => {
     try {

@@ -11,7 +11,7 @@ import { useEvmEstimationData } from 'app/pages/Send/hooks/use-evm-estimation-da
 import { toastError, toastSuccess } from 'app/toaster';
 import { EVM_TOKEN_SLUG } from 'lib/assets/defaults';
 import { useEvmAssetBalance } from 'lib/balances/hooks';
-import { useEvmAssetMetadata } from 'lib/metadata';
+import { useEvmCategorizedAssetMetadata } from 'lib/metadata';
 import { useTempleClient } from 'lib/temple/front';
 import { ZERO } from 'lib/utils/numbers';
 import { EvmTxParams } from 'temple/evm/types';
@@ -38,7 +38,7 @@ export const EvmContent: FC<EvmContentProps> = ({ data, onClose }) => {
 
   const { value: balance = ZERO } = useEvmAssetBalance(assetSlug, accountPkh, network);
   const { value: ethBalance = ZERO } = useEvmAssetBalance(EVM_TOKEN_SLUG, accountPkh, network);
-  const assetMetadata = useEvmAssetMetadata(assetSlug, network.chainId);
+  const assetMetadata = useEvmCategorizedAssetMetadata(assetSlug, network.chainId);
 
   const form = useForm<EvmTxParamsFormData>({ mode: 'onChange' });
   const { watch, formState, setValue } = form;
