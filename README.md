@@ -102,3 +102,34 @@ redux-devtools --open --port=8000
 > Other UI options like `--open=browser` are available.
 
 Go to settings to specify port one more time.
+
+### Notes about countries flags
+
+- Do not compress the atlas with them, which is located at `public/misc/country-flags/atlas_original.png`, using tinypng; the compressed image has too low quality.
+- You can generate such an atlas with a script like below:
+```js
+const sharp = require('sharp');
+const fsPromises = require('fs/promises');
+const path = require('path');
+(async () => {
+  const imagesNames = await fsPromises.readdir(path.resolve('input'));
+  const atlasRowSize = 7;
+  const atlasRows = Math.ceil(imagesNames.length / atlasRowSize);
+  // Each image has a size of 40x30
+  const atlas = sharp({
+    create: {
+      width: 40 * atlasRowSize,
+      height: 30 * atlasRows,
+      channels: 4,
+      background: { r: 0, g: 0, b: 0, alpha: 0 }
+    }
+  }).composite(
+    imagesNames.map((imageName, index) => ({
+      input: path.resolve(`input/${imageName}`),
+      left: 40 * (index % atlasRowSize),
+      top: 30 * Math.floor(index / atlasRowSize)
+    }))
+  );
+  await atlas.png().toFile(path.resolve('output/atlas.png'));
+})();
+```
