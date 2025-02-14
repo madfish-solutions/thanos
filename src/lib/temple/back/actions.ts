@@ -1,3 +1,4 @@
+import { isDefined } from '@rnw-community/shared';
 import { DerivationType } from '@taquito/ledger-signer';
 import { TezosOperationError } from '@taquito/taquito';
 import { char2Bytes } from '@taquito/utils';
@@ -669,9 +670,10 @@ function getErrorData(err: any) {
 }
 
 function generateRawPayloadBytes(payload: string) {
-  const bytes = char2Bytes(Buffer.from(payload, 'utf8').toString('hex'));
-  // https://tezostaquito.io/docs/signing/
-  return `0501${char2Bytes(String(bytes.length))}${bytes}`;
+  const alreadyHexMatch = payload.match(/^(0x)?([0-9a-fA-F]+)$/);
+  const hexString = alreadyHexMatch?.[2];
+
+  return isDefined(hexString) && hexString.length % 2 === 0 ? hexString : char2Bytes(payload);
 }
 
 const close = (

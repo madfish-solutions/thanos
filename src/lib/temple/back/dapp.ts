@@ -1,7 +1,7 @@
 import { localForger } from '@taquito/local-forging';
 import { valueDecoder } from '@taquito/local-forging/dist/lib/michelson/codec';
 import { Uint8ArrayConsumer } from '@taquito/local-forging/dist/lib/uint8array-consumer';
-import { emitMicheline } from '@taquito/michel-codec';
+import { emitMicheline, packDataBytes, unpackDataBytes, StringLiteral } from '@taquito/michel-codec';
 import { RpcClient } from '@taquito/rpc';
 import { TezosOperationError } from '@taquito/taquito';
 import {
@@ -26,6 +26,7 @@ import * as Beacon from 'lib/temple/beacon';
 import { loadChainId, isAddressValid } from 'lib/temple/helpers';
 import { NETWORKS } from 'lib/temple/networks';
 import {
+  TempleAccountType,
   TempleMessageType,
   TempleRequest,
   TempleDAppPayload,
@@ -263,27 +264,40 @@ const generatePromisifySign = async (
 
   let preview: any;
   try {
-    const value = valueDecoder(Uint8ArrayConsumer.fromHexString(req.payload.slice(2)));
-    const parsed = emitMicheline(value, {
-      indent: '  ',
-      newline: '\n'
-    }).slice(1, -1);
-
     if (req.payload.match(TEZ_MSG_SIGN_PATTERN)) {
-      preview = value.string;
+      preview = (unpackDataBytes({ bytes: req.payload }) as StringLiteral).string;
     } else {
-      if (parsed.length > 0) {
-        preview = parsed;
+      const value = valueDecoder(Uint8ArrayConsumer.fromHexString(req.payload));
+      const parsedMicheline = emitMicheline(value, {
+        indent: '  ',
+        newline: '\n'
+      });
+
+      if (parsedMicheline.length > 0) {
+        preview = parsedMicheline;
       } else {
-        const parsed = await localForger.parse(req.payload);
-        if (parsed.contents.length > 0) {
-          preview = parsed;
+        const parsedParams = await localForger.parse(req.payload);
+        if (parsedParams.contents.length > 0) {
+          preview = parsedParams;
         }
       }
     }
   } catch {
-    preview = null;
+    const utf8Payload = Buffer.from(req.payload, 'hex').toString('utf8');
+    const gibberishRegex = /[^ A-Za-z0-9_@.,!?/#&+-\d\s:]/g;
+    const maxGibberishLength = utf8Payload.length / 10;
+    const gibberishLength = utf8Payload.match(gibberishRegex)?.length ?? 0;
+    preview = gibberishLength > maxGibberishLength ? req.payload : utf8Payload;
   }
+
+  const ledgerAllowedPayloadPrefixes = ['01', '02', '03', '04', '05'];
+  const accounts = await withUnlocked(({ vault }) => vault.fetchAccounts());
+  const accountType = accounts.find(a => a.publicKeyHash === dApp.pkh)?.type;
+  const correctedPayload =
+    ledgerAllowedPayloadPrefixes.some(prefix => req.payload.startsWith(prefix)) ||
+    accountType !== TempleAccountType.Ledger
+      ? req.payload
+      : packDataBytes({ string: Buffer.from(req.payload, 'hex').toString('utf8') }).bytes;
 
   await requestConfirm({
     id,
@@ -293,7 +307,7 @@ const generatePromisifySign = async (
       networkRpc,
       appMeta: dApp.appMeta,
       sourcePkh: req.sourcePkh,
-      payload: req.payload,
+      payload: correctedPayload,
       preview
     },
     onDecline: () => {
@@ -302,7 +316,7 @@ const generatePromisifySign = async (
     handleIntercomRequest: async (confirmReq, decline) => {
       if (confirmReq?.type === TempleMessageType.DAppSignConfirmationRequest && confirmReq?.id === id) {
         if (confirmReq.confirmed) {
-          const { prefixSig: signature } = await withUnlocked(({ vault }) => vault.sign(dApp.pkh, req.payload));
+          const { prefixSig: signature } = await withUnlocked(({ vault }) => vault.sign(dApp.pkh, correctedPayload));
           resolve({
             type: TempleDAppMessageType.SignResponse,
             signature
