@@ -1,20 +1,9 @@
 import { useEffect } from 'react';
 
-import axios from 'axios';
-
 import { dispatch } from 'app/store';
 import { setConversionTrackedAction } from 'app/store/settings/actions';
 import { useIsConversionTrackedSelector } from 'app/store/settings/selectors';
 import { AnalyticsEventCategory, useAnalytics } from 'lib/analytics';
-import { EnvVars } from 'lib/env';
-
-function fetchConversionInformation() {
-  return axios
-    .get<{ linkId: string; name: string }>(EnvVars.CONVERSION_VERIFICATION_URL, {
-      withCredentials: true
-    })
-    .then(response => response.data);
-}
 
 export const useConversionTracking = () => {
   const { trackEvent } = useAnalytics();
@@ -22,15 +11,34 @@ export const useConversionTracking = () => {
   const isConversionTracked = useIsConversionTrackedSelector();
 
   useEffect(() => {
-    if (!isConversionTracked) {
-      fetchConversionInformation().then(({ linkId, name }) => {
-        trackEvent('Conversion Info', AnalyticsEventCategory.General, {
-          conversionId: linkId,
-          conversionName: name
-        });
-      });
-
-      dispatch(setConversionTrackedAction());
+    if (isConversionTracked) {
+      return undefined;
     }
-  }, [trackEvent]);
+
+    const conversionIframeListener = (event: MessageEvent<any>) => {
+      try {
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+
+        if (data.type !== 'trackLink') {
+          return;
+        }
+
+        dispatch(setConversionTrackedAction());
+        window.removeEventListener('message', conversionIframeListener);
+
+        if (data.link) {
+          const { linkId, name } = data.link;
+
+          trackEvent('Conversion Info', AnalyticsEventCategory.General, {
+            conversionId: linkId,
+            conversionName: name
+          });
+        }
+      } catch {}
+    };
+
+    window.addEventListener('message', conversionIframeListener);
+
+    return () => window.removeEventListener('message', conversionIframeListener);
+  }, [isConversionTracked, trackEvent]);
 };

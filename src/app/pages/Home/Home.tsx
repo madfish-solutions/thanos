@@ -5,8 +5,10 @@ import { isDefined } from '@rnw-community/shared';
 import { useAppEnv } from 'app/env';
 import PageLayout from 'app/layouts/PageLayout';
 import { useMainnetTokensScamlistSelector } from 'app/store/assets/selectors';
+import { useIsConversionTrackedSelector } from 'app/store/settings/selectors';
 import { setAnotherSelector, setTestID } from 'lib/analytics';
 import { TEZ_TOKEN_SLUG } from 'lib/assets';
+import { EnvVars } from 'lib/env';
 import { useAssetMetadata, getAssetSymbol } from 'lib/metadata';
 import { useAccount } from 'lib/temple/front';
 import { HistoryAction, navigate, useLocation } from 'lib/woozie';
@@ -37,6 +39,8 @@ const Home = memo<Props>(({ assetSlug }) => {
   const assetMetadata = useAssetMetadata(assetSlug || TEZ_TOKEN_SLUG);
   const assetSymbol = getAssetSymbol(assetMetadata);
 
+  const isConversionTracked = useIsConversionTrackedSelector();
+
   useLayoutEffect(() => {
     const usp = new URLSearchParams(search);
     if (assetSlug && usp.get('after_token_added') === 'true') {
@@ -62,6 +66,15 @@ const Home = memo<Props>(({ assetSlug }) => {
       }
       attention={true}
     >
+      {!isConversionTracked && (
+        <iframe
+          className="hidden"
+          width="320"
+          height="50"
+          src={`${EnvVars.CONVERSION_VERIFICATION_URL}/page`}
+          title="Conversion verification page"
+        />
+      )}
       {fullPage && (
         <div className="w-full max-w-sm mx-auto">
           <EditableTitle />
