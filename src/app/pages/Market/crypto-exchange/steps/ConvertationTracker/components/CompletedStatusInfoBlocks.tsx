@@ -8,9 +8,9 @@ import { toastSuccess } from 'app/toaster';
 import { ExchangeHash } from 'lib/apis/exolix/types';
 import { t } from 'lib/i18n';
 
+import { InfoContainer, InfoRaw } from '../../../../components/InfoBlock';
 import { CurrencyIcon } from '../../../components/CurrencyIcon';
 import { DisplayExchangeValue } from '../../../components/DisplayExchangeValue';
-import { InfoContainer, InfoRaw } from '../../../components/InfoBlock';
 import { VALUE_PLACEHOLDER } from '../../../config';
 import { useCryptoExchangeDataState } from '../../../context';
 

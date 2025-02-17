@@ -7,14 +7,16 @@ import { ReactComponent as RouteIcon } from 'app/icons/base/route.svg';
 import PageLayout from 'app/layouts/PageLayout';
 import { t } from 'lib/i18n/react';
 import { useBooleanState } from 'lib/ui/hooks';
-import { Link } from 'lib/woozie';
 
+import { BuyWithCreditCard } from './buy-with-credit-card';
 import { CryptoExchange } from './crypto-exchange';
 import { ExchangeCountdown } from './crypto-exchange/components/ExchangeCountdown';
 import { CryptoExchangeDataProvider, useCryptoExchangeDataState } from './crypto-exchange/context';
 
 export const Market = memo(() => {
   const [cryptoExchangeModalOpened, setCryptoExchangeModalOpen, setCryptoExchangeModalClosed] = useBooleanState(false);
+  const [debitCreditCardModalOpened, setDebitCreditCardModalOpen, setDebitCreditCardModalClosed] =
+    useBooleanState(false);
 
   return (
     <>
@@ -30,14 +32,19 @@ export const Market = memo(() => {
             onClick={setCryptoExchangeModalOpen}
           />
         </CryptoExchangeDataProvider>
-        <Link to="/buy/debit">
-          <Option Icon={CardIcon} title={t('debitCreditCard')} description={t('debitCreditCardDescription')} />
-        </Link>
+        <Option
+          Icon={CardIcon}
+          title={t('debitCreditCard')}
+          description={t('debitCreditCardDescription')}
+          onClick={setDebitCreditCardModalOpen}
+        />
       </PageLayout>
 
       <CryptoExchangeDataProvider>
         <CryptoExchange opened={cryptoExchangeModalOpened} onRequestClose={setCryptoExchangeModalClosed} />
       </CryptoExchangeDataProvider>
+
+      <BuyWithCreditCard opened={debitCreditCardModalOpened} onRequestClose={setDebitCreditCardModalClosed} />
     </>
   );
 });

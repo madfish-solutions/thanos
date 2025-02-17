@@ -7,11 +7,11 @@ import { loadExolixCurrenciesActions, loadExolixNetworksMapActions } from 'app/s
 import { useDidMount } from 'lib/ui/hooks';
 import { useAccountAddressForTezos } from 'temple/front';
 
+import { ModalHeaderConfig } from '../../../types';
 import {
   INITIAL_EVM_ACC_OUTPUT_CURRENCY,
   INITIAL_INPUT_CURRENCY,
-  INITIAL_TEZOS_ACC_OUTPUT_CURRENCY,
-  ModalHeaderConfig
+  INITIAL_TEZOS_ACC_OUTPUT_CURRENCY
 } from '../../config';
 
 import { FormContent } from './components/FormContent';

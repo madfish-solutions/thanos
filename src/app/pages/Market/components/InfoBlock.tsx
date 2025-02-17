@@ -6,15 +6,19 @@ import { T, TID } from 'lib/i18n';
 
 interface InfoContainerProps extends PropsWithChildren {
   className?: string;
+  onClick?: EmptyFn;
 }
 
-export const InfoContainer: FC<InfoContainerProps> = ({ className, children }) => (
-  <div className={clsx('flex flex-col px-4 py-2 rounded-lg shadow-bottom border-0.5 border-transparent', className)}>
+export const InfoContainer: FC<InfoContainerProps> = ({ className, onClick, children }) => (
+  <div
+    className={clsx('flex flex-col px-4 py-2 rounded-lg shadow-bottom border-0.5 border-transparent', className)}
+    onClick={onClick}
+  >
     {children}
   </div>
 );
 
-interface InfoRawProps extends InfoContainerProps {
+interface InfoRawProps extends Omit<InfoContainerProps, 'onClick'> {
   title: TID;
   bottomSeparator?: boolean;
 }

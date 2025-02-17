@@ -10,7 +10,6 @@ import { isTruthy } from 'lib/utils';
 
 import { DropdownSelect } from '../DropdownSelect/DropdownSelect';
 import { InputContainer } from '../InputContainer/InputContainer';
-import { TopUpProviderIcon } from '../TopUpProviderIcon';
 
 import { MoneyRange } from './MoneyRange';
 import { PaymentProviderOption } from './PaymentProvidersMenu/PaymentProviderOption';
@@ -61,7 +60,6 @@ interface PaymentProviderDropdownFaceContentProps {
 
 const PaymentProviderDropdownFaceContent: FC<PaymentProviderDropdownFaceContentProps> = ({ value, testId }) => (
   <div className="w-full flex flex-row items-center gap-2 rounded-md cursor-pointer" {...setTestID(testId)}>
-    <TopUpProviderIcon providerId={value?.id} />
     <div className="flex flex-1 flex-col items-start">
       {isDefined(value) ? (
         <>

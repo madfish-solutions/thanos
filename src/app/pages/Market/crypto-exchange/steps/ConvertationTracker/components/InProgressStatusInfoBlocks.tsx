@@ -6,9 +6,9 @@ import { ReactComponent as CopyIcon } from 'app/icons/base/copy.svg';
 import { toastSuccess } from 'app/toaster';
 import { t } from 'lib/i18n';
 
+import { InfoContainer, InfoRaw } from '../../../../components/InfoBlock';
 import { CurrencyIcon } from '../../../components/CurrencyIcon';
 import { DisplayExchangeValue } from '../../../components/DisplayExchangeValue';
-import { InfoContainer, InfoRaw } from '../../../components/InfoBlock';
 import { useCryptoExchangeDataState } from '../../../context';
 
 export const InProgressStatusInfoBlocks = memo(() => {

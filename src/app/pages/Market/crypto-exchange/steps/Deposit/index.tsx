@@ -9,9 +9,9 @@ import { toastSuccess } from 'app/toaster';
 import { OrderStatusEnum } from 'lib/apis/exolix/types';
 import { t, T } from 'lib/i18n';
 
+import { InfoContainer, InfoRaw } from '../../../components/InfoBlock';
 import { CurrencyIcon } from '../../components/CurrencyIcon';
 import { DisplayExchangeValue } from '../../components/DisplayExchangeValue';
-import { InfoContainer, InfoRaw } from '../../components/InfoBlock';
 import { StepLabel } from '../../components/StepLabel';
 import { Stepper } from '../../components/Stepper';
 import { SupportLink } from '../../components/SupportLink';

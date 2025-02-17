@@ -1,9 +1,8 @@
-import React, { FC, memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import React, { FC, useCallback, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 
 import axios from 'axios';
-import clsx from 'clsx';
 import { isEmpty } from 'lodash';
-import { Controller, useFormContext, SubmitHandler, FieldError } from 'react-hook-form-v7';
+import { Controller, useFormContext, SubmitHandler } from 'react-hook-form-v7';
 import { useDebounce } from 'use-debounce';
 
 import { FadeTransition } from 'app/a11y/FadeTransition';
@@ -17,15 +16,11 @@ import { t, T } from 'lib/i18n';
 import { useTypedSWR } from 'lib/swr';
 import { useAccountAddressForEvm, useAccountAddressForTezos } from 'temple/front';
 
+import { ErrorType, MinMaxDisplay } from '../../../../components/MinMaxDisplay';
+import { ModalHeaderConfig } from '../../../../types';
 import { StepLabel } from '../../../components/StepLabel';
 import { Stepper } from '../../../components/Stepper';
-import {
-  defaultModalHeaderConfig,
-  EXOLIX_DECIMALS,
-  ModalHeaderConfig,
-  TEZOS_EXOLIX_NETWORK_CODE,
-  VALUE_PLACEHOLDER
-} from '../../../config';
+import { defaultModalHeaderConfig, EXOLIX_DECIMALS, TEZOS_EXOLIX_NETWORK_CODE } from '../../../config';
 import { useCryptoExchangeDataState } from '../../../context';
 import { getCurrencyDisplayCode } from '../../../utils';
 import { CryptoExchangeFormData } from '../types';
@@ -33,9 +28,6 @@ import { CryptoExchangeFormData } from '../types';
 import { InfoCard } from './InfoCard';
 import { SelectCurrencyButton } from './SelectCurrencyButton';
 import { SelectTokenContent } from './SelectCurrencyContent';
-
-const MIN_ERROR = 'min';
-const MAX_ERROR = 'max';
 
 const TEN_SECONDS_IN_MS = 10_000;
 
@@ -59,7 +51,7 @@ export const FormContent: FC<Props> = ({ setModalHeaderConfig, setModalContent }
 
   const { setExchangeData, setStep } = useCryptoExchangeDataState();
 
-  const { control, watch, handleSubmit, formState, trigger } = useFormContext<CryptoExchangeFormData>();
+  const { control, watch, handleSubmit, formState, trigger, setValue } = useFormContext<CryptoExchangeFormData>();
   const { isSubmitting, submitCount, errors } = formState;
 
   const formSubmitted = submitCount > 0;
@@ -132,15 +124,24 @@ export const FormContent: FC<Props> = ({ setModalHeaderConfig, setModalContent }
   const selectInputCurrency = useCallback(() => setModalContent('send'), []);
   const selectOutputCurrency = useCallback(() => setModalContent('get'), []);
 
+  const handleMinClick = useCallback(
+    () => minMaxData && setValue('inputValue', minMaxData.finalMinAmount.toString(), { shouldValidate: true }),
+    [minMaxData, setValue]
+  );
+  const handleMaxClick = useCallback(
+    () => minMaxData && setValue('inputValue', minMaxData.finalMaxAmount.toString(), { shouldValidate: true }),
+    [minMaxData, setValue]
+  );
+
   const validateInputValue = useCallback(
     (value: string) => {
-      if (!value || !minMaxData) return MIN_ERROR;
+      if (!value || !minMaxData) return ErrorType.min;
 
       const amount = Number(value);
       const { finalMinAmount, finalMaxAmount } = minMaxData;
 
-      if (amount < finalMinAmount) return MIN_ERROR;
-      if (amount > finalMaxAmount) return MAX_ERROR;
+      if (amount < finalMinAmount) return ErrorType.min;
+      if (amount > finalMaxAmount) return ErrorType.max;
 
       return true;
     },
@@ -206,10 +207,12 @@ export const FormContent: FC<Props> = ({ setModalHeaderConfig, setModalContent }
               style={{ paddingRight: 158 }}
               underneathComponent={
                 <MinMaxDisplay
-                  currencyCode={inputCurrency.code}
+                  currencyCode={getCurrencyDisplayCode(inputCurrency.code)}
                   min={minMaxData?.finalMinAmount}
                   max={minMaxData?.finalMaxAmount}
                   error={errors.inputValue}
+                  onMinClick={handleMinClick}
+                  onMaxClick={handleMaxClick}
                 />
               }
               label={t('send')}
@@ -250,50 +253,3 @@ export const FormContent: FC<Props> = ({ setModalHeaderConfig, setModalContent }
     </FadeTransition>
   );
 };
-
-const COMMON_TEXT_CLASSNAME = 'cursor-pointer text-font-num-12 ml-0.5';
-
-interface MinMaxDisplayProps {
-  currencyCode: string;
-  error?: FieldError;
-  min?: number;
-  max?: number;
-}
-
-const MinMaxDisplay = memo<MinMaxDisplayProps>(({ currencyCode, error, min, max }) => {
-  const isMinError = error?.message === MIN_ERROR;
-  const ismMaxError = error?.message === MAX_ERROR;
-
-  const { setValue } = useFormContext<CryptoExchangeFormData>();
-
-  const handleMinClick = useCallback(
-    () => min && setValue('inputValue', min.toString(), { shouldValidate: true }),
-    [min, setValue]
-  );
-  const handleMaxClick = useCallback(
-    () => max && setValue('inputValue', max.toString(), { shouldValidate: true }),
-    [max, setValue]
-  );
-
-  return (
-    <div className="flex items-center text-font-description text-grey-1 py-1">
-      <T id="min" />{' '}
-      <span
-        className={clsx('mr-4', COMMON_TEXT_CLASSNAME, getMinMaxTextClassNames(isMinError, min))}
-        onClick={handleMinClick}
-      >
-        {getMinMaxDisplayValue(currencyCode, min)}
-      </span>
-      <T id="max" />:{' '}
-      <span className={clsx(COMMON_TEXT_CLASSNAME, getMinMaxTextClassNames(ismMaxError, max))} onClick={handleMaxClick}>
-        {getMinMaxDisplayValue(currencyCode, max)}
-      </span>
-    </div>
-  );
-});
-
-const getMinMaxDisplayValue = (currencyCode: string, value?: number) =>
-  value ? `${value} ${getCurrencyDisplayCode(currencyCode)}` : VALUE_PLACEHOLDER;
-
-const getMinMaxTextClassNames = (isError: boolean, value?: number) =>
-  value ? (isError ? 'text-error underline' : 'text-secondary') : '';

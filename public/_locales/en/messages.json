@@ -2608,6 +2608,15 @@
   "PriceImpactInfo": {
     "message": "The difference between the market price and estimated price due to trade size"
   },
+  "newQuote": {
+    "message": "New quote:"
+  },
+  "selectProvider": {
+    "message": "Select Provider"
+  },
+  "selectCurrency": {
+    "message": "Select Currency"
+  },
   "selectToken": {
     "message": "Select Token"
   },
@@ -3136,6 +3145,12 @@
   "buyWithRampDescription": {
     "message": "Buy TEZ  using Visa, Mastercard, and all major debit and credit cards. Ramp is available in 160+ countries and territories."
   },
+  "provider": {
+    "message": "Provider"
+  },
+  "providers": {
+    "message": "Providers"
+  },
   "selectPaymentProvider": {
     "message": "Select payment provider"
   },
@@ -3214,7 +3229,7 @@
     "message": "Supports USDT"
   },
   "bestPrice": {
-    "message": "Best price"
+    "message": "Best Price"
   },
   "topUpCrypto": {
     "message": "Crypto"

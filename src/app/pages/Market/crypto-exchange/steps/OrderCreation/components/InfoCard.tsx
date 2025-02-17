@@ -2,8 +2,8 @@ import React, { memo } from 'react';
 
 import { T } from 'lib/i18n';
 
+import { InfoContainer, InfoRaw } from '../../../../components/InfoBlock';
 import { DisplayExchangeValue } from '../../../components/DisplayExchangeValue';
-import { InfoContainer, InfoRaw } from '../../../components/InfoBlock';
 import { EXOLIX_PRIVICY_LINK, EXOLIX_TERMS_LINK, VALUE_PLACEHOLDER } from '../../../config';
 import { getCurrencyDisplayCode } from '../../../utils';
 

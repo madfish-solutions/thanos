@@ -22,8 +22,9 @@ import { t } from 'lib/i18n';
 import { isSearchStringApplicable, searchAndFilterItems } from 'lib/utils/search-items';
 import { useAccountAddressForEvm, useAccountAddressForTezos, useEnabledEvmChains } from 'temple/front';
 
+import { ModalHeaderConfig } from '../../../../types';
 import { CurrencyIcon } from '../../../components/CurrencyIcon';
-import { ModalHeaderConfig, TEZOS_EXOLIX_NETWORK_CODE } from '../../../config';
+import { TEZOS_EXOLIX_NETWORK_CODE } from '../../../config';
 import { getCurrencyDisplayCode, isSameExolixCurrency } from '../../../utils';
 import { CryptoExchangeFormData } from '../types';
 
