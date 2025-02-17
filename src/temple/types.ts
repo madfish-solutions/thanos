@@ -10,4 +10,4 @@ export const TempleChainTitle: Record<TempleChainKind, string> = {
   [TempleChainKind.EVM]: 'EVM'
 };
 
-export type BalancesChanges = StringRecord<{ atomicAmount: BigNumber; isNft?: boolean }>;
+export type AssetsAmounts = StringRecord<{ atomicAmount: BigNumber; isNft?: boolean }>;

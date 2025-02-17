@@ -14,14 +14,14 @@ import {
 } from 'viem';
 
 import { SEND_ETH_GAS_LIMIT } from 'lib/constants';
-import { getEvmBalancesChanges } from 'lib/evm/on-chain/get-evm-balances-changes';
+import { getEvmBalancesChanges } from 'lib/evm/on-chain/transactions';
 import { useTypedSWR } from 'lib/swr';
 import { EvmEstimationDataWithFallback, StoredAccount } from 'lib/temple/types';
 import { AccountForChain, getAccountAddressForEvm } from 'temple/accounts';
 import { getReadOnlyEvmForNetwork } from 'temple/evm';
 import { isEvmEstimationData } from 'temple/evm/utils';
 import { useAllEvmChains } from 'temple/front';
-import { BalancesChanges, TempleChainKind } from 'temple/types';
+import { AssetsAmounts, TempleChainKind } from 'temple/types';
 
 import { DEFAULT_INPUT_DEBOUNCE } from './constants';
 import { useEvmEstimationDataState } from './context';
@@ -188,7 +188,7 @@ export const useEvmEstimationForm = (
   );
 
   const estimateBalancesChanges = useCallback(
-    async (): Promise<BalancesChanges> =>
+    async (): Promise<AssetsAmounts> =>
       basicParams ? getEvmBalancesChanges(basicParams, accountAddress, getReadOnlyEvmForNetwork(chain)) : {},
     [basicParams, chain, accountAddress]
   );

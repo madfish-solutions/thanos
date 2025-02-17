@@ -27,7 +27,7 @@ export interface ActionModalProps {
 
 export const ActionModal = memo<ActionModalProps>(
   ({ onClose, children, hasCloseButton = true, title, headerClassName, contentClassName, className }) => {
-    const { fullPage } = useAppEnv();
+    const { fullPage, confirmWindow } = useAppEnv();
     const testnetModeEnabled = useTestnetModeEnabledSelector();
 
     return (
@@ -36,13 +36,14 @@ export const ActionModal = memo<ActionModalProps>(
         className={clsx('rounded-lg', className)}
         overlayClassName={clsx(
           'backdrop-blur-xs',
-          testnetModeEnabled && 'mt-6 rounded-t-none',
-          fullPage && [
-            FULL_PAGE_WRAP_OVERLAY_CLASSNAME,
-            actionModalStyles.fullPageOverlay,
-            LAYOUT_CONTAINER_CLASSNAME,
-            FULL_PAGE_LAYOUT_CONTAINER_CLASSNAME
-          ]
+          testnetModeEnabled && !confirmWindow && 'mt-6 rounded-t-none',
+          fullPage &&
+            !confirmWindow && [
+              FULL_PAGE_WRAP_OVERLAY_CLASSNAME,
+              actionModalStyles.fullPageOverlay,
+              LAYOUT_CONTAINER_CLASSNAME,
+              FULL_PAGE_LAYOUT_CONTAINER_CLASSNAME
+            ]
         )}
         onRequestClose={onClose}
       >

@@ -13,7 +13,7 @@ interface OutputProps {
   noPrice: boolean;
 }
 
-export interface InFiatProps extends TestIDProps {
+interface InFiatProps extends TestIDProps {
   volume: BigNumber | number | string;
   chainId: number | string;
   assetSlug: string;

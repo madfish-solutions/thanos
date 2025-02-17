@@ -155,3 +155,37 @@ export const erc721BurnAbi = {
   ],
   outputs: []
 } as const;
+
+export const erc721ApproveAbi = {
+  type: 'function',
+  name: 'approve',
+  stateMutability: 'payable',
+  inputs: [
+    {
+      name: 'spender',
+      type: 'address'
+    },
+    {
+      name: 'tokenId',
+      type: 'uint256'
+    }
+  ],
+  outputs: []
+} as const;
+
+export const erc721SetApprovalForAllAbi = {
+  type: 'function',
+  name: 'setApprovalForAll',
+  stateMutability: 'nonpayable',
+  inputs: [
+    {
+      name: 'operator',
+      type: 'address'
+    },
+    {
+      name: 'approved',
+      type: 'bool'
+    }
+  ],
+  outputs: []
+} as const;

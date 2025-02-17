@@ -17,7 +17,7 @@ import { serializeEstimate } from 'lib/utils/serialize-estimate';
 import { AccountForChain, getAccountAddressForTezos } from 'temple/accounts';
 import { getTezosToolkitWithSigner } from 'temple/front';
 import { getTezosFastRpcClient, michelEncoder } from 'temple/tezos';
-import { BalancesChanges, TempleChainKind } from 'temple/types';
+import { AssetsAmounts, TempleChainKind } from 'temple/types';
 
 import { DEFAULT_INPUT_DEBOUNCE } from './constants';
 import { useTezosEstimationDataState } from './context';
@@ -49,7 +49,7 @@ export const useTezosEstimationForm = (
   const tezos = getTezosToolkitWithSigner(rpcBaseURL, sender, true);
   const estimates = estimationData?.estimates;
   const params$ = useMemo(() => new BehaviorSubject<ForgeParams | null>(null), []);
-  const [balancesChanges, setBalancesChanges] = useSafeState<BalancesChanges>({});
+  const [balancesChanges, setBalancesChanges] = useSafeState<AssetsAmounts>({});
   const [balancesChangesLoading, setBalancesChangesLoading] = useSafeState(false);
 
   const revealFee = useMemo(

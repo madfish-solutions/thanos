@@ -142,6 +142,25 @@ export const erc1155TransferSingleEvent = {
   type: 'event'
 } as const;
 
+export const erc1155SetApprovalForAllAbi = {
+  inputs: [
+    {
+      internalType: 'address',
+      name: 'operator',
+      type: 'address'
+    },
+    {
+      internalType: 'bool',
+      name: 'approved',
+      type: 'bool'
+    }
+  ],
+  name: 'setApprovalForAll',
+  outputs: [],
+  stateMutability: 'nonpayable',
+  type: 'function'
+} as const;
+
 export const erc1155Abi = [
   {
     inputs: [
@@ -365,24 +384,7 @@ export const erc1155Abi = [
   },
   erc1155SafeBatchTransferFromAbi,
   erc1155SafeTransferFromAbi,
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'operator',
-        type: 'address'
-      },
-      {
-        internalType: 'bool',
-        name: 'approved',
-        type: 'bool'
-      }
-    ],
-    name: 'setApprovalForAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function'
-  },
+  erc1155SetApprovalForAllAbi,
   {
     inputs: [
       {

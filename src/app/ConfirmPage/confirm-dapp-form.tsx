@@ -14,6 +14,8 @@ import { StyledButton } from 'app/atoms/StyledButton';
 import { ReactComponent as LinkIcon } from 'app/icons/base/link.svg';
 import { ReactComponent as OutLinkIcon } from 'app/icons/base/outLink.svg';
 import { AccountsModalContent } from 'app/templates/AccountsModalContent';
+import { EvmOperationKind, getOperationKind } from 'lib/evm/on-chain/transactions';
+import { parseEvmTxRequest } from 'lib/evm/on-chain/utils/parse-evm-tx-request';
 import { T, t } from 'lib/i18n';
 import { useTempleClient } from 'lib/temple/front';
 import { StoredAccount, TempleAccountType, TempleDAppPayload } from 'lib/temple/types';
@@ -41,6 +43,15 @@ interface ConfirmDAppFormProps {
 }
 
 const CONFIRM_OPERATIONS_FORM_ID = 'confirm-operations-form';
+
+const evmOperationTitles: Record<EvmOperationKind, ReactNode> = {
+  [EvmOperationKind.DeployContract]: <T id="deployContract" />,
+  [EvmOperationKind.Mint]: <T id="mint" />,
+  [EvmOperationKind.Send]: <T id="send" />,
+  [EvmOperationKind.Other]: <T id="unknownTransaction" />,
+  [EvmOperationKind.Approval]: <T id="approval" />,
+  [EvmOperationKind.Transfer]: <T id="confirmAction" substitutions={<T id="transfer" />} />
+};
 
 export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, onConfirm, children }) => {
   const [accountsModalIsOpen, openAccountsModal, closeAccountsModal] = useBooleanState(false);
@@ -143,11 +154,10 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
           declineTestID: ConfirmPageSelectors.ConfirmOperationsAction_RejectButton
         };
       default:
-        // TODO: add other variants of title using ABIs and payload data
         return {
           title:
             payload.chainType === TempleChainKind.EVM ? (
-              <T id="unknownTransaction" />
+              evmOperationTitles[getOperationKind(parseEvmTxRequest(payload).txSerializable)]
             ) : (
               <T id="confirmAction" substitutions={<T id="transfer" />} />
             ),
@@ -158,7 +168,7 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
           declineTestID: ConfirmPageSelectors.ConfirmOperationsAction_RejectButton
         };
     }
-  }, [payload.type, payload.chainType, error, addAssetErrorMessage]);
+  }, [payload, error, addAssetErrorMessage]);
 
   const isOperationsConfirm = payload.type === 'confirm_operations';
 

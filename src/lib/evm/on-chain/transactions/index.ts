@@ -3,7 +3,7 @@ import { TransactionSerializable } from 'viem';
 
 import { EVM_TOKEN_SLUG } from 'lib/assets/defaults';
 import { ChainPublicClient } from 'temple/evm';
-import { BalancesChanges } from 'temple/types';
+import { AssetsAmounts } from 'temple/types';
 
 import { ContractCallTransaction, knownOperationsHandlers } from './handlers';
 
@@ -16,7 +16,7 @@ export const getEvmBalancesChanges = async (
   sender: HexString,
   client: ChainPublicClient
 ) => {
-  const basicBalancesChanges: BalancesChanges = {
+  const basicBalancesChanges: AssetsAmounts = {
     [EVM_TOKEN_SLUG]: { atomicAmount: new BigNumber((tx.value ?? 0).toString()).negated(), isNft: false }
   };
 
@@ -34,3 +34,5 @@ export const getEvmBalancesChanges = async (
 
   return basicBalancesChanges;
 };
+
+export * from './get-operation-kind';

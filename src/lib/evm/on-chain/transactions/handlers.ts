@@ -27,8 +27,9 @@ import {
 } from 'lib/abi/erc721';
 import { toEvmAssetSlug } from 'lib/assets/utils';
 import { EvmAssetStandard } from 'lib/evm/types';
+import { toBigNumber } from 'lib/utils/numbers';
 import { ChainPublicClient } from 'temple/evm';
-import { BalancesChanges } from 'temple/types';
+import { AssetsAmounts } from 'temple/types';
 
 import { detectEvmTokenStandard } from '../utils/common.utils';
 
@@ -38,7 +39,7 @@ type ParseCallback<AbiFragment extends TxAbiFragment> = (
   simultateOperation: () => Promise<SimulateContractReturnType<[AbiFragment]>['result']>,
   sender: HexString,
   to: HexString
-) => Promise<BalancesChanges | null>;
+) => Promise<AssetsAmounts | null>;
 
 export type ContractCallTransaction = TransactionSerializable & { data: HexString; to: HexString };
 
@@ -74,11 +75,9 @@ const makeAbiFunctionHandler = <AbiFragment extends TxAbiFragment>(
   };
 };
 
-const toBigNumber = (x: bigint) => new BigNumber(x.toString());
-
 const withOperationSimulation = async <AbiFragment extends TxAbiFragment>(
   simulateOperation: () => Promise<SimulateContractReturnType<[AbiFragment]>['result']>,
-  onSuccess: (result: SimulateContractReturnType<[AbiFragment]>['result']) => BalancesChanges
+  onSuccess: (result: SimulateContractReturnType<[AbiFragment]>['result']) => AssetsAmounts
 ) => {
   try {
     return onSuccess(await simulateOperation());

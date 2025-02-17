@@ -113,3 +113,62 @@ export const erc20TransferFromAbi = {
     }
   ]
 } as const;
+
+export const erc20ApproveAbi = {
+  type: 'function',
+  name: 'approve',
+  stateMutability: 'nonpayable',
+  inputs: [
+    {
+      name: 'spender',
+      type: 'address'
+    },
+    {
+      name: 'amount',
+      type: 'uint256'
+    }
+  ],
+  outputs: [
+    {
+      type: 'bool'
+    }
+  ]
+} as const;
+
+export const erc20IncreaseAllowanceAbi = {
+  type: 'function',
+  name: 'increaseAllowance',
+  stateMutability: 'nonpayable',
+  inputs: [
+    {
+      name: 'spender',
+      type: 'address'
+    },
+    {
+      name: 'addedValue',
+      type: 'uint256'
+    }
+  ],
+  outputs: []
+} as const;
+
+export const erc20AllowanceAbi = {
+  type: 'function',
+  name: 'allowance',
+  stateMutability: 'view',
+  inputs: [
+    {
+      name: 'owner',
+      type: 'address'
+    },
+    {
+      name: 'spender',
+      type: 'address'
+    }
+  ],
+  outputs: [
+    {
+      type: 'uint256'
+    }
+  ]
+} as const;

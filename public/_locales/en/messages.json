@@ -741,6 +741,31 @@
       }
     }
   },
+  "amountMustBeGte": {
+    "message": "Amount must be greater than or equal to $amount$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "amountMustBeGt": {
+    "message": "Amount must be greater than $amount$",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      }
+    }
+  },
+  "tooLargeAmount": {
+    "message": "Too large amount"
+  },
+  "unlimited": {
+    "message": "Unlimited"
+  },
+  "setToUnlimited": {
+    "message": "Set to unlimited"
+  },
   "maximalAmount": {
     "message": "Max: $amount$",
     "placeholders": {
@@ -3964,5 +3989,17 @@
   },
   "genericTxError": {
     "message": "Something’s not right. Please review a message."
+  },
+  "deployContract": {
+    "message": "Deploy Contract"
+  },
+  "mint": {
+    "message": "Mint"
+  },
+  "approval": {
+    "message": "Approval"
+  },
+  "approve": {
+    "message": "Approve"
   }
 }

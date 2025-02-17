@@ -87,6 +87,7 @@ export interface FormFieldProps extends TestIDProperty, Omit<FormFieldAttrs, 'ty
   rightSideComponent?: ReactNode;
   underneathComponent?: ReactNode;
   extraFloatingInner?: ReactNode;
+  floatAfterPlaceholder?: boolean;
   rightSideContainerStyle?: CSSProperties;
 }
 
@@ -119,6 +120,7 @@ export const FormField = forwardRef<FormFieldElement, FormFieldProps>(
       extraRightInner = null,
       extraRightInnerWrapper = 'default',
       extraFloatingInner = null,
+      floatAfterPlaceholder,
       id,
       type,
       value,
@@ -143,6 +145,7 @@ export const FormField = forwardRef<FormFieldElement, FormFieldProps>(
       testIDs,
       style,
       rightSideContainerStyle,
+      placeholder,
       ...rest
     },
     ref
@@ -231,7 +234,7 @@ export const FormField = forwardRef<FormFieldElement, FormFieldProps>(
 
         <div className={clsx('relative flex items-stretch', fieldWrapperBottomMargin && 'mb-1')}>
           <ExtraFloatingInner
-            inputValue={value}
+            inputValue={value || (floatAfterPlaceholder ? placeholder : undefined)}
             innerComponent={extraFloatingInner}
             onClick={() => spareRef.current?.focus()}
           />
@@ -260,6 +263,7 @@ export const FormField = forwardRef<FormFieldElement, FormFieldProps>(
             readOnly={readOnly}
             spellCheck={spellCheck}
             autoComplete={autoComplete}
+            placeholder={placeholder}
             onChange={handleChange}
             onFocus={handleFocus}
             onBlur={handleBlur}

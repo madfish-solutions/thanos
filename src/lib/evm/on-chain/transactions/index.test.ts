@@ -7,9 +7,24 @@ import { toEvmAssetSlug } from 'lib/assets/utils';
 import { EvmAssetStandard } from 'lib/evm/types';
 import { stripZeroBalancesChanges } from 'lib/utils/balances-changes';
 import { getReadOnlyEvmForNetwork } from 'temple/evm';
-import { BalancesChanges, TempleChainKind } from 'temple/types';
+import { AssetsAmounts, TempleChainKind } from 'temple/types';
 
 import { detectEvmTokenStandard } from './common.utils.mock';
+import {
+  burnErc20Data,
+  mintBatchErc1155Data,
+  mintErc1155Data,
+  mintErc20Data,
+  mintErc721Data,
+  safeBatchTransferFromErc1155Data,
+  safeMintErc721Data,
+  safeTransferFromErc1155Data,
+  safeTransferFromErc721Data,
+  safeTransferFromErc721WithBytesData,
+  transferErc20Data,
+  transferFromErc20Data,
+  transferFromErc721Data
+} from './data.mock';
 
 import { getEvmBalancesChanges } from '.';
 
@@ -64,7 +79,7 @@ const testErc1155Address = '0xbd176E60DEF79f956E91F97e0cE54E6fC4Ac83aD';
 const getTestErc721TokenSlug = (tokenId: number) => toEvmAssetSlug(testErc721Address, String(tokenId));
 const getTestErc1155TokenSlug = (tokenId: number) => toEvmAssetSlug(testErc1155Address, String(tokenId));
 
-const checkEvmBalancesChanges = async (tx: TransactionSerializable, sender: HexString, expected: BalancesChanges) => {
+const checkEvmBalancesChanges = async (tx: TransactionSerializable, sender: HexString, expected: AssetsAmounts) => {
   const actualValue = stripZeroBalancesChanges(await getEvmBalancesChanges(tx, sender, testClient));
   expect(actualValue).toEqual(expected);
 };
@@ -90,8 +105,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.bscscan.com/tx/0xc48f590c30aa660c947d47b5096d44469267922a5cc4431b1a3fec3453de11f0
       const testTransaction: TransactionSerializable = {
         to: testFxtzAddress,
-        data: '0x40c10f19000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-0000000000000000000000000000000000989680'
+        data: mintErc20Data
       };
 
       it('should return the amount of minted tokens if `account` is the address of the sender', async () => {
@@ -109,7 +123,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.bscscan.com/tx/0x89ed4b740a10c11d4f66e7efc21e7bfd9f4cdb1e793b7b87e49885e820135ff9
       const testTransaction: TransactionSerializable = {
         to: testFxtzAddress,
-        data: '0x42966c6800000000000000000000000000000000000000000000000000000000000f4240'
+        data: burnErc20Data
       };
 
       it('should return the negated amount of burned tokens', async () => {
@@ -141,8 +155,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.kavascan.com/tx/0x40db4721522dd60aba5233da6bc7ecee338c53a3e18fcdf6b2e4ab8b1d3b469c
       const testTransaction: TransactionSerializable = {
         to: testUsdcAddress,
-        data: '0xa9059cbb0000000000000000000000004d85a924b1b137abf7acb9b0c07355a97460637e000000000000000000000000\
-000000000000000000000000000000000016e360'
+        data: transferErc20Data
       };
 
       it('should return correct balance changes', async () => {
@@ -156,8 +169,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.kavascan.com/tx/0xa05e196400221601fbc6faab4865854339e6f3e842662b3f3623480cdca484e7
       const testTransaction: TransactionSerializable = {
         to: testUsdcAddress,
-        data: '0x23b872dd000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-4d85a924b1b137abf7acb9b0c07355a97460637e00000000000000000000000000000000000000000000000000000000000f4240'
+        data: transferFromErc20Data
       };
 
       it('should return correct balance changes', async () => {
@@ -181,8 +193,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.bscscan.com/tx/0xb1c0ee461dd3e7caafc3c676170f9f54f925e9f293ea8feff7a7d1cce4a73d29
       const testTransaction: TransactionSerializable = {
         to: testErc721Address,
-        data: '0x42842e0e000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-4d85a924b1b137abf7acb9b0c07355a97460637e0000000000000000000000000000000000000000000000000000000000000000'
+        data: safeTransferFromErc721Data
       };
 
       it('should return correct balance changes', async () => {
@@ -200,9 +211,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.bscscan.com/tx/0x647c4c24b2deb894d86f92b74a6135634f8df4185aa26d9a6becc57edc8349eb
       const testTransaction: TransactionSerializable = {
         to: testErc721Address,
-        data: '0xb88d4fde000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-4d85a924b1b137abf7acb9b0c07355a97460637e0000000000000000000000000000000000000000000000000000000000000001000000000\
-00000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000'
+        data: safeTransferFromErc721WithBytesData
       };
 
       it('should return correct balance changes', async () => {
@@ -220,8 +229,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.bscscan.com/tx/0x8812f80daf04bbdcd17d5c7a92fc346d8c157878e076255a38777390c6103d97
       const testTransaction: TransactionSerializable = {
         to: testErc721Address,
-        data: '0x23b872dd000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-8e2c8f793f927b0fb600661c292817bc5fbdc9310000000000000000000000000000000000000000000000000000000000000001'
+        data: transferFromErc721Data
       };
 
       it('should return correct balance changes', async () => {
@@ -239,9 +247,7 @@ describe('getEvmBalancesChanges', () => {
       // https://testnet.bscscan.com/tx/0x7cec721f550fc3c593e4343f80652adf841db05b7b3540644dc180d75224999d
       const testTransaction: TransactionSerializable = {
         to: testErc721Address,
-        data: '0xd0def521000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-00000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000035697066733\
-a2f2f516d4e7a65674a6d42727a7875364a7a556535727071564e4c33767933473351595a4a73597361745935325651320000000000000000000000'
+        data: mintErc721Data
       };
 
       it('should return correct balance changes if simulation passes', async () => {
@@ -266,9 +272,7 @@ a2f2f516d4e7a65674a6d42727a7875364a7a556535727071564e4c33767933473351595a4a73597
       // https://testnet.bscscan.com/tx/0xf2f693067f47d4069114dde545cfc1f80a675daf6aabbd77a11d75657843fd42
       const testTransaction: TransactionSerializable = {
         to: testErc721Address,
-        data: '0xd204c45e000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-00000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000035697066733\
-a2f2f516d6457746e596d3671616f52375264636b7777554b7043547a4a7256724e6679655a456e61506f5074574a47510000000000000000000000'
+        data: safeMintErc721Data
       };
 
       it('should return correct balance changes if simulation passes', async () => {
@@ -309,13 +313,7 @@ a2f2f516d6457746e596d3671616f52375264636b7777554b7043547a4a7256724e6679655a456e6
       // https://sepolia.etherscan.io/tx/0xb44652c879f1c16d1126f293ad76a9f4411c753ac6c1f3ef53f7271d271d8891
       const testTransaction: TransactionSerializable = {
         to: testErc1155Address,
-        data: '0x2eb2c2d6000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-4d85a924b1b137abf7acb9b0c07355a97460637e00000000000000000000000000000000000000000000000000000000000000a0000000000\
-00000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000\
-00016000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000\
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000\
-00000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000010000000000000\
-0000000000000000000000000000000000000000000000000050000000000000000000000000000000000000000000000000000000000000000'
+        data: safeBatchTransferFromErc1155Data
       };
       it('should return correct balance changes', async () => {
         await checkEvmBalancesChanges(testTransaction, aliceAddress, {
@@ -334,10 +332,7 @@ a2f2f516d6457746e596d3671616f52375264636b7777554b7043547a4a7256724e6679655a456e6
       // https://sepolia.etherscan.io/tx/0x31d4d37f5431942f44e934d41ca55334992e495149a2dac90a8d7b4ba357a05b
       const testTransaction: TransactionSerializable = {
         to: testErc1155Address,
-        data: '0xf242432a000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-4d85a924b1b137abf7acb9b0c07355a97460637e0000000000000000000000000000000000000000000000000000000000000002000000000\
-00000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000\
-0000a00000000000000000000000000000000000000000000000000000000000000000'
+        data: safeTransferFromErc1155Data
       };
 
       it('should return correct balance changes', async () => {
@@ -355,14 +350,7 @@ a2f2f516d6457746e596d3671616f52375264636b7777554b7043547a4a7256724e6679655a456e6
       // https://sepolia.etherscan.io/tx/0xd9ad7ef43d23f7db76119c0d255f6458ea5fafe52264ae5d60b9ca1ae22658ff
       const testTransaction: TransactionSerializable = {
         to: testErc1155Address,
-        data: '0x1f7fdffa000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-00000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000100000000000\
-00000000000000000000000000000000000000000000000000001800000000000000000000000000000000000000000000000000000000000\
-00000300000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\
-00000000000000000000100000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000\
-00000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000020000000000000\
-00000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000\
-040000000000000000000000000000000000000000000000000000000000000000'
+        data: mintBatchErc1155Data
       };
 
       it('should return the amounts of minted tokens if `to` is the address of the sender', async () => {
@@ -382,9 +370,7 @@ a2f2f516d6457746e596d3671616f52375264636b7777554b7043547a4a7256724e6679655a456e6
       // https://sepolia.etherscan.io/tx/0x3671bfecaf87fb06ce4c8fc2263cd26a87ce9dc081d22f74a832499094005596
       const testTransaction: TransactionSerializable = {
         to: testErc1155Address,
-        data: '0x731133e9000000000000000000000000253c35f10766e8a5115c89ab8ce50282fdc1cec8000000000000000000000000\
-00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003000000000\
-00000000000000000000000000000000000000000000000000000800000000000000000000000000000000000000000000000000000000000000000'
+        data: mintErc1155Data
       };
 
       it('should return the amounts of minted tokens if `to` is the address of the sender', async () => {

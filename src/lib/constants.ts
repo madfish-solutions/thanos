@@ -120,3 +120,5 @@ export const FONT_SIZE_SEARCH_PARAM_NAME = 'fs';
 export const LINE_HEIGHT_SEARCH_PARAM_NAME = 'lh';
 
 export const SEND_ETH_GAS_LIMIT = BigInt(21000);
+
+export const MAX_EVM_ALLOWANCE = BigInt(2) ** BigInt(256) - BigInt(1);

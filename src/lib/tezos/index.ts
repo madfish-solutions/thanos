@@ -10,7 +10,7 @@ import BigNumber from 'bignumber.js';
 
 import { TEZ_TOKEN_SLUG } from 'lib/assets';
 import { ZERO } from 'lib/utils/numbers';
-import { BalancesChanges } from 'temple/types';
+import { AssetsAmounts } from 'temple/types';
 
 import { parseTransactionParams } from './parse-transaction-params';
 
@@ -35,7 +35,7 @@ export function tezosManagerKeyHasManager(manager: ManagerKeyResponse) {
 }
 
 const onBalanceChangeFnFactory =
-  (balancesChanges: BalancesChanges) => (tokenSlug: string, value: BigNumber, isNft: boolean | undefined) => {
+  (balancesChanges: AssetsAmounts) => (tokenSlug: string, value: BigNumber, isNft: boolean | undefined) => {
     if (!balancesChanges[tokenSlug]) {
       balancesChanges[tokenSlug] = { atomicAmount: ZERO, isNft };
     }
@@ -47,7 +47,7 @@ function getBalancesChangesInternal(
   externalOperationSource: string,
   externalOperationDestination: string
 ) {
-  const balancesChanges: BalancesChanges = {};
+  const balancesChanges: AssetsAmounts = {};
   const onBalanceChange = onBalanceChangeFnFactory(balancesChanges);
 
   if (input.kind !== OpKind.TRANSACTION) {
@@ -79,18 +79,18 @@ function getBalancesChangesInternal(
 export function getBalancesChanges(
   entry: OperationContentsAndResult | OperationContents,
   senderPkh: string
-): BalancesChanges;
+): AssetsAmounts;
 export function getBalancesChanges(
   entries: OperationContentsAndResult[] | OperationContents[],
   senderPkh: string
-): BalancesChanges;
+): AssetsAmounts;
 export function getBalancesChanges(
   input: OperationContentsAndResult | OperationContents | OperationContentsAndResult[] | OperationContents[],
   senderPkh: string
 ) {
-  const balancesChanges: BalancesChanges = {};
+  const balancesChanges: AssetsAmounts = {};
   const onBalanceChange = onBalanceChangeFnFactory(balancesChanges);
-  const onBalancesChanges = (newBalancesChanges: BalancesChanges) => {
+  const onBalancesChanges = (newBalancesChanges: AssetsAmounts) => {
     Object.entries(newBalancesChanges).forEach(([tokenSlug, { atomicAmount, isNft }]) =>
       onBalanceChange(tokenSlug, atomicAmount, isNft)
     );
