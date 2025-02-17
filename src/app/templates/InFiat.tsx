@@ -13,7 +13,7 @@ interface OutputProps {
   noPrice: boolean;
 }
 
-interface Props extends TestIDProps {
+export interface InFiatProps extends TestIDProps {
   volume: BigNumber | number | string;
   chainId: number | string;
   assetSlug: string;
@@ -26,7 +26,7 @@ interface Props extends TestIDProps {
   evm?: boolean;
 }
 
-const InFiat: FC<Props> = ({
+const InFiat: FC<InFiatProps> = ({
   evm,
   chainId,
   volume,

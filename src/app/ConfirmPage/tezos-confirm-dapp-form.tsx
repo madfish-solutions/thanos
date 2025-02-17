@@ -1,14 +1,12 @@
-import React, { memo, useCallback, useMemo } from 'react';
+import React, { memo, useCallback, useMemo, useRef } from 'react';
 
-import { ModifyFeeAndLimit } from 'app/templates/ExpensesView/ExpensesView';
 import { CustomTezosChainIdContext } from 'lib/analytics';
 import { useTempleClient } from 'lib/temple/front/client';
 import { StoredAccount, TempleTezosDAppPayload } from 'lib/temple/types';
-import { useSafeState } from 'lib/ui/hooks';
 import { getAccountForTezos, isAccountOfActableType } from 'temple/accounts';
 import { useAllAccounts, useTezosChainIdLoadingValue } from 'temple/front';
 
-import { ConfirmDAppForm } from './confirm-dapp-form';
+import { ConfirmDAppForm, ConfirmDAppFormContentProps } from './confirm-dapp-form';
 import { TezosPayloadContent } from './payload-content';
 
 interface TezosConfirmDAppFormProps {
@@ -17,7 +15,7 @@ interface TezosConfirmDAppFormProps {
 }
 
 export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, id }) => {
-  const { confirmDAppPermission, confirmDAppOperation, confirmDAppSign } = useTempleClient();
+  const { confirmDAppPermission, confirmTezosDAppOperation, confirmDAppSign } = useTempleClient();
 
   const allAccountsStored = useAllAccounts();
   const allAccounts = useMemo(
@@ -25,7 +23,6 @@ export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, 
     [allAccountsStored]
   );
 
-  const payloadError = payload!.error;
   const tezosChainId = useTezosChainIdLoadingValue(payload.networkRpc, true)!;
 
   const network = useMemo(
@@ -45,74 +42,57 @@ export const TezosConfirmDAppForm = memo<TezosConfirmDAppFormProps>(({ payload, 
     return 0;
   }, [payload]);
 
-  const [modifiedTotalFeeValue, setModifiedTotalFeeValue] = useSafeState(
-    (payload.type === 'confirm_operations' &&
-      payload.opParams.reduce((sum, op) => sum + (op.fee ? +op.fee : 0), 0) + revealFee) ||
-      0
+  const initialTotalFeeValue = useMemo(
+    () =>
+      (payload.type === 'confirm_operations' &&
+        payload.opParams.reduce((sum, op) => sum + (op.fee ? +op.fee : 0), 0) + revealFee) ||
+      0,
+    [payload, revealFee]
   );
-  const [modifiedStorageLimitValue, setModifiedStorageLimitValue] = useSafeState(
+  const modifiedTotalFeeValueRef = useRef(initialTotalFeeValue);
+  const modifiedStorageLimitValueRef = useRef(
     (payload.type === 'confirm_operations' && payload.opParams[0].storageLimit) || 0
   );
 
-  const modifiedStorageLimitDisplayed = useMemo(
-    () => payload.type === 'confirm_operations' && payload.opParams.length < 2,
-    [payload]
-  );
-
-  const modifyFeeAndLimit = useMemo<ModifyFeeAndLimit>(
-    () => ({
-      totalFee: modifiedTotalFeeValue,
-      onTotalFeeChange: v => setModifiedTotalFeeValue(v),
-      storageLimit: modifiedStorageLimitDisplayed ? modifiedStorageLimitValue : null,
-      onStorageLimitChange: v => setModifiedStorageLimitValue(v)
-    }),
-    [
-      modifiedTotalFeeValue,
-      setModifiedTotalFeeValue,
-      modifiedStorageLimitValue,
-      setModifiedStorageLimitValue,
-      modifiedStorageLimitDisplayed
-    ]
-  );
+  const setTotalFee = useCallback((value: number) => void (modifiedTotalFeeValueRef.current = value), []);
+  const setStorageLimit = useCallback((value: number) => void (modifiedStorageLimitValueRef.current = value), []);
 
   const handleConfirm = useCallback(
-    async (confimed: boolean, selectedAccount: StoredAccount) => {
+    async (confirmed: boolean, selectedAccount: StoredAccount) => {
       const accountPkh = getAccountForTezos(selectedAccount)!.address;
       switch (payload.type) {
         case 'connect':
-          return confirmDAppPermission(id, confimed, accountPkh);
+          return confirmDAppPermission(id, confirmed, accountPkh);
 
         case 'confirm_operations':
-          return confirmDAppOperation(id, confimed, modifiedTotalFeeValue - revealFee, modifiedStorageLimitValue);
+          return confirmTezosDAppOperation(
+            id,
+            confirmed,
+            modifiedTotalFeeValueRef.current - revealFee,
+            modifiedStorageLimitValueRef.current
+          );
 
         case 'sign':
-          return confirmDAppSign(id, confimed);
+          return confirmDAppSign(id, confirmed);
       }
     },
-    [
-      payload.type,
-      confirmDAppPermission,
-      id,
-      confirmDAppOperation,
-      modifiedTotalFeeValue,
-      revealFee,
-      modifiedStorageLimitValue,
-      confirmDAppSign
-    ]
+    [payload.type, confirmDAppPermission, id, confirmTezosDAppOperation, revealFee, confirmDAppSign]
   );
 
   const renderPayload = useCallback(
-    (openAccountsModal: EmptyFn, selectedAccount: StoredAccount) => (
+    ({ openAccountsModal, selectedAccount, error, formId, onSubmit }: ConfirmDAppFormContentProps) => (
       <TezosPayloadContent
         network={network}
-        error={payloadError}
-        modifyFeeAndLimit={modifyFeeAndLimit}
+        error={error}
         account={selectedAccount}
         payload={payload}
         openAccountsModal={openAccountsModal}
+        formId={formId}
+        onSubmit={onSubmit}
+        extraProps={{ setTotalFee, setStorageLimit }}
       />
     ),
-    [modifyFeeAndLimit, network, payload, payloadError]
+    [network, payload, setTotalFee, setStorageLimit]
   );
 
   return (

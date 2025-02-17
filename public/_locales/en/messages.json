@@ -1656,6 +1656,15 @@
   "transaction": {
     "message": "Transaction"
   },
+  "transactionInfo": {
+    "message": "Transaction info"
+  },
+  "estimatedTxDetails": {
+    "message": "Est. transaction details"
+  },
+  "noValue": {
+    "message": "No value"
+  },
   "recipient": {
     "message": "Recipient"
   },
@@ -1903,6 +1912,12 @@
   },
   "transfers": {
     "message": "Transfers"
+  },
+  "unknownToken": {
+    "message": "Unknown Token"
+  },
+  "unknownTokenAcronym": {
+    "message": "UT"
   },
   "someUnknownToken": {
     "message": "unknown token $token$",
@@ -3929,10 +3944,25 @@
   "disabledInTestnetMode": {
     "message": "Disabled in Testnet Mode"
   },
+  "unknownTransaction": {
+    "message": "Unknown Transaction"
+  },
+  "interactionWith": {
+    "message": "Interaction With"
+  },
   "earn": {
     "message": "Earn"
   },
   "marketPageDisclaimer": {
     "message": "Temple integrated third-party solutions to buy or exchange crypto."
+  },
+  "txCouldNotBeEstimated": {
+    "message": "Transaction could not be estimated"
+  },
+  "txCouldNotBeEstimatedDescription": {
+    "message": "Fee estimation isn't available. Default values are used, but the transaction may fail. Please retry or adjust transaction parameters manually."
+  },
+  "genericTxError": {
+    "message": "Something’s not right. Please review a message."
   }
 }

@@ -1,28 +1,24 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 
-import { omit, transform } from 'lodash';
-import { FormProvider, useForm } from 'react-hook-form-v7';
-import { useDebounce } from 'use-debounce';
-import { FeeValuesEIP1559, FeeValuesLegacy, formatEther, parseEther, serializeTransaction } from 'viem';
+import { omit } from 'lodash';
+import { FormProvider } from 'react-hook-form-v7';
+import { TransactionRequest } from 'viem';
 
 import { CLOSE_ANIMATION_TIMEOUT } from 'app/atoms/PageModal';
 import { EvmReviewData } from 'app/pages/Send/form/interfaces';
 import { useEvmEstimationData } from 'app/pages/Send/hooks/use-evm-estimation-data';
+import { EvmTxParamsFormData } from 'app/templates/TransactionTabs/types';
+import { useEvmEstimationForm } from 'app/templates/TransactionTabs/use-evm-estimation-form';
 import { toastError, toastSuccess } from 'app/toaster';
 import { EVM_TOKEN_SLUG } from 'lib/assets/defaults';
 import { useEvmAssetBalance } from 'lib/balances/hooks';
 import { useEvmAssetMetadata } from 'lib/metadata';
 import { useTempleClient } from 'lib/temple/front';
 import { ZERO } from 'lib/utils/numbers';
-import { EvmTxParams } from 'temple/evm/types';
 
 import { buildBasicEvmSendParams } from '../../build-basic-evm-send-params';
 
-import { BaseContent, Tab } from './BaseContent';
-import { DEFAULT_INPUT_DEBOUNCE } from './contants';
-import { useEvmEstimationDataState } from './context';
-import { useEvmFeeOptions } from './hooks/use-evm-fee-options';
-import { EvmTxParamsFormData, FeeOptionLabel } from './types';
+import { BaseContent } from './BaseContent';
 
 interface EvmContentProps {
   data: EvmReviewData;
@@ -40,17 +36,6 @@ export const EvmContent: FC<EvmContentProps> = ({ data, onClose }) => {
   const { value: ethBalance = ZERO } = useEvmAssetBalance(EVM_TOKEN_SLUG, accountPkh, network);
   const assetMetadata = useEvmAssetMetadata(assetSlug, network.chainId);
 
-  const form = useForm<EvmTxParamsFormData>({ mode: 'onChange' });
-  const { watch, formState, setValue } = form;
-
-  const gasPriceValue = watch('gasPrice');
-
-  const [debouncedNonce] = useDebounce(watch('nonce'), DEFAULT_INPUT_DEBOUNCE);
-  const [debouncedGasLimit] = useDebounce(watch('gasLimit'), DEFAULT_INPUT_DEBOUNCE);
-  const [debouncedGasPrice] = useDebounce(gasPriceValue, DEFAULT_INPUT_DEBOUNCE);
-
-  const [tab, setTab] = useState<Tab>('details');
-  const [selectedFeeOption, setSelectedFeeOption] = useState<FeeOptionLabel | nullish>('mid');
   const [latestSubmitError, setLatestSubmitError] = useState<string | nullish>(null);
 
   const { data: estimationData } = useEvmEstimationData(
@@ -63,93 +48,13 @@ export const EvmContent: FC<EvmContentProps> = ({ data, onClose }) => {
     true,
     amount
   );
-
-  const feeOptions = useEvmFeeOptions(debouncedGasLimit, estimationData);
-  const { setData } = useEvmEstimationDataState();
-
-  useEffect(() => {
-    if (estimationData && feeOptions) setData({ ...estimationData, feeOptions });
-  }, [estimationData, feeOptions, setData]);
-
-  useEffect(() => {
-    if (gasPriceValue && selectedFeeOption) setSelectedFeeOption(null);
-  }, [gasPriceValue, selectedFeeOption]);
-
-  const getFeesPerGas = useCallback(
-    (rawGasPrice: string): FeeValuesLegacy | FeeValuesEIP1559 | null => {
-      if (!feeOptions) {
-        return null;
-      }
-
-      const parsedGasPrice = rawGasPrice ? parseEther(rawGasPrice, 'gwei') : null;
-      const feeOptionValues = feeOptions.gasPrice[selectedFeeOption ?? 'mid'];
-
-      return transform(
-        feeOptionValues,
-        (acc, value, key) => {
-          if (typeof value === 'bigint' && parsedGasPrice) {
-            // @ts-expect-error
-            acc[key] = parsedGasPrice;
-          }
-
-          return acc;
-        },
-        { ...feeOptionValues }
-      );
-    },
-    [feeOptions, selectedFeeOption]
+  const basicParams = useMemo(
+    () => assetMetadata && buildBasicEvmSendParams(accountPkh, to as HexString, assetMetadata, amount),
+    [accountPkh, amount, assetMetadata, to]
   );
-
-  const rawTransaction = useMemo(() => {
-    const feesPerGas = getFeesPerGas(debouncedGasPrice);
-
-    if (!estimationData || !feesPerGas || !assetMetadata) return null;
-
-    const basicParams = buildBasicEvmSendParams(accountPkh, to as HexString, assetMetadata, amount);
-
-    return serializeTransaction({
-      chainId: network.chainId,
-      gas: debouncedGasLimit ? BigInt(debouncedGasLimit) : estimationData.gas,
-      nonce: debouncedNonce ? Number(debouncedNonce) : estimationData.nonce,
-      ...basicParams,
-      ...feesPerGas
-    });
-  }, [
-    accountPkh,
-    amount,
-    assetMetadata,
-    debouncedGasLimit,
-    debouncedGasPrice,
-    debouncedNonce,
-    estimationData,
-    getFeesPerGas,
-    network.chainId,
-    to
-  ]);
-
-  useEffect(() => {
-    if (rawTransaction) setValue('rawTransaction', rawTransaction);
-  }, [rawTransaction, setValue]);
-
-  const displayedFee = useMemo(() => {
-    if (feeOptions && selectedFeeOption) return feeOptions.displayed[selectedFeeOption];
-
-    if (estimationData && debouncedGasPrice) {
-      const gas = debouncedGasLimit ? BigInt(debouncedGasLimit) : estimationData.gas;
-
-      return formatEther(gas * parseEther(debouncedGasPrice, 'gwei'));
-    }
-
-    return '0';
-  }, [feeOptions, selectedFeeOption, estimationData, debouncedGasPrice, debouncedGasLimit]);
-
-  const handleFeeOptionSelect = useCallback(
-    (label: FeeOptionLabel) => {
-      setSelectedFeeOption(label);
-      setValue('gasPrice', '', { shouldValidate: true });
-    },
-    [setValue]
-  );
+  const { form, tab, setTab, selectedFeeOption, handleFeeOptionSelect, feeOptions, displayedFee, getFeesPerGas } =
+    useEvmEstimationForm(estimationData, basicParams, account, network.chainId);
+  const { formState } = form;
 
   const onSubmit = useCallback(
     async ({ gasPrice, gasLimit, nonce }: EvmTxParamsFormData) => {
@@ -182,7 +87,7 @@ export const EvmContent: FC<EvmContentProps> = ({ data, onClose }) => {
           ...feesPerGas,
           ...(gasLimit ? { gas: BigInt(gasLimit) } : {}),
           ...(nonce ? { nonce: Number(nonce) } : {})
-        } as EvmTxParams);
+        } as TransactionRequest);
 
         onConfirm();
         onClose();
@@ -206,6 +111,7 @@ export const EvmContent: FC<EvmContentProps> = ({ data, onClose }) => {
       onClose,
       onConfirm,
       sendEvmTransaction,
+      setTab,
       to
     ]
   );

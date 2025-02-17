@@ -1,11 +1,10 @@
 import type { TID } from 'lib/i18n';
 import { EvmNativeTokenMetadata } from 'lib/metadata/types';
-import { ETHEREUM_MAINNET_CHAIN_ID, TEZOS_MAINNET_CHAIN_ID } from 'lib/temple/types';
+import { BlockExplorer, ETHEREUM_MAINNET_CHAIN_ID, TEZOS_MAINNET_CHAIN_ID } from 'lib/temple/types';
 import type { StoredTezosNetwork, StoredEvmNetwork } from 'temple/networks';
 import type { TempleChainKind } from 'temple/types';
 
 import { useAllTezosChains, useAllEvmChains } from './ready';
-import { BlockExplorer } from './use-block-explorers';
 
 export interface BasicEvmChain {
   kind: TempleChainKind.EVM;

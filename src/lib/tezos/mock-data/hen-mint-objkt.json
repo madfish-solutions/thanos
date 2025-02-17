@@ -1,0 +1,220 @@
+[
+  {
+    "kind": "transaction",
+    "source": "tz1YokFzMR1hX4m4aBqgutxLSUKFDdNoYGEN",
+    "fee": "1037",
+    "counter": "11302326",
+    "gas_limit": "6380",
+    "storage_limit": "310",
+    "amount": "0",
+    "destination": "KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9",
+    "parameters": {
+      "entrypoint": "mint_OBJKT",
+      "value": {
+        "prim": "Pair",
+        "args": [
+          { "prim": "Pair", "args": [{ "string": "tz1YokFzMR1hX4m4aBqgutxLSUKFDdNoYGEN" }, { "int": "15" }] },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "bytes": "697066733a2f2f516d54677634776e4a66576b744b774c73336a314d6d324654544a58593961735168325954664c74335633547561"
+              },
+              { "int": "100" }
+            ]
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "balance_updates": [
+        {
+          "kind": "contract",
+          "contract": "tz1YokFzMR1hX4m4aBqgutxLSUKFDdNoYGEN",
+          "change": "-1037",
+          "origin": "block"
+        },
+        { "kind": "accumulator", "category": "block fees", "change": "1037", "origin": "block" }
+      ],
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          [
+            {
+              "prim": "Pair",
+              "args": [
+                { "bytes": "01d4bbb83486df92642008e9ce812481f4d564611100" },
+                {
+                  "prim": "Pair",
+                  "args": [{ "int": "1618452581" }, { "bytes": "01123aaf8d2c25e0ddafa6d98e16582de7478f092500" }]
+                }
+              ]
+            },
+            { "prim": "True" },
+            { "bytes": "013116e679766d18239f246ca78b0a4fdaa637ecf200" },
+            { "int": "521" }
+          ],
+          {
+            "prim": "Pair",
+            "args": [
+              { "bytes": "01b752c7f3de31759bce246416a6823e86b9756c6c00" },
+              { "prim": "Pair", "args": [{ "int": "864430" }, { "int": "522" }] }
+            ]
+          },
+          { "int": "0" },
+          { "int": "348155" },
+          { "int": "523" }
+        ],
+        "balance_updates": [
+          {
+            "kind": "contract",
+            "contract": "tz1YokFzMR1hX4m4aBqgutxLSUKFDdNoYGEN",
+            "change": "-24250",
+            "origin": "block"
+          },
+          { "kind": "burned", "category": "storage fees", "change": "24250", "origin": "block" }
+        ],
+        "consumed_milligas": "5013311",
+        "storage_size": "88126240",
+        "paid_storage_size_diff": "97",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "523", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "522",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "expruG6HGdZoymCuTc8f66yhgLGgrDzP1Tj9FJii6dyt7p3ztkWyPH",
+                  "key": { "int": "864429" },
+                  "value": {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "0000907013b6a3f86c965dab421908929b14a6795967" }, { "int": "100" }]
+                  }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "521", "diff": { "action": "update", "updates": [] } }
+        ]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1Hkg5qeNhfwpKW4fXvq7HGZB9z2EnmCCA9",
+          "nonce": 0,
+          "amount": "0",
+          "destination": "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton",
+          "parameters": {
+            "entrypoint": "mint",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [{ "bytes": "0000907013b6a3f86c965dab421908929b14a6795967" }, { "int": "15" }]
+                },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    { "int": "864429" },
+                    [
+                      {
+                        "prim": "Elt",
+                        "args": [
+                          { "string": "" },
+                          {
+                            "bytes": "697066733a2f2f516d54677634776e4a66576b744b774c73336a314d6d324654544a58593961735168325954664c74335633547561"
+                          }
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "016498b7494a18a572c1d24484038545662c0454ed00" },
+                  { "prim": "Pair", "args": [{ "int": "864430" }, { "int": "511" }] }
+                ]
+              },
+              { "prim": "Pair", "args": [{ "int": "512" }, { "int": "513" }] },
+              { "prim": "False" },
+              { "int": "514" }
+            ],
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "tz1YokFzMR1hX4m4aBqgutxLSUKFDdNoYGEN",
+                "change": "-52000",
+                "origin": "block"
+              },
+              { "kind": "burned", "category": "storage fees", "change": "52000", "origin": "block" }
+            ],
+            "consumed_milligas": "1265729",
+            "storage_size": "675658040",
+            "paid_storage_size_diff": "208",
+            "lazy_storage_diff": [
+              {
+                "kind": "big_map",
+                "id": "514",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expruG6HGdZoymCuTc8f66yhgLGgrDzP1Tj9FJii6dyt7p3ztkWyPH",
+                      "key": { "int": "864429" },
+                      "value": {
+                        "prim": "Pair",
+                        "args": [
+                          { "int": "864429" },
+                          [
+                            {
+                              "prim": "Elt",
+                              "args": [
+                                { "string": "" },
+                                {
+                                  "bytes": "697066733a2f2f516d54677634776e4a66576b744b774c73336a314d6d324654544a58593961735168325954664c74335633547561"
+                                }
+                              ]
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "513", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "512", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "511",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtaYaynxfzYnaaUjrKKZqvnAusTDZj6bKfZoRdGKJikWWfwCfnP",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000907013b6a3f86c965dab421908929b14a6795967" }, { "int": "864429" }]
+                      },
+                      "value": { "int": "15" }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

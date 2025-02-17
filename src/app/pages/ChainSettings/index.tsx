@@ -9,10 +9,10 @@ import { StyledButton } from 'app/atoms/StyledButton';
 import PageLayout from 'app/layouts/PageLayout';
 import { MAIN_CHAINS_IDS } from 'lib/constants';
 import { T, t } from 'lib/i18n';
+import { BlockExplorer } from 'lib/temple/types';
 import { useBooleanState } from 'lib/ui/hooks';
 import { HistoryAction, navigate } from 'lib/woozie';
 import { OneOfChains, useAllEvmChains, useAllTezosChains } from 'temple/front';
-import { BlockExplorer } from 'temple/front/use-block-explorers';
 import { StoredEvmNetwork, StoredTezosNetwork } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 

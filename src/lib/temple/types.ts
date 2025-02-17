@@ -1,12 +1,12 @@
 import type { DerivationType } from '@taquito/ledger-signer';
-import type { Estimate } from '@taquito/taquito';
 import type { TempleDAppMetadata } from '@temple-wallet/dapp/dist/types';
-import type { TypedDataDefinition } from 'viem';
+import type { RpcTransactionRequest, TypedDataDefinition } from 'viem';
 
 import type { DAppsSessionsRecord } from 'app/storage/dapps';
 import type { PromisesQueueCounters } from 'lib/utils';
+import type { EvmEstimationData, SerializedEvmEstimationData } from 'temple/evm/estimate';
 import type { TypedDataV1 } from 'temple/evm/typed-data-v1';
-import type { SerializableEvmTxParams } from 'temple/evm/types';
+import type { SerializedBigints } from 'temple/evm/utils';
 import type { EvmChain } from 'temple/front';
 import type { StoredEvmNetwork, StoredTezosNetwork } from 'temple/networks';
 import type { TempleChainKind } from 'temple/types';
@@ -59,6 +59,14 @@ export enum TempleStatus {
   Locked,
   Ready
 }
+
+type EvmEstimationDataFallback = { gasPrice: bigint; type: 'legacy' | 'eip1559' };
+
+export type EvmEstimationDataWithFallback = EvmEstimationData | EvmEstimationDataFallback;
+
+export type SerializedEvmEstimationDataWithFallback =
+  | SerializedEvmEstimationData
+  | SerializedBigints<EvmEstimationDataFallback>;
 
 export type StoredAccount =
   | StoredHDAccount
@@ -170,7 +178,7 @@ interface TempleOpsConfirmationPayload extends TempleConfirmationPayloadBase {
   opParams: any[];
   bytesToSign?: string;
   rawToSign?: any;
-  estimates?: Estimate[];
+  estimates?: SerializedEstimate[];
 }
 
 export type TempleConfirmationPayload = TempleSignConfirmationPayload | TempleOpsConfirmationPayload;
@@ -202,6 +210,13 @@ interface WatchAssetOptions {
 
 export interface EvmAssetToAddMetadata extends WatchAssetOptions {
   chainId: number;
+}
+
+export interface BlockExplorer {
+  name: string;
+  url: string;
+  id: string;
+  default: boolean;
 }
 
 /**
@@ -259,6 +274,19 @@ interface TempleEvmDAppConnectPayload extends TempleEvmDAppPayloadBase {
   type: 'connect';
 }
 
+export interface SerializedEstimate {
+  minimalFeePerStorageByteMutez: string | number;
+  opSize: string | number;
+  burnFeeMutez: number;
+  consumedMilligas: number;
+  gasLimit: number;
+  minimalFeeMutez: number;
+  storageLimit: number;
+  suggestedFeeMutez: number;
+  totalCost: number;
+  usingBaseFeeMutez: number;
+}
+
 interface TempleEvmDAppAddChainPayload extends TempleEvmDAppPayloadBase {
   type: 'add_chain';
   metadata: EvmChainToAddMetadata;
@@ -276,7 +304,13 @@ export interface TempleTezosDAppOperationsPayload extends TempleTezosDAppPayload
   opParams: any[];
   bytesToSign?: string;
   rawToSign?: any;
-  estimates?: Estimate[];
+  estimates?: SerializedEstimate[];
+}
+
+export interface TempleEvmDAppTransactionPayload extends TempleEvmDAppPayloadBase {
+  type: 'confirm_operations';
+  req: EvmTransactionRequestWithSender;
+  estimationData?: SerializedEvmEstimationDataWithFallback;
 }
 
 export interface TempleTezosDAppSignPayload extends TempleTezosDAppPayloadBase {
@@ -311,6 +345,7 @@ export type TempleTezosDAppPayload =
 
 export type TempleEvmDAppPayload =
   | TempleEvmDAppConnectPayload
+  | TempleEvmDAppTransactionPayload
   | TempleEvmDAppAddChainPayload
   | TempleEvmDAppAddAssetPayload
   | TempleEvmDAppSignPayload;
@@ -330,6 +365,7 @@ export enum TempleMessageType {
   ConfirmationExpired = 'TEMPLE_CONFIRMATION_EXPIRED',
   SelectedAccountChanged = 'TEMPLE_SELECTED_ACCOUNT_CHANGED',
   TempleEvmDAppsDisconnected = 'TEMPLE_EVM_DAPPS_DISCONNECTED',
+  TempleTezosDAppsDisconnected = 'TEMPLE_TEZOS_DAPPS_DISCONNECTED',
   TempleEvmChainSwitched = 'TEMPLE_SWITCH_EVM_CHAIN',
   // Request-Response pairs
   GetStateRequest = 'TEMPLE_GET_STATE_REQUEST',
@@ -386,7 +422,8 @@ export enum TempleMessageType {
   DAppGetPayloadResponse = 'TEMPLE_DAPP_GET_PAYLOAD_RESPONSE',
   DAppPermConfirmationRequest = 'TEMPLE_DAPP_PERM_CONFIRMATION_REQUEST',
   DAppPermConfirmationResponse = 'TEMPLE_DAPP_PERM_CONFIRMATION_RESPONSE',
-  DAppOpsConfirmationRequest = 'TEMPLE_DAPP_OPS_CONFIRMATION_REQUEST',
+  DAppTezosOpsConfirmationRequest = 'TEMPLE_DAPP_TEZOS_OPS_CONFIRMATION_REQUEST',
+  DAppEvmOpsConfirmationRequest = 'TEMPLE_DAPP_EVM_OPS_CONFIRMATION_REQUEST',
   DAppOpsConfirmationResponse = 'TEMPLE_DAPP_OPS_CONFIRMATION_RESPONSE',
   DAppSignConfirmationRequest = 'TEMPLE_DAPP_SIGN_CONFIRMATION_REQUEST',
   DAppSignConfirmationResponse = 'TEMPLE_DAPP_SIGN_CONFIRMATION_RESPONSE',
@@ -414,6 +451,7 @@ export type TempleNotification =
   | TempleConfirmationExpired
   | TempleSelectedAccountChanged
   | TempleEvmDAppsDisconnected
+  | TempleTezosDAppsDisconnected
   | TempleEvmChainSwitched;
 
 export type TempleRequest =
@@ -444,7 +482,8 @@ export type TempleRequest =
   | TemplePageRequest
   | TempleDAppGetPayloadRequest
   | TempleDAppPermConfirmationRequest
-  | TempleDAppOpsConfirmationRequest
+  | TempleTezosDAppOpsConfirmationRequest
+  | TempleEvmDAppOpsConfirmationRequest
   | TempleDAppSignConfirmationRequest
   | TempleUpdateSettingsRequest
   | TempleRemoveDAppSessionRequest
@@ -524,6 +563,11 @@ interface TempleSelectedAccountChanged extends TempleMessageBase {
 interface TempleEvmDAppsDisconnected extends TempleMessageBase {
   type: TempleMessageType.TempleEvmDAppsDisconnected;
   origins: string[];
+}
+
+interface TempleTezosDAppsDisconnected extends TempleMessageBase {
+  type: TempleMessageType.TempleTezosDAppsDisconnected;
+  messagePayloads: StringRecord;
 }
 
 interface TempleEvmChainSwitched extends TempleMessageBase {
@@ -797,7 +841,7 @@ interface TempleSendEvmTransactionRequest extends TempleMessageBase {
   type: TempleMessageType.SendEvmTransactionRequest;
   accountPkh: HexString;
   network: EvmChain;
-  txParams: SerializableEvmTxParams;
+  txParams: RpcTransactionRequest;
 }
 
 interface TempleSendEvmTransactionResponse extends TempleMessageBase {
@@ -862,12 +906,21 @@ interface TempleDAppPermConfirmationResponse extends TempleMessageBase {
   type: TempleMessageType.DAppPermConfirmationResponse;
 }
 
-interface TempleDAppOpsConfirmationRequest extends TempleMessageBase {
-  type: TempleMessageType.DAppOpsConfirmationRequest;
+interface TempleDAppOpsConfirmationRequestBase extends TempleMessageBase {
+  type: TempleMessageType.DAppTezosOpsConfirmationRequest | TempleMessageType.DAppEvmOpsConfirmationRequest;
   id: string;
   confirmed: boolean;
+}
+
+interface TempleTezosDAppOpsConfirmationRequest extends TempleDAppOpsConfirmationRequestBase {
+  type: TempleMessageType.DAppTezosOpsConfirmationRequest;
   modifiedTotalFee?: number;
   modifiedStorageLimit?: number;
+}
+
+interface TempleEvmDAppOpsConfirmationRequest extends TempleDAppOpsConfirmationRequestBase {
+  type: TempleMessageType.DAppEvmOpsConfirmationRequest;
+  modifiedReq: EvmTransactionRequestWithSender;
 }
 
 interface TempleDAppOpsConfirmationResponse extends TempleMessageBase {
@@ -935,5 +988,7 @@ interface TempleResetExtensionRequest extends TempleMessageBase {
 interface TempleResetExtensionResponse extends TempleMessageBase {
   type: TempleMessageType.ResetExtensionResponse;
 }
+
+export type EvmTransactionRequestWithSender = RpcTransactionRequest & { from: HexString };
 
 export type OperationsPreview = any[] | { branch: string; contents: any[] };

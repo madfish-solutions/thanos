@@ -1,12 +1,12 @@
-import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useIsMounted } from './useIsMounted';
 
-export function useSafeState<T>(initialState: T | (() => T), dep?: any): [T, Dispatch<SetStateAction<T>>] {
+export function useSafeState<T>(initialState: T | (() => T), dep?: any): [T, ReactSetStateFn<T>] {
   const isMounted = useIsMounted();
   const [state, setStatePure] = useState(initialState);
 
-  const setState = useCallback<Dispatch<SetStateAction<T>>>(
+  const setState = useCallback<ReactSetStateFn<T>>(
     val => {
       if (isMounted()) {
         setStatePure(val);

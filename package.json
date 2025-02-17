@@ -231,6 +231,7 @@
     "@taquito/contracts-library": "20.1.0",
     "@taquito/tzip16": "20.1.0",
     "bignumber.js": "9.1.2",
+    "elliptic": "6.6.1",
     "graphql-request": "^6.1.0",
     "json5": "^2.2.2",
     "follow-redirects": "^1.15.4"

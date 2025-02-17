@@ -109,10 +109,14 @@ export const RESPONSE_FROM_BG_MSG_TYPE = 'templeResponseFromBackground';
 export const DISCONNECT_DAPP_MSG_TYPE = 'templeDisconnectDApp';
 
 export const SWITCH_CHAIN_MSG_TYPE = 'templeSwitchChain';
+
 export const LIQUIDITY_BAKING_DEX_ADDRESS = 'KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5';
 
 export const FEE_PER_GAS_UNIT = 0.1;
+export const RECOMMENDED_ADD_TEZ_GAS_FEE = 0.00015;
 
 export const THEME_COLOR_SEARCH_PARAM_NAME = 'tc';
 export const FONT_SIZE_SEARCH_PARAM_NAME = 'fs';
 export const LINE_HEIGHT_SEARCH_PARAM_NAME = 'lh';
+
+export const SEND_ETH_GAS_LIMIT = BigInt(21000);

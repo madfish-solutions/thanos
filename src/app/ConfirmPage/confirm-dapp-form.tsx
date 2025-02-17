@@ -20,16 +20,27 @@ import { StoredAccount, TempleAccountType, TempleDAppPayload } from 'lib/temple/
 import { useBooleanState, useSafeState } from 'lib/ui/hooks';
 import { delay } from 'lib/utils';
 import { useCurrentAccountId } from 'temple/front';
+import { TempleChainKind } from 'temple/types';
 
 import { useAddAsset } from './add-asset/context';
 import { ConfirmPageSelectors } from './selectors';
+
+export interface ConfirmDAppFormContentProps {
+  selectedAccount: StoredAccount;
+  error: any;
+  formId: string;
+  openAccountsModal: EmptyFn;
+  onSubmit: EmptyFn;
+}
 
 interface ConfirmDAppFormProps {
   accounts: StoredAccount[];
   payload: TempleDAppPayload;
   onConfirm: (confirmed: boolean, selectedAccount: StoredAccount) => Promise<void>;
-  children: (openAccountsModal: EmptyFn, selectedAccount: StoredAccount) => ReactNode | ReactNode[];
+  children: (props: ConfirmDAppFormContentProps) => ReactNode | ReactNode[];
 }
+
+const CONFIRM_OPERATIONS_FORM_ID = 'confirm-operations-form';
 
 export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, onConfirm, children }) => {
   const [accountsModalIsOpen, openAccountsModal, closeAccountsModal] = useBooleanState(false);
@@ -79,16 +90,16 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
 
     setIsConfirming(true);
     await confirm(true);
-    setIsDeclining(false);
-  }, [confirm, isConfirming, isDeclining, setIsConfirming, setIsDeclining]);
+    setIsConfirming(false);
+  }, [confirm, isConfirming, isDeclining, setIsConfirming]);
 
   const handleDeclineClick = useCallback(async () => {
     if (isConfirming || isDeclining) return;
 
-    setIsConfirming(true);
+    setIsDeclining(true);
     await confirm(false);
     setIsDeclining(false);
-  }, [confirm, isConfirming, isDeclining, setIsConfirming, setIsDeclining]);
+  }, [confirm, isConfirming, isDeclining, setIsDeclining]);
 
   const handleErrorAlertClose = useCallback(() => setError(null), [setError]);
 
@@ -102,6 +113,15 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
             ? ConfirmPageSelectors.ConnectAction_RetryButton
             : ConfirmPageSelectors.ConnectAction_ConnectButton,
           declineTestID: ConfirmPageSelectors.ConnectAction_CancelButton
+        };
+      case 'sign_typed':
+      case 'personal_sign':
+      case 'sign':
+        return {
+          title: <T id="signatureRequest" />,
+          confirmButtonName: <T id="signAction" />,
+          confirmTestID: ConfirmPageSelectors.SignAction_SignButton,
+          declineTestID: ConfirmPageSelectors.SignAction_RejectButton
         };
       case 'add_asset':
         return {
@@ -122,24 +142,25 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
             : ConfirmPageSelectors.ConfirmOperationsAction_ConfirmButton,
           declineTestID: ConfirmPageSelectors.ConfirmOperationsAction_RejectButton
         };
-      case 'confirm_operations':
+      default:
+        // TODO: add other variants of title using ABIs and payload data
         return {
-          title: <T id="confirmAction" substitutions={<T id="operations" />} />,
+          title:
+            payload.chainType === TempleChainKind.EVM ? (
+              <T id="unknownTransaction" />
+            ) : (
+              <T id="confirmAction" substitutions={<T id="transfer" />} />
+            ),
           confirmButtonName: <T id={error ? 'retry' : 'confirm'} />,
           confirmTestID: error
             ? ConfirmPageSelectors.ConfirmOperationsAction_RetryButton
             : ConfirmPageSelectors.ConfirmOperationsAction_ConfirmButton,
           declineTestID: ConfirmPageSelectors.ConfirmOperationsAction_RejectButton
         };
-      default:
-        return {
-          title: <T id="signatureRequest" />,
-          confirmButtonName: <T id="signAction" />,
-          confirmTestID: ConfirmPageSelectors.SignAction_SignButton,
-          declineTestID: ConfirmPageSelectors.SignAction_RejectButton
-        };
     }
-  }, [addAssetErrorMessage, error, payload.type]);
+  }, [payload.type, payload.chainType, error, addAssetErrorMessage]);
+
+  const isOperationsConfirm = payload.type === 'confirm_operations';
 
   return (
     <PageModal
@@ -190,7 +211,7 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
               </div>
             )}
 
-            {error && (
+            {error && !isOperationsConfirm && (
               <Alert
                 closable
                 onClose={handleErrorAlertClose}
@@ -201,7 +222,13 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
               />
             )}
 
-            {children(openAccountsModal, selectedAccount)}
+            {children({
+              openAccountsModal,
+              selectedAccount,
+              formId: CONFIRM_OPERATIONS_FORM_ID,
+              onSubmit: handleConfirmClick,
+              error
+            })}
           </ScrollView>
 
           <ActionsButtonsBox shouldCastShadow={!bottomEdgeIsVisible} flexDirection="row">
@@ -222,7 +249,9 @@ export const ConfirmDAppForm = memo<ConfirmDAppFormProps>(({ accounts, payload, 
               className="w-full"
               loading={isConfirming}
               testID={confirmTestID}
-              onClick={handleConfirmClick}
+              type={isOperationsConfirm ? 'submit' : 'button'}
+              onClick={isOperationsConfirm ? undefined : handleConfirmClick}
+              form={isOperationsConfirm ? CONFIRM_OPERATIONS_FORM_ID : undefined}
               disabled={confirmDisabled}
             >
               {confirmButtonName}

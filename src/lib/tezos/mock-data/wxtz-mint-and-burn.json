@@ -1,0 +1,218 @@
+[
+  {
+    "kind": "transaction",
+    "source": "tz1N4UfQCahHkRShBanv9QP9TnmXNgCaqCyZ",
+    "fee": "1312",
+    "counter": "7117410",
+    "gas_limit": "10283",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1HUNSkSKKJ7WZgYPqSygFQdiz4eSyUJKZ7",
+    "parameters": { "entrypoint": "withdraw", "value": { "int": "210000000" } },
+    "metadata": {
+      "balance_updates": [
+        {
+          "kind": "contract",
+          "contract": "tz1N4UfQCahHkRShBanv9QP9TnmXNgCaqCyZ",
+          "change": "-1312",
+          "origin": "block"
+        },
+        { "kind": "accumulator", "category": "block fees", "change": "1312", "origin": "block" }
+      ],
+      "operation_result": {
+        "status": "applied",
+        "storage": { "bytes": "01e0a1035a390e9104b62439250043207bb4d4045000" },
+        "consumed_milligas": "859755",
+        "storage_size": "631"
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1HUNSkSKKJ7WZgYPqSygFQdiz4eSyUJKZ7",
+          "nonce": 5,
+          "amount": "0",
+          "destination": "KT1V4Vp7zhynCNuaBjWMpNU535Xm2sgqkz6M",
+          "parameters": {
+            "entrypoint": "runEntrypointLambda",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                { "string": "onOvenWithdrawalRequested" },
+                { "bytes": "0507070a0000001600001a8fe9e3631f0bbd611ac9768f4a907cf70445920080e2a2c801" }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": {
+              "prim": "Pair",
+              "args": [{ "prim": "Pair", "args": [{ "int": "258" }, { "int": "259" }] }, { "int": "260" }]
+            },
+            "consumed_milligas": "7052397",
+            "storage_size": "47193",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "260", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "259", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "258", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1V4Vp7zhynCNuaBjWMpNU535Xm2sgqkz6M",
+          "nonce": 7,
+          "amount": "0",
+          "destination": "KT1VYsVfmobT7rsMVivvZ4J8i3bPiqz12NaH",
+          "parameters": {
+            "entrypoint": "burn",
+            "value": {
+              "prim": "Pair",
+              "args": [{ "bytes": "00001a8fe9e3631f0bbd611ac9768f4a907cf7044592" }, { "int": "218400000" }]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "00000cc84c2f6520dab375e8636d606671f3f5575abe" }, { "int": "254" }]
+                  },
+                  { "int": "255" }
+                ]
+              },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "01e0a1035a390e9104b62439250043207bb4d4045000" }, { "int": "256" }]
+                  },
+                  {
+                    "prim": "Pair",
+                    "args": [{ "int": "257" }, { "bytes": "0000521fc029738499f7961a65008b98e7532dbe84be" }]
+                  }
+                ]
+              },
+              { "prim": "False" },
+              { "int": "104093828670" }
+            ],
+            "consumed_milligas": "1033670",
+            "storage_size": "336656",
+            "lazy_storage_diff": [
+              {
+                "kind": "big_map",
+                "id": "257",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expruBSpV52XPge7X4CRpwnnAqVKD4Cxts9BDhVgnPYLa1DsUKX1GE",
+                      "key": { "bytes": "00001a8fe9e3631f0bbd611ac9768f4a907cf7044592" },
+                      "value": { "int": "5610159" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "256", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "255", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "254", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1V4Vp7zhynCNuaBjWMpNU535Xm2sgqkz6M",
+          "nonce": 8,
+          "amount": "0",
+          "destination": "KT1VYsVfmobT7rsMVivvZ4J8i3bPiqz12NaH",
+          "parameters": {
+            "entrypoint": "mint",
+            "value": {
+              "prim": "Pair",
+              "args": [{ "bytes": "0000293e38f56b6b5b02f022669c9d6982e237f5f165" }, { "int": "2100000" }]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "00000cc84c2f6520dab375e8636d606671f3f5575abe" }, { "int": "254" }]
+                  },
+                  { "int": "255" }
+                ]
+              },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "01e0a1035a390e9104b62439250043207bb4d4045000" }, { "int": "256" }]
+                  },
+                  {
+                    "prim": "Pair",
+                    "args": [{ "int": "257" }, { "bytes": "0000521fc029738499f7961a65008b98e7532dbe84be" }]
+                  }
+                ]
+              },
+              { "prim": "False" },
+              { "int": "104095928670" }
+            ],
+            "consumed_milligas": "1033813",
+            "storage_size": "336656",
+            "lazy_storage_diff": [
+              {
+                "kind": "big_map",
+                "id": "257",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expruJc1q4tjNikYqokQTiNB7MafnSFBpLc9xdZNPhWvLtrZLMmw6A",
+                      "key": { "bytes": "0000293e38f56b6b5b02f022669c9d6982e237f5f165" },
+                      "value": { "int": "728055178" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "256", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "255", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "254", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1HUNSkSKKJ7WZgYPqSygFQdiz4eSyUJKZ7",
+          "nonce": 6,
+          "amount": "210000000",
+          "destination": "tz1N4UfQCahHkRShBanv9QP9TnmXNgCaqCyZ",
+          "result": {
+            "status": "applied",
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1HUNSkSKKJ7WZgYPqSygFQdiz4eSyUJKZ7",
+                "change": "-210000000",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "tz1N4UfQCahHkRShBanv9QP9TnmXNgCaqCyZ",
+                "change": "210000000",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "100000"
+          }
+        }
+      ]
+    }
+  }
+]

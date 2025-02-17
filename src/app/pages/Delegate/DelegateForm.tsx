@@ -10,6 +10,7 @@ import { useAppEnv } from 'app/env';
 import OperationStatus from 'app/templates/OperationStatus';
 import { useFormAnalytics } from 'lib/analytics';
 import { submitDelegation } from 'lib/apis/everstake';
+import { RECOMMENDED_ADD_TEZ_GAS_FEE } from 'lib/constants';
 import { TEZOS_BLOCK_DURATION } from 'lib/fixed-times';
 import { TID, t } from 'lib/i18n';
 import { RECOMMENDED_BAKER_ADDRESS } from 'lib/known-bakers';
@@ -31,7 +32,6 @@ import { UnchangedError, UnregisteredDelegateError } from './errors';
 import { DelegateFormSelectors } from './selectors';
 
 const PENNY = 0.000001;
-const RECOMMENDED_ADD_FEE = 0.0001;
 
 interface FormData {
   to: string;
@@ -66,7 +66,7 @@ const DelegateForm = memo<Props>(({ network, account, balance }) => {
   const { watch, handleSubmit, errors, control, formState, setValue, triggerValidation, reset } = useForm<FormData>({
     mode: 'onChange',
     defaultValues: {
-      fee: RECOMMENDED_ADD_FEE
+      fee: RECOMMENDED_ADD_TEZ_GAS_FEE
     }
   });
 
@@ -223,7 +223,7 @@ const DelegateForm = memo<Props>(({ network, account, balance }) => {
         }
 
         setOperation(op);
-        reset({ to: '', fee: RECOMMENDED_ADD_FEE });
+        reset({ to: '', fee: RECOMMENDED_ADD_TEZ_GAS_FEE });
 
         if (to === RECOMMENDED_BAKER_ADDRESS && opHash) {
           submitDelegation(opHash);

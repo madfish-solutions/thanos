@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { memo, useMemo } from 'react';
 
 import BigNumber from 'bignumber.js';
 import clsx from 'clsx';
@@ -12,7 +12,7 @@ import { getAssetSymbol, TEZOS_METADATA } from 'lib/metadata';
 import { OneOfChains } from 'temple/front/chains';
 import { TempleChainKind } from 'temple/types';
 
-import { DisplayedFeeOptions, FeeOptionLabel } from '../../types';
+import { DisplayedFeeOptions, FeeOptionLabel } from '../types';
 
 interface Option {
   label: FeeOptionLabel;
@@ -34,26 +34,22 @@ interface FeeOptionsProps {
   onOptionClick?: (label: FeeOptionLabel) => void;
 }
 
-export const FeeOptions: FC<FeeOptionsProps> = ({
-  network,
-  assetSlug,
-  activeOptionName,
-  displayedFeeOptions,
-  onOptionClick
-}) => (
-  <div className="flex flex-row gap-x-2">
-    {options.map(option => (
-      <Option
-        key={option.label}
-        network={network}
-        assetSlug={assetSlug}
-        option={option}
-        value={displayedFeeOptions[option.label]}
-        active={activeOptionName === option.label}
-        onClick={() => onOptionClick?.(option.label)}
-      />
-    ))}
-  </div>
+export const FeeOptions = memo<FeeOptionsProps>(
+  ({ network, assetSlug, activeOptionName, displayedFeeOptions, onOptionClick }) => (
+    <div className="flex flex-row gap-x-2">
+      {options.map(option => (
+        <Option
+          key={option.label}
+          network={network}
+          assetSlug={assetSlug}
+          option={option}
+          value={displayedFeeOptions[option.label]}
+          active={activeOptionName === option.label}
+          onClick={() => onOptionClick?.(option.label)}
+        />
+      ))}
+    </div>
+  )
 );
 
 interface OptionProps {
@@ -65,7 +61,7 @@ interface OptionProps {
   onClick?: EmptyFn;
 }
 
-const Option: FC<OptionProps> = ({ network, assetSlug, active, option, value, onClick }) => {
+const Option = memo<OptionProps>(({ network, assetSlug, active, option, value, onClick }) => {
   const isEvm = network.kind === TempleChainKind.EVM;
 
   const nativeAssetSymbol = useMemo(() => getAssetSymbol(isEvm ? network?.currency : TEZOS_METADATA), [isEvm, network]);
@@ -112,4 +108,4 @@ const Option: FC<OptionProps> = ({ network, assetSlug, active, option, value, on
       </div>
     </div>
   );
-};
+});

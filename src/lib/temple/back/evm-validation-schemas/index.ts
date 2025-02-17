@@ -10,8 +10,10 @@ import {
 import { evmRpcMethodsNames } from 'temple/evm/constants';
 import { ChangePermissionsPayload } from 'temple/evm/types';
 
+import { rpcTransactionRequestValidationSchema } from './transaction-request';
 import {
   evmAddressValidationSchema,
+  hexByteStringSchema,
   hexStringSchema,
   oldTypedDataValidationSchema,
   stringArraySchema,
@@ -28,15 +30,18 @@ export const ethSignTypedDataValidationSchema = tupleSchema([
   typedDataValidationSchema().json().required()
 ]).required();
 
+const ethPersonalSignSchemas = [
+  tupleSchema([
+    hexByteStringSchema().required(),
+    evmAddressValidationSchema().required(),
+    stringSchema().required().nullable()
+  ]),
+  tupleSchema([hexByteStringSchema().required(), evmAddressValidationSchema().required()])
+];
 export const ethPersonalSignPayloadValidationSchema = mixedSchema<
-  [HexString, HexString, string] | [HexString, HexString]
+  [HexString, HexString, string | null] | [HexString, HexString]
 >((value: unknown): value is [HexString, HexString, string] | [HexString, HexString] => {
-  const tuplesSchemas = [
-    tupleSchema([hexStringSchema().required(), evmAddressValidationSchema().required(), stringSchema().required()]),
-    tupleSchema([hexStringSchema().required(), evmAddressValidationSchema().required()])
-  ];
-
-  for (const schema of tuplesSchemas) {
+  for (const schema of ethPersonalSignSchemas) {
     try {
       schema.validateSync(value);
 
@@ -93,6 +98,10 @@ export const ethChangePermissionsPayloadValidationSchema: TupleSchema<[ChangePer
 ]).required();
 
 export const personalSignRecoverPayloadValidationSchema = tupleSchema([
-  hexStringSchema().required(),
-  hexStringSchema().required()
+  hexByteStringSchema().required(),
+  hexByteStringSchema().required()
+]).required();
+
+export const sendTransactionPayloadValidationSchema = tupleSchema([
+  rpcTransactionRequestValidationSchema().required()
 ]).required();

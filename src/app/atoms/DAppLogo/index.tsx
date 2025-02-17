@@ -13,7 +13,10 @@ interface DAppLogoProps {
 }
 
 const DAppLogo = memo<DAppLogoProps>(({ origin, size, icon, className, style }) => {
-  const faviconSrc = useMemo(() => [icon ? icon : `${origin}/favicon.ico`], [origin, icon]);
+  const faviconSrc = useMemo(
+    () => (icon ? [icon] : [`${origin}/favicon.ico`, `${origin}/favicon.png`]),
+    [origin, icon]
+  );
 
   const styleMemo = useMemo(() => ({ width: size, height: size, ...style }), [style, size]);
 

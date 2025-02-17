@@ -1,0 +1,2847 @@
+[
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "10097",
+    "counter": "4628654",
+    "gas_limit": "6796",
+    "storage_limit": "0",
+    "amount": "2713499",
+    "destination": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+    "parameters": { "entrypoint": "wrap", "value": { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" } },
+    "metadata": {
+      "balance_updates": [
+        {
+          "kind": "contract",
+          "contract": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+          "change": "-10097",
+          "origin": "block"
+        },
+        { "kind": "accumulator", "category": "block fees", "change": "10097", "origin": "block" }
+      ],
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          { "int": "19490" },
+          [
+            {
+              "prim": "Elt",
+              "args": [
+                { "bytes": "011c6bf24119daaa693a9dec630f13b5dd775d051e00" },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    { "int": "21585363628" },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "int": "24224255770" },
+                        { "prim": "Some", "args": [{ "bytes": "009ff07dfb31a52504052cbbb7e54303a1573fe350" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "prim": "Elt",
+              "args": [
+                { "bytes": "015c8a3d7532fd51a972b01976c1b0d6b6c6d31c3500" },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    { "int": "21585368636" },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "int": "24469260287" },
+                        { "prim": "Some", "args": [{ "bytes": "014b7c404fd4fbcf931cde0a8971caf76f53c8e5c0" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "prim": "Elt",
+              "args": [
+                { "bytes": "01862f200ab5236cbece2e2069a7309fd951bbc68500" },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    { "int": "21585373541" },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "int": "24457693831" },
+                        { "prim": "Some", "args": [{ "bytes": "00debe4a4a7c24a8e9c60cb5578444e4a03dc4622e" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "prim": "Elt",
+              "args": [
+                { "bytes": "0195344056a158032b17115cdd9efb7d6778e1c5f900" },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    { "int": "21585378675" },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "int": "22711628909" },
+                        { "prim": "Some", "args": [{ "bytes": "0046a2c00eb115343242347fa1cd672a2bc1dcc609" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "prim": "Elt",
+              "args": [
+                { "bytes": "01961af3a43e52366df905c895001705a91a0ac12e00" },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    { "int": "21585384015" },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "int": "24339681998" },
+                        { "prim": "Some", "args": [{ "bytes": "000af6b35e6812b1bc8660a30827a9794c98a2f873" }] }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          { "int": "107926868495" },
+          { "int": "120202520795" },
+          { "int": "890671565747706451" },
+          {
+            "prim": "Pair",
+            "args": [
+              { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+              { "prim": "Pair", "args": [{ "int": "0" }, { "prim": "Right", "args": [{ "prim": "Unit" }] }] }
+            ]
+          },
+          { "int": "10" },
+          { "bytes": "0000e69af3c62771ffb2521c7bc5cf33f185d8c8ee6e" },
+          { "bytes": "0000ec9b2c0f2942338e604d86c341d81bae534bbb1d" },
+          { "prim": "None" },
+          { "prim": "False" }
+        ],
+        "balance_updates": [
+          {
+            "kind": "contract",
+            "contract": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+            "change": "-2713499",
+            "origin": "block"
+          },
+          {
+            "kind": "contract",
+            "contract": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+            "change": "2713499",
+            "origin": "block"
+          }
+        ],
+        "consumed_milligas": "3465190",
+        "storage_size": "8001",
+        "lazy_storage_diff": [{ "kind": "big_map", "id": "19490", "diff": { "action": "update", "updates": [] } }]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+          "nonce": 5,
+          "amount": "542699",
+          "destination": "KT1NGTDBKDPMrAYEufb72CLwuQJ7jU7jL6jD",
+          "result": {
+            "status": "applied",
+            "storage": { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+                "change": "-542699",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "KT1NGTDBKDPMrAYEufb72CLwuQJ7jU7jL6jD",
+                "change": "542699",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "304364",
+            "storage_size": "727"
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+          "nonce": 4,
+          "amount": "542700",
+          "destination": "KT1NBgqqJacbdoeNAg9MvrgPT9h6q6AGWvFA",
+          "result": {
+            "status": "applied",
+            "storage": { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+                "change": "-542700",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "KT1NBgqqJacbdoeNAg9MvrgPT9h6q6AGWvFA",
+                "change": "542700",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "304364",
+            "storage_size": "727"
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+          "nonce": 3,
+          "amount": "542700",
+          "destination": "KT1LpGZnT6dj6STSxHXmvSPqx39ZdPXAMpFz",
+          "result": {
+            "status": "applied",
+            "storage": { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+                "change": "-542700",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "KT1LpGZnT6dj6STSxHXmvSPqx39ZdPXAMpFz",
+                "change": "542700",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "304364",
+            "storage_size": "727"
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+          "nonce": 2,
+          "amount": "542700",
+          "destination": "KT1H25LW5k4HQGm9hmNXzaxf3nqjsAEhQPah",
+          "result": {
+            "status": "applied",
+            "storage": { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+                "change": "-542700",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "KT1H25LW5k4HQGm9hmNXzaxf3nqjsAEhQPah",
+                "change": "542700",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "304364",
+            "storage_size": "727"
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+          "nonce": 1,
+          "amount": "542700",
+          "destination": "KT1BB3oNr5vUSw1CuPNb2zpYEVp376XrXWaJ",
+          "result": {
+            "status": "applied",
+            "storage": { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+                "change": "-542700",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "KT1BB3oNr5vUSw1CuPNb2zpYEVp376XrXWaJ",
+                "change": "542700",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "304364",
+            "storage_size": "727"
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1Pyd1r9F4nMaHy8pPZxPSq6VCn9hVbVrf4",
+          "nonce": 0,
+          "amount": "0",
+          "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+          "parameters": {
+            "entrypoint": "mint",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                },
+                { "int": "2416836" }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "19485" },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                      { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                    ]
+                  },
+                  { "int": "19489" }
+                ]
+              },
+              { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+              { "prim": "None" }
+            ],
+            "consumed_milligas": "1707600",
+            "storage_size": "322290",
+            "lazy_storage_diff": [
+              {
+                "kind": "big_map",
+                "id": "19489",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtZBwZUeYYYfUs9B9Rg2ywHezVHnCCnmF9WsDQVrs582dSK63dC",
+                      "key": { "int": "0" },
+                      "value": { "int": "108142011697" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19487", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "19486",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtWyeCE95tVtKARRvQ51JPfkUEUTkA7AoLmniSschNGfr3HzxvU",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                      },
+                      "value": { "int": "9027780" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628655",
+    "gas_limit": "664",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+    "parameters": {
+      "entrypoint": "update_operators",
+      "value": [
+        {
+          "prim": "Left",
+          "args": [
+            {
+              "prim": "Pair",
+              "args": [
+                { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" },
+                { "prim": "Pair", "args": [{ "string": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43" }, { "int": "0" }] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          { "int": "19485" },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                  { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                ]
+              },
+              { "int": "19489" }
+            ]
+          },
+          { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+          { "prim": "None" }
+        ],
+        "consumed_milligas": "563554",
+        "storage_size": "322357",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "19487",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "expruJ6ZPAH1bZnPUvHVWmSTZ1WPqNvQ9mDPATxCT682ShM6bjQxDs",
+                  "key": {
+                    "prim": "Pair",
+                    "args": [
+                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                      {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" }, { "int": "0" }]
+                      }
+                    ]
+                  },
+                  "value": { "prim": "Unit" }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "19486", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+        ]
+      }
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628656",
+    "gas_limit": "14647",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43",
+    "parameters": {
+      "entrypoint": "swap",
+      "value": {
+        "prim": "Pair",
+        "args": [
+          { "prim": "None" },
+          {
+            "prim": "Pair",
+            "args": [
+              [{ "prim": "Pair", "args": [{ "prim": "Left", "args": [{ "prim": "Unit" }] }, { "int": "135" }] }],
+              {
+                "prim": "Pair",
+                "args": [
+                  { "string": "1702183425" },
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" },
+                      {
+                        "prim": "Pair",
+                        "args": [
+                          { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" },
+                          {
+                            "prim": "Pair",
+                            "args": [
+                              { "int": "1080842" },
+                              { "prim": "Pair", "args": [{ "int": "165962804417002" }, { "prim": "None" }] }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": {
+          "prim": "Pair",
+          "args": [
+            [
+              { "int": "306106" },
+              { "int": "306107" },
+              { "int": "306108" },
+              { "int": "306109" },
+              { "int": "306110" },
+              { "int": "306111" },
+              { "int": "306112" },
+              { "int": "306113" },
+              { "int": "306114" },
+              { "int": "306115" },
+              { "int": "306116" },
+              [{ "bytes": "00000ca34712e63c628199f391963dc7de0fa859fa97" }],
+              [
+                { "int": "500000000000000" },
+                { "int": "2250000000000000" },
+                { "int": "750000000000000" },
+                { "int": "0" }
+              ],
+              { "bytes": "0000f234742441835b5bce8423f16b39c2695b662a1e" },
+              { "prim": "None" },
+              { "bytes": "0147e0147c1141901fc856affc3ed7a1d34fcc51bc00" },
+              { "bytes": "0187e197de112f2397d0b7ecf24b99c6a9b6bd293f00" },
+              { "bytes": "0189b4de4f4fdb06517b4092f759e5c351bbd3f30f00" },
+              { "int": "0" },
+              { "int": "31564512" },
+              { "prim": "True" },
+              { "int": "136" },
+              { "int": "60480" },
+              { "int": "999999999999999999" }
+            ],
+            { "prim": "Pair", "args": [{ "int": "306117" }, { "int": "306118" }] }
+          ]
+        },
+        "consumed_milligas": "9178622",
+        "storage_size": "388788",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "306118", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "306117", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "306116", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "306115",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "expruMmirn1Ej2cG9X865WX3pbdyCZbp6hwdVUP6SYSR5puDA47FLH",
+                  "key": {
+                    "prim": "Left",
+                    "args": [
+                      {
+                        "prim": "Right",
+                        "args": [
+                          {
+                            "prim": "Pair",
+                            "args": [{ "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" }, { "int": "0" }]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  "value": { "int": "1147376839500000000000000" }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "306114", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "306113",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "exprvTD5FwiMhSm2Hm9fitmNNpFFpj4UmNE1hd4H55xM5ZPLNHCvpv",
+                  "key": {
+                    "prim": "Pair",
+                    "args": [
+                      {
+                        "prim": "Left",
+                        "args": [
+                          {
+                            "prim": "Right",
+                            "args": [
+                              {
+                                "prim": "Pair",
+                                "args": [{ "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" }, { "int": "0" }]
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }
+                    ]
+                  },
+                  "value": { "int": "550668000000000000000" }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "306112", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "306111",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "expru7c8TJYjprDz2azP3hiY2tkKJoRxua2GYNkMKzcaP943VV1mMX",
+                  "key": { "int": "135" },
+                  "value": [
+                    { "int": "701339023" },
+                    { "int": "240636223484870613" },
+                    { "int": "114234460894803840993241530277283" },
+                    { "int": "92472197901276" },
+                    { "int": "185000000" },
+                    { "int": "1702182244" },
+                    { "prim": "None" }
+                  ]
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "306110", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "306109", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "306108", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "306107", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "306106", "diff": { "action": "update", "updates": [] } }
+        ]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43",
+          "nonce": 8,
+          "amount": "0",
+          "destination": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "parameters": {
+            "entrypoint": "transfer",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" },
+                  [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                        { "prim": "Pair", "args": [{ "int": "0" }, { "int": "370119092665192" }] }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "574706" },
+              {
+                "prim": "Pair",
+                "args": [{ "bytes": "0000e3367500945485c0f9ac6f249deb1cc9b23bf152" }, { "prim": "None" }]
+              },
+              { "int": "574707" },
+              { "int": "574708" },
+              { "int": "574709" },
+              { "int": "574710" }
+            ],
+            "consumed_milligas": "1958551",
+            "storage_size": "62499",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574710", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574709", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "574708",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expru8TsaqjAXcaQwhtEVWu7RN2oqaHrpyftbAanuxdAUZZgoRE3v4",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" }, { "int": "0" }]
+                      },
+                      "value": { "int": "242068916406670741" }
+                    },
+                    {
+                      "key_hash": "exprtWyeCE95tVtKARRvQ51JPfkUEUTkA7AoLmniSschNGfr3HzxvU",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                      },
+                      "value": { "int": "44006628577019463" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "574707", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574706", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "event",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 11,
+          "type": {
+            "prim": "pair",
+            "args": [
+              { "prim": "address", "annots": ["%owner"] },
+              {
+                "prim": "pair",
+                "args": [
+                  { "prim": "nat", "annots": ["%token_id"] },
+                  {
+                    "prim": "pair",
+                    "args": [
+                      { "prim": "nat", "annots": ["%new_balance"] },
+                      { "prim": "int", "annots": ["%diff"] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "tag": "balance_update",
+          "payload": [
+            { "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" },
+            { "int": "0" },
+            { "int": "242068916406670741" },
+            { "int": "-370119092665192" }
+          ],
+          "result": { "status": "applied", "consumed_milligas": "100000" }
+        },
+        {
+          "kind": "event",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 10,
+          "type": {
+            "prim": "pair",
+            "args": [
+              { "prim": "address", "annots": ["%owner"] },
+              {
+                "prim": "pair",
+                "args": [
+                  { "prim": "nat", "annots": ["%token_id"] },
+                  {
+                    "prim": "pair",
+                    "args": [
+                      { "prim": "nat", "annots": ["%new_balance"] },
+                      { "prim": "int", "annots": ["%diff"] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "tag": "balance_update",
+          "payload": [
+            { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+            { "int": "0" },
+            { "int": "44006628577019463" },
+            { "int": "370119092665192" }
+          ],
+          "result": { "status": "applied", "consumed_milligas": "100000" }
+        },
+        {
+          "kind": "event",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 9,
+          "type": {
+            "prim": "pair",
+            "args": [
+              { "prim": "address", "annots": ["%from_"] },
+              {
+                "prim": "pair",
+                "args": [
+                  { "prim": "address", "annots": ["%to_"] },
+                  {
+                    "prim": "pair",
+                    "args": [
+                      { "prim": "nat", "annots": ["%token_id"] },
+                      { "prim": "nat", "annots": ["%amount"] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "tag": "transfer_event",
+          "payload": [
+            { "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" },
+            { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+            { "int": "0" },
+            { "int": "370119092665192" }
+          ],
+          "result": { "status": "applied", "consumed_milligas": "100000" }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43",
+          "nonce": 7,
+          "amount": "0",
+          "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+          "parameters": {
+            "entrypoint": "transfer",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                  [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" },
+                        { "prim": "Pair", "args": [{ "int": "0" }, { "int": "1080842" }] }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "19485" },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                      { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                    ]
+                  },
+                  { "int": "19489" }
+                ]
+              },
+              { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+              { "prim": "None" }
+            ],
+            "consumed_milligas": "1943438",
+            "storage_size": "322357",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19487", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "19486",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expru8TsaqjAXcaQwhtEVWu7RN2oqaHrpyftbAanuxdAUZZgoRE3v4",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" }, { "int": "0" }]
+                      },
+                      "value": { "int": "703256372" }
+                    },
+                    {
+                      "key_hash": "exprtWyeCE95tVtKARRvQ51JPfkUEUTkA7AoLmniSschNGfr3HzxvU",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                      },
+                      "value": { "int": "7946938" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43",
+          "nonce": 6,
+          "amount": "0",
+          "destination": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43",
+          "parameters": { "entrypoint": "close", "value": { "prim": "Unit" } },
+          "result": {
+            "status": "applied",
+            "storage": {
+              "prim": "Pair",
+              "args": [
+                [
+                  { "int": "306106" },
+                  { "int": "306107" },
+                  { "int": "306108" },
+                  { "int": "306109" },
+                  { "int": "306110" },
+                  { "int": "306111" },
+                  { "int": "306112" },
+                  { "int": "306113" },
+                  { "int": "306114" },
+                  { "int": "306115" },
+                  { "int": "306116" },
+                  [{ "bytes": "00000ca34712e63c628199f391963dc7de0fa859fa97" }],
+                  [
+                    { "int": "500000000000000" },
+                    { "int": "2250000000000000" },
+                    { "int": "750000000000000" },
+                    { "int": "0" }
+                  ],
+                  { "bytes": "0000f234742441835b5bce8423f16b39c2695b662a1e" },
+                  { "prim": "None" },
+                  { "bytes": "0147e0147c1141901fc856affc3ed7a1d34fcc51bc00" },
+                  { "bytes": "0187e197de112f2397d0b7ecf24b99c6a9b6bd293f00" },
+                  { "bytes": "0189b4de4f4fdb06517b4092f759e5c351bbd3f30f00" },
+                  { "int": "0" },
+                  { "int": "31564512" },
+                  { "prim": "False" },
+                  { "int": "136" },
+                  { "int": "60480" },
+                  { "int": "999999999999999999" }
+                ],
+                { "prim": "Pair", "args": [{ "int": "306117" }, { "int": "306118" }] }
+              ]
+            },
+            "consumed_milligas": "1166026",
+            "storage_size": "388788",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "306118", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306117", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306116", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306115", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306114", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306113", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306112", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306111", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306110", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306109", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306108", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306107", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "306106", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628657",
+    "gas_limit": "634",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+    "parameters": {
+      "entrypoint": "update_operators",
+      "value": [
+        {
+          "prim": "Right",
+          "args": [
+            {
+              "prim": "Pair",
+              "args": [
+                { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" },
+                { "prim": "Pair", "args": [{ "string": "KT1J8Hr3BP8bpbfmgGpRPoC9nAMSYtStZG43" }, { "int": "0" }] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          { "int": "19485" },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                  { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                ]
+              },
+              { "int": "19489" }
+            ]
+          },
+          { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+          { "prim": "None" }
+        ],
+        "consumed_milligas": "533322",
+        "storage_size": "322290",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "19487",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "expruJ6ZPAH1bZnPUvHVWmSTZ1WPqNvQ9mDPATxCT682ShM6bjQxDs",
+                  "key": {
+                    "prim": "Pair",
+                    "args": [
+                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                      {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0168af4dc6d5632968e3b872d5d1f92c2d73c5c96c00" }, { "int": "0" }]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "19486", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+        ]
+      }
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628658",
+    "gas_limit": "3924",
+    "storage_limit": "0",
+    "amount": "3780",
+    "destination": "KT1VXBX6NwapYf9Sq6LsQVr4SdsDq3ta1nss",
+    "parameters": {
+      "entrypoint": "tezToTokenPayment",
+      "value": { "prim": "Pair", "args": [{ "int": "1499" }, { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" }] }
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": {
+          "prim": "Pair",
+          "args": [
+            { "prim": "Pair", "args": [{ "int": "19664" }, { "int": "19665" }] },
+            {
+              "prim": "Pair",
+              "args": [
+                [
+                  [
+                    [
+                      {
+                        "prim": "Pair",
+                        "args": [
+                          {
+                            "prim": "Pair",
+                            "args": [{ "bytes": "0134221a2f827422da187e00da51ffbd0c9f1d9be900" }, { "prim": "None" }]
+                          },
+                          {
+                            "prim": "Pair",
+                            "args": [
+                              { "prim": "Some", "args": [{ "bytes": "00e124d3e9e01f5afa1fc9ddd1a43b2ef05022a959" }] },
+                              { "int": "1691004405" }
+                            ]
+                          }
+                        ]
+                      },
+                      { "prim": "Pair", "args": [{ "int": "1684229282" }, { "int": "19666" }] },
+                      { "int": "1693522890" },
+                      { "int": "0" }
+                    ],
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "prim": "Pair", "args": [{ "int": "5344591" }, { "int": "0" }] },
+                        { "prim": "Pair", "args": [{ "int": "84387441721142" }, { "int": "167470931" }] }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [{ "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" }, { "int": "0" }]
+                    },
+                    { "int": "148891350" },
+                    { "int": "13282143" }
+                  ],
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "prim": "Pair", "args": [{ "int": "130853480" }, { "int": "126064649" }] },
+                      { "prim": "Pair", "args": [{ "int": "19667" }, { "int": "0" }] }
+                    ]
+                  },
+                  { "prim": "Pair", "args": [{ "int": "19668" }, { "int": "19669" }] },
+                  { "int": "19670" }
+                ],
+                { "int": "19671" }
+              ]
+            }
+          ]
+        },
+        "balance_updates": [
+          {
+            "kind": "contract",
+            "contract": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+            "change": "-3780",
+            "origin": "block"
+          },
+          {
+            "kind": "contract",
+            "contract": "KT1VXBX6NwapYf9Sq6LsQVr4SdsDq3ta1nss",
+            "change": "3780",
+            "origin": "block"
+          }
+        ],
+        "consumed_milligas": "1879634",
+        "storage_size": "35251",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "19671", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19670", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19669", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19668", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19667", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19666", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19665", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19664", "diff": { "action": "update", "updates": [] } }
+        ]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1VXBX6NwapYf9Sq6LsQVr4SdsDq3ta1nss",
+          "nonce": 12,
+          "amount": "0",
+          "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+          "parameters": {
+            "entrypoint": "transfer",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "01e5acf92d63b92505b421b7af834ec945b6fc90f800" },
+                  [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                        { "prim": "Pair", "args": [{ "int": "0" }, { "int": "3350" }] }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "19485" },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                      { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                    ]
+                  },
+                  { "int": "19489" }
+                ]
+              },
+              { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+              { "prim": "None" }
+            ],
+            "consumed_milligas": "1943439",
+            "storage_size": "322290",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19487", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "19486",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtoKCLFFYVL6T6wBBpzsNTeEm4VYAMHpRmidatVBe4rERMPe28w",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "01e5acf92d63b92505b421b7af834ec945b6fc90f800" }, { "int": "0" }]
+                      },
+                      "value": { "int": "148891350" }
+                    },
+                    {
+                      "key_hash": "exprtWyeCE95tVtKARRvQ51JPfkUEUTkA7AoLmniSschNGfr3HzxvU",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                      },
+                      "value": { "int": "7950288" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628659",
+    "gas_limit": "664",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+    "parameters": {
+      "entrypoint": "update_operators",
+      "value": [
+        {
+          "prim": "Left",
+          "args": [
+            {
+              "prim": "Pair",
+              "args": [
+                { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" },
+                { "prim": "Pair", "args": [{ "string": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL" }, { "int": "0" }] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          { "int": "19485" },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                  { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                ]
+              },
+              { "int": "19489" }
+            ]
+          },
+          { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+          { "prim": "None" }
+        ],
+        "consumed_milligas": "563554",
+        "storage_size": "322357",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "19487",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "exprunj56QY4wt3iu3okQFCvkxqiTUCyKPthaPGZJ5iRY3GjhQAgte",
+                  "key": {
+                    "prim": "Pair",
+                    "args": [
+                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                      {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "01a8844b5b00ea700f62dfeef8d9f30c9d0a9bc6d800" }, { "int": "0" }]
+                      }
+                    ]
+                  },
+                  "value": { "prim": "Unit" }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "19486", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+        ]
+      }
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628660",
+    "gas_limit": "28918",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+    "parameters": {
+      "entrypoint": "swap_exact_for_tokens",
+      "value": {
+        "prim": "Pair",
+        "args": [
+          {
+            "prim": "Pair",
+            "args": [
+              { "prim": "Pair", "args": [{ "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" }, { "int": "1499" }] },
+              { "prim": "Pair", "args": [{ "int": "223944415993" }, { "string": "1702183426" }] }
+            ]
+          },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "string": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn" },
+                  { "prim": "Some", "args": [{ "int": "0" }] }
+                ]
+              },
+              {
+                "prim": "Pair",
+                "args": [
+                  { "string": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm" },
+                  { "prim": "Some", "args": [{ "int": "0" }] }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": {
+          "prim": "Pair",
+          "args": [
+            {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Some",
+                      "args": [
+                        [
+                          {
+                            "prim": "Pair",
+                            "args": [
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                                  { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }
+                                ]
+                              },
+                              { "prim": "Pair", "args": [{ "prim": "None" }, { "prim": "None" }] }
+                            ]
+                          },
+                          {
+                            "prim": "Pair",
+                            "args": [
+                              { "prim": "Right", "args": [{ "prim": "Unit" }] },
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                                  { "prim": "Some", "args": [{ "int": "0" }] }
+                                ]
+                              }
+                            ]
+                          },
+                          {
+                            "prim": "Pair",
+                            "args": [
+                              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+                              { "prim": "Some", "args": [{ "int": "0" }] }
+                            ]
+                          },
+                          { "prim": "None" }
+                        ]
+                      ]
+                    },
+                    { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }
+                  ]
+                },
+                {
+                  "prim": "Pair",
+                  "args": [{ "prim": "True" }, { "bytes": "0000dc7eb40f3bd1e15b4014d628e340ba656409593f" }]
+                }
+              ]
+            },
+            {
+              "prim": "Pair",
+              "args": [{ "prim": "Pair", "args": [{ "int": "19538" }, { "int": "19539" }] }, { "int": "19540" }]
+            }
+          ]
+        },
+        "consumed_milligas": "3087482",
+        "storage_size": "58297",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "19540", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19539", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19538", "diff": { "action": "update", "updates": [] } }
+        ]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+          "nonce": 13,
+          "amount": "0",
+          "destination": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "parameters": {
+            "entrypoint": "get_reserves",
+            "value": { "bytes": "01a8844b5b00ea700f62dfeef8d9f30c9d0a9bc6d80072657365727665735f63616c6c6261636b" }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "prim": "Pair", "args": [{ "int": "574721" }, { "int": "574722" }] },
+                            { "prim": "Pair", "args": [{ "int": "574723" }, { "int": "574724" }] }
+                          ]
+                        },
+                        { "int": "574725" }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [{ "prim": "None" }, { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }]
+                    }
+                  ]
+                },
+                { "prim": "Pair", "args": [{ "int": "574726" }, { "int": "666294090525824" }] },
+                { "int": "0" },
+                { "int": "1702182109" }
+              ],
+              [
+                { "prim": "Pair", "args": [{ "int": "7669268524" }, { "int": "2577129593717438040" }] },
+                { "int": "19752675197489071423967724864" },
+                { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                { "prim": "Some", "args": [{ "int": "0" }] }
+              ],
+              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+              { "prim": "Some", "args": [{ "int": "0" }] }
+            ],
+            "consumed_milligas": "4186104",
+            "storage_size": "25652",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574726", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574725", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574724", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574723", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574722", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574721", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "nonce": 15,
+          "amount": "0",
+          "destination": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+          "parameters": {
+            "entrypoint": "reserves_callback",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                { "prim": "Pair", "args": [{ "int": "1702182109" }, { "int": "7669268524" }] },
+                { "prim": "Pair", "args": [{ "int": "2577129593717438040" }, { "int": "139334687126147" }] }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Some",
+                          "args": [
+                            [
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  {
+                                    "prim": "Pair",
+                                    "args": [
+                                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }
+                                    ]
+                                  },
+                                  {
+                                    "prim": "Pair",
+                                    "args": [
+                                      { "prim": "Some", "args": [{ "int": "7669268524" }] },
+                                      { "prim": "Some", "args": [{ "int": "2577129593717438040" }] }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  { "prim": "Left", "args": [{ "prim": "Unit" }] },
+                                  {
+                                    "prim": "Pair",
+                                    "args": [
+                                      { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                                      { "prim": "Some", "args": [{ "int": "0" }] }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+                                  { "prim": "Some", "args": [{ "int": "0" }] }
+                                ]
+                              },
+                              { "prim": "Some", "args": [{ "int": "139334687126147" }] }
+                            ]
+                          ]
+                        },
+                        { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [{ "prim": "True" }, { "bytes": "0000dc7eb40f3bd1e15b4014d628e340ba656409593f" }]
+                    }
+                  ]
+                },
+                {
+                  "prim": "Pair",
+                  "args": [{ "prim": "Pair", "args": [{ "int": "19538" }, { "int": "19539" }] }, { "int": "19540" }]
+                }
+              ]
+            },
+            "consumed_milligas": "819352",
+            "storage_size": "58321",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "19540", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19539", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19538", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+          "nonce": 14,
+          "amount": "0",
+          "destination": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+          "parameters": {
+            "entrypoint": "main_entry",
+            "value": {
+              "prim": "Left",
+              "args": [
+                {
+                  "prim": "Left",
+                  "args": [
+                    {
+                      "prim": "Left",
+                      "args": [
+                        {
+                          "prim": "Right",
+                          "args": [
+                            [
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  {
+                                    "prim": "Pair",
+                                    "args": [
+                                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                                      { "int": "1499" }
+                                    ]
+                                  },
+                                  { "prim": "Pair", "args": [{ "int": "223944415993" }, { "int": "1702183426" }] }
+                                ]
+                              },
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                                  { "prim": "Some", "args": [{ "int": "0" }] }
+                                ]
+                              },
+                              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+                              { "prim": "Some", "args": [{ "int": "0" }] }
+                            ]
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [{ "prim": "None" }, { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [{ "prim": "True" }, { "bytes": "0000dc7eb40f3bd1e15b4014d628e340ba656409593f" }]
+                    }
+                  ]
+                },
+                {
+                  "prim": "Pair",
+                  "args": [{ "prim": "Pair", "args": [{ "int": "19538" }, { "int": "19539" }] }, { "int": "19540" }]
+                }
+              ]
+            },
+            "consumed_milligas": "2214603",
+            "storage_size": "58154",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "19540", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19539", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19538", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+          "nonce": 16,
+          "amount": "0",
+          "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+          "parameters": {
+            "entrypoint": "transfer",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                  [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" },
+                        { "prim": "Pair", "args": [{ "int": "0" }, { "int": "1499" }] }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "19485" },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                      { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                    ]
+                  },
+                  { "int": "19489" }
+                ]
+              },
+              { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+              { "prim": "None" }
+            ],
+            "consumed_milligas": "1943473",
+            "storage_size": "322357",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19487", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "19486",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtrtdEKRLRHs7ebEfttRwsqrCtGthE1f828dFohRav99t5jUuJD",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" }, { "int": "0" }]
+                      },
+                      "value": { "int": "7669270023" }
+                    },
+                    {
+                      "key_hash": "exprtWyeCE95tVtKARRvQ51JPfkUEUTkA7AoLmniSschNGfr3HzxvU",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                      },
+                      "value": { "int": "7948789" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL",
+          "nonce": 17,
+          "amount": "0",
+          "destination": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "parameters": {
+            "entrypoint": "start_swap",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                {
+                  "prim": "Pair",
+                  "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                },
+                { "prim": "Pair", "args": [{ "int": "502202673775" }, { "prim": "None" }] }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "prim": "Pair", "args": [{ "int": "574721" }, { "int": "574722" }] },
+                            { "prim": "Pair", "args": [{ "int": "574723" }, { "int": "574724" }] }
+                          ]
+                        },
+                        { "int": "574725" }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Some",
+                          "args": [
+                            {
+                              "prim": "Pair",
+                              "args": [
+                                {
+                                  "prim": "Pair",
+                                  "args": [
+                                    {
+                                      "prim": "Pair",
+                                      "args": [
+                                        { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                                        { "int": "0" }
+                                      ]
+                                    },
+                                    { "prim": "Pair", "args": [{ "int": "502202673775" }, { "prim": "None" }] }
+                                  ]
+                                },
+                                {
+                                  "prim": "Pair",
+                                  "args": [{ "prim": "None" }, { "prim": "Right", "args": [{ "prim": "Unit" }] }]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }
+                      ]
+                    }
+                  ]
+                },
+                { "prim": "Pair", "args": [{ "int": "574726" }, { "int": "666294090525824" }] },
+                { "int": "0" },
+                { "int": "1702182109" }
+              ],
+              [
+                { "prim": "Pair", "args": [{ "int": "7669268524" }, { "int": "2577129593717438040" }] },
+                { "int": "19752675197489071423967724864" },
+                { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                { "prim": "Some", "args": [{ "int": "0" }] }
+              ],
+              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+              { "prim": "Some", "args": [{ "int": "0" }] }
+            ],
+            "consumed_milligas": "7299793",
+            "storage_size": "25706",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574726", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574725", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574724", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574723", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574722", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574721", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "nonce": 18,
+          "amount": "0",
+          "destination": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "parameters": {
+            "entrypoint": "transfer",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" },
+                  [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                        { "prim": "Pair", "args": [{ "int": "0" }, { "int": "502202673775" }] }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "574706" },
+              {
+                "prim": "Pair",
+                "args": [{ "bytes": "0000e3367500945485c0f9ac6f249deb1cc9b23bf152" }, { "prim": "None" }]
+              },
+              { "int": "574707" },
+              { "int": "574708" },
+              { "int": "574709" },
+              { "int": "574710" }
+            ],
+            "consumed_milligas": "1958401",
+            "storage_size": "62499",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574710", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574709", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "574708",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtrtdEKRLRHs7ebEfttRwsqrCtGthE1f828dFohRav99t5jUuJD",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" }, { "int": "0" }]
+                      },
+                      "value": { "int": "2577129091514764265" }
+                    },
+                    {
+                      "key_hash": "exprtWyeCE95tVtKARRvQ51JPfkUEUTkA7AoLmniSschNGfr3HzxvU",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" }, { "int": "0" }]
+                      },
+                      "value": { "int": "44007130779693238" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "574707", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574706", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "event",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 24,
+          "type": {
+            "prim": "pair",
+            "args": [
+              { "prim": "address", "annots": ["%owner"] },
+              {
+                "prim": "pair",
+                "args": [
+                  { "prim": "nat", "annots": ["%token_id"] },
+                  {
+                    "prim": "pair",
+                    "args": [
+                      { "prim": "nat", "annots": ["%new_balance"] },
+                      { "prim": "int", "annots": ["%diff"] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "tag": "balance_update",
+          "payload": [
+            { "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" },
+            { "int": "0" },
+            { "int": "2577129091514764265" },
+            { "int": "-502202673775" }
+          ],
+          "result": { "status": "applied", "consumed_milligas": "100000" }
+        },
+        {
+          "kind": "event",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 23,
+          "type": {
+            "prim": "pair",
+            "args": [
+              { "prim": "address", "annots": ["%owner"] },
+              {
+                "prim": "pair",
+                "args": [
+                  { "prim": "nat", "annots": ["%token_id"] },
+                  {
+                    "prim": "pair",
+                    "args": [
+                      { "prim": "nat", "annots": ["%new_balance"] },
+                      { "prim": "int", "annots": ["%diff"] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "tag": "balance_update",
+          "payload": [
+            { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+            { "int": "0" },
+            { "int": "44007130779693238" },
+            { "int": "502202673775" }
+          ],
+          "result": { "status": "applied", "consumed_milligas": "100000" }
+        },
+        {
+          "kind": "event",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 22,
+          "type": {
+            "prim": "pair",
+            "args": [
+              { "prim": "address", "annots": ["%from_"] },
+              {
+                "prim": "pair",
+                "args": [
+                  { "prim": "address", "annots": ["%to_"] },
+                  {
+                    "prim": "pair",
+                    "args": [
+                      { "prim": "nat", "annots": ["%token_id"] },
+                      { "prim": "nat", "annots": ["%amount"] }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "tag": "transfer_event",
+          "payload": [
+            { "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" },
+            { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+            { "int": "0" },
+            { "int": "502202673775" }
+          ],
+          "result": { "status": "applied", "consumed_milligas": "100000" }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "nonce": 19,
+          "amount": "0",
+          "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+          "parameters": {
+            "entrypoint": "balance_of",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" }, { "int": "0" }]
+                  }
+                ],
+                { "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b0062616c616e63655f63616c6c6261636b" }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "19485" },
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [
+                      { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                      { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                    ]
+                  },
+                  { "int": "19489" }
+                ]
+              },
+              { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+              { "prim": "None" }
+            ],
+            "consumed_milligas": "784157",
+            "storage_size": "322357",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19487", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19486", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+          "nonce": 25,
+          "amount": "0",
+          "destination": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "parameters": {
+            "entrypoint": "balance_callback",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" }, { "int": "0" }]
+                  },
+                  { "int": "7669270023" }
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "prim": "Pair", "args": [{ "int": "574721" }, { "int": "574722" }] },
+                            { "prim": "Pair", "args": [{ "int": "574723" }, { "int": "574724" }] }
+                          ]
+                        },
+                        { "int": "574725" }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Some",
+                          "args": [
+                            {
+                              "prim": "Pair",
+                              "args": [
+                                {
+                                  "prim": "Pair",
+                                  "args": [
+                                    {
+                                      "prim": "Pair",
+                                      "args": [
+                                        { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                                        { "int": "0" }
+                                      ]
+                                    },
+                                    {
+                                      "prim": "Pair",
+                                      "args": [
+                                        { "int": "502202673775" },
+                                        { "prim": "Some", "args": [{ "int": "7669270023" }] }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "prim": "Pair",
+                                  "args": [
+                                    { "prim": "None" },
+                                    { "prim": "Left", "args": [{ "prim": "Left", "args": [{ "prim": "Unit" }] }] }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }
+                      ]
+                    }
+                  ]
+                },
+                { "prim": "Pair", "args": [{ "int": "574726" }, { "int": "666294090525824" }] },
+                { "int": "0" },
+                { "int": "1702182109" }
+              ],
+              [
+                { "prim": "Pair", "args": [{ "int": "7669268524" }, { "int": "2577129593717438040" }] },
+                { "int": "19752675197489071423967724864" },
+                { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                { "prim": "Some", "args": [{ "int": "0" }] }
+              ],
+              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+              { "prim": "Some", "args": [{ "int": "0" }] }
+            ],
+            "consumed_milligas": "340675",
+            "storage_size": "25714",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574726", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574725", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574724", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574723", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574722", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574721", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "nonce": 20,
+          "amount": "0",
+          "destination": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "parameters": {
+            "entrypoint": "balance_of",
+            "value": {
+              "prim": "Pair",
+              "args": [
+                [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" }, { "int": "0" }]
+                  }
+                ],
+                { "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b0062616c616e63655f63616c6c6261636b" }
+              ]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "574706" },
+              {
+                "prim": "Pair",
+                "args": [{ "bytes": "0000e3367500945485c0f9ac6f249deb1cc9b23bf152" }, { "prim": "None" }]
+              },
+              { "int": "574707" },
+              { "int": "574708" },
+              { "int": "574709" },
+              { "int": "574710" }
+            ],
+            "consumed_milligas": "781744",
+            "storage_size": "62499",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574710", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574709", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574708", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574707", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574706", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1UQVEDf4twF2eMbrCKQAxN7YYunTAiCTTm",
+          "nonce": 26,
+          "amount": "0",
+          "destination": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "parameters": {
+            "entrypoint": "balance_callback",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  {
+                    "prim": "Pair",
+                    "args": [{ "bytes": "015f783b790628b15856d5ba5a458b20e1eb34fb0b00" }, { "int": "0" }]
+                  },
+                  { "int": "2577129091514764265" }
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "prim": "Pair", "args": [{ "int": "574721" }, { "int": "574722" }] },
+                            { "prim": "Pair", "args": [{ "int": "574723" }, { "int": "574724" }] }
+                          ]
+                        },
+                        { "int": "574725" }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Some",
+                          "args": [
+                            {
+                              "prim": "Pair",
+                              "args": [
+                                {
+                                  "prim": "Pair",
+                                  "args": [
+                                    {
+                                      "prim": "Pair",
+                                      "args": [
+                                        { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                                        { "int": "0" }
+                                      ]
+                                    },
+                                    {
+                                      "prim": "Pair",
+                                      "args": [
+                                        { "int": "502202673775" },
+                                        { "prim": "Some", "args": [{ "int": "7669270023" }] }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "prim": "Pair",
+                                  "args": [
+                                    { "prim": "Some", "args": [{ "int": "2577129091514764265" }] },
+                                    { "prim": "Left", "args": [{ "prim": "Right", "args": [{ "prim": "Unit" }] }] }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }
+                      ]
+                    }
+                  ]
+                },
+                { "prim": "Pair", "args": [{ "int": "574726" }, { "int": "666294090525824" }] },
+                { "int": "0" },
+                { "int": "1702182109" }
+              ],
+              [
+                { "prim": "Pair", "args": [{ "int": "7669268524" }, { "int": "2577129593717438040" }] },
+                { "int": "19752675197489071423967724864" },
+                { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                { "prim": "Some", "args": [{ "int": "0" }] }
+              ],
+              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+              { "prim": "Some", "args": [{ "int": "0" }] }
+            ],
+            "consumed_milligas": "341277",
+            "storage_size": "25724",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574726", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574725", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574724", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574723", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574722", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574721", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "nonce": 21,
+          "amount": "0",
+          "destination": "KT1HHZnspZoRZgtFns5LHYHFkXgQ1WGPrxFr",
+          "parameters": {
+            "entrypoint": "finalize_action",
+            "value": { "prim": "Right", "args": [{ "prim": "Unit" }] }
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              [
+                {
+                  "prim": "Pair",
+                  "args": [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "prim": "Pair", "args": [{ "int": "574721" }, { "int": "574722" }] },
+                            { "prim": "Pair", "args": [{ "int": "574723" }, { "int": "574724" }] }
+                          ]
+                        },
+                        { "int": "574725" }
+                      ]
+                    },
+                    {
+                      "prim": "Pair",
+                      "args": [{ "prim": "None" }, { "bytes": "01aae5d1ce457ee29e202f6dcf5d31ff0841fbef9d00" }]
+                    }
+                  ]
+                },
+                { "prim": "Pair", "args": [{ "int": "574726" }, { "int": "666339455021024" }] },
+                { "int": "0" },
+                { "int": "1702182244" }
+              ],
+              [
+                { "prim": "Pair", "args": [{ "int": "7669270023" }, { "int": "2577129091514764265" }] },
+                { "int": "19752675197489071423967724864" },
+                { "bytes": "01a6c0ade93013a611102651a1451bab19d522f78100" },
+                { "prim": "Some", "args": [{ "int": "0" }] }
+              ],
+              { "bytes": "01d970b7f6eafaf9f8180f4ece84c7ce2f980689db00" },
+              { "prim": "Some", "args": [{ "int": "0" }] }
+            ],
+            "consumed_milligas": "4760217",
+            "storage_size": "25652",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "574726", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574725", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574724", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574723", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574722", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "574721", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628661",
+    "gas_limit": "634",
+    "storage_limit": "0",
+    "amount": "0",
+    "destination": "KT1PnUZCp3u2KzWr93pn4DD7HAJnm3rWVrgn",
+    "parameters": {
+      "entrypoint": "update_operators",
+      "value": [
+        {
+          "prim": "Right",
+          "args": [
+            {
+              "prim": "Pair",
+              "args": [
+                { "string": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt" },
+                { "prim": "Pair", "args": [{ "string": "KT1PwoZxyv4XkPEGnTqWYvjA1UYiPTgAGyqL" }, { "int": "0" }] }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          { "int": "19485" },
+          {
+            "prim": "Pair",
+            "args": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "prim": "Pair", "args": [{ "int": "19486" }, { "int": "1" }] },
+                  { "prim": "Pair", "args": [{ "int": "19487" }, { "int": "19488" }] }
+                ]
+              },
+              { "int": "19489" }
+            ]
+          },
+          { "bytes": "01a8dc5102be024aa1a805d72335e87815e5ada7a900" },
+          { "prim": "None" }
+        ],
+        "consumed_milligas": "533322",
+        "storage_size": "322290",
+        "lazy_storage_diff": [
+          { "kind": "big_map", "id": "19489", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19488", "diff": { "action": "update", "updates": [] } },
+          {
+            "kind": "big_map",
+            "id": "19487",
+            "diff": {
+              "action": "update",
+              "updates": [
+                {
+                  "key_hash": "exprunj56QY4wt3iu3okQFCvkxqiTUCyKPthaPGZJ5iRY3GjhQAgte",
+                  "key": {
+                    "prim": "Pair",
+                    "args": [
+                      { "bytes": "0000bc4b0fba65d535515f793c65fe74ecfa5caa07eb" },
+                      {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "01a8844b5b00ea700f62dfeef8d9f30c9d0a9bc6d800" }, { "int": "0" }]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          { "kind": "big_map", "id": "19486", "diff": { "action": "update", "updates": [] } },
+          { "kind": "big_map", "id": "19485", "diff": { "action": "update", "updates": [] } }
+        ]
+      }
+    }
+  },
+  {
+    "kind": "transaction",
+    "source": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+    "fee": "0",
+    "counter": "4628662",
+    "gas_limit": "11193",
+    "storage_limit": "0",
+    "amount": "2719",
+    "destination": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+    "metadata": {
+      "operation_result": {
+        "status": "applied",
+        "storage": [
+          { "int": "357333" },
+          {
+            "prim": "Pair",
+            "args": [
+              { "bytes": "0000ec9b2c0f2942338e604d86c341d81bae534bbb1d" },
+              { "bytes": "0000ec9b2c0f2942338e604d86c341d81bae534bbb1d" }
+            ]
+          },
+          { "int": "5000" },
+          { "bytes": "0000009ba066522ef3c735a3d8aea59b3572afb9ea8d" },
+          {
+            "prim": "Pair",
+            "args": [
+              { "bytes": "010497de18803f380caa9cb9ce071d4a0fad9f6f9600" },
+              { "prim": "Pair", "args": [{ "int": "0" }, { "prim": "Right", "args": [{ "prim": "Unit" }] }] }
+            ]
+          },
+          { "bytes": "017baca8b6e7e9ef252f33730a2b17841d946315a600" }
+        ],
+        "balance_updates": [
+          {
+            "kind": "contract",
+            "contract": "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt",
+            "change": "-2719",
+            "origin": "block"
+          },
+          {
+            "kind": "contract",
+            "contract": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+            "change": "2719",
+            "origin": "block"
+          }
+        ],
+        "consumed_milligas": "1570144",
+        "storage_size": "2723",
+        "lazy_storage_diff": [{ "kind": "big_map", "id": "357333", "diff": { "action": "update", "updates": [] } }]
+      },
+      "internal_operation_results": [
+        {
+          "kind": "transaction",
+          "source": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+          "nonce": 29,
+          "amount": "1360",
+          "destination": "tz1KhF8F19J94sKjSZjFGNRgnd65Yawqvsr6",
+          "result": {
+            "status": "applied",
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+                "change": "-1360",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "tz1KhF8F19J94sKjSZjFGNRgnd65Yawqvsr6",
+                "change": "1360",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "100000"
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+          "nonce": 28,
+          "amount": "1359",
+          "destination": "KT1KrhWvNabCZXNkBgxyxz3RG2MX1MVabwRd",
+          "parameters": {
+            "entrypoint": "tezToTokenPayment",
+            "value": {
+              "prim": "Pair",
+              "args": [{ "int": "1" }, { "bytes": "014ab689f980af5a197e6dc5bd8577aa5c67087e4f00" }]
+            }
+          },
+          "result": {
+            "status": "applied",
+            "storage": {
+              "prim": "Pair",
+              "args": [
+                { "prim": "Pair", "args": [{ "int": "356672" }, { "int": "356673" }] },
+                {
+                  "prim": "Pair",
+                  "args": [
+                    [
+                      [
+                        [
+                          {
+                            "prim": "Pair",
+                            "args": [
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  { "bytes": "0134221a2f827422da187e00da51ffbd0c9f1d9be900" },
+                                  {
+                                    "prim": "Some",
+                                    "args": [{ "bytes": "009ff07dfb31a52504052cbbb7e54303a1573fe350" }]
+                                  }
+                                ]
+                              },
+                              {
+                                "prim": "Pair",
+                                "args": [
+                                  {
+                                    "prim": "Some",
+                                    "args": [{ "bytes": "00e124d3e9e01f5afa1fc9ddd1a43b2ef05022a959" }]
+                                  },
+                                  { "int": "1701791747" }
+                                ]
+                              }
+                            ]
+                          },
+                          { "prim": "Pair", "args": [{ "int": "1701781529" }, { "int": "356674" }] },
+                          { "int": "1703727854" },
+                          { "int": "0" }
+                        ],
+                        {
+                          "prim": "Pair",
+                          "args": [
+                            { "prim": "Pair", "args": [{ "int": "2199411" }, { "int": "350931648662551" }] },
+                            { "prim": "Pair", "args": [{ "int": "8565557318319" }, { "int": "2539196887" }] }
+                          ]
+                        },
+                        {
+                          "prim": "Pair",
+                          "args": [{ "bytes": "010497de18803f380caa9cb9ce071d4a0fad9f6f9600" }, { "int": "0" }]
+                        },
+                        { "int": "1028741319162568" },
+                        { "int": "71454985" }
+                      ],
+                      {
+                        "prim": "Pair",
+                        "args": [
+                          { "prim": "Pair", "args": [{ "int": "6030253503" }, { "int": "1501168400" }] },
+                          { "prim": "Pair", "args": [{ "int": "356675" }, { "int": "0" }] }
+                        ]
+                      },
+                      { "prim": "Pair", "args": [{ "int": "356676" }, { "int": "356677" }] },
+                      { "int": "356678" }
+                    ],
+                    { "int": "356679" }
+                  ]
+                }
+              ]
+            },
+            "balance_updates": [
+              {
+                "kind": "contract",
+                "contract": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+                "change": "-1359",
+                "origin": "block"
+              },
+              {
+                "kind": "contract",
+                "contract": "KT1KrhWvNabCZXNkBgxyxz3RG2MX1MVabwRd",
+                "change": "1359",
+                "origin": "block"
+              }
+            ],
+            "consumed_milligas": "1869887",
+            "storage_size": "34046",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "356679", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356678", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356677", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356676", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356675", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356674", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356673", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356672", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1KrhWvNabCZXNkBgxyxz3RG2MX1MVabwRd",
+          "nonce": 30,
+          "amount": "0",
+          "destination": "KT1914CUZ7EegAFPbfgQMRkw8Uz5mYkEz2ui",
+          "parameters": {
+            "entrypoint": "transfer",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "017baca8b6e7e9ef252f33730a2b17841d946315a600" },
+                  [
+                    {
+                      "prim": "Pair",
+                      "args": [
+                        { "bytes": "014ab689f980af5a197e6dc5bd8577aa5c67087e4f00" },
+                        { "prim": "Pair", "args": [{ "int": "0" }, { "int": "548939716" }] }
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "356645" },
+              { "int": "356646" },
+              { "int": "356647" },
+              { "int": "356648" },
+              { "int": "356649" }
+            ],
+            "consumed_milligas": "1940011",
+            "storage_size": "138352",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "356649", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356648", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "356647",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expruwcsCWTTc9c55sxxF2DRyXtHkVf2v45fJE9JJz1Lr4qTDFicKK",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "017baca8b6e7e9ef252f33730a2b17841d946315a600" }, { "int": "0" }]
+                      },
+                      "value": { "int": "1028741319162568" }
+                    },
+                    {
+                      "key_hash": "expruLX4sAkHLgVZSru4yo6apDZ4PpPT45zxDrzLvAENULtcTUGh5e",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "014ab689f980af5a197e6dc5bd8577aa5c67087e4f00" }, { "int": "0" }]
+                      },
+                      "value": { "int": "548939716" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "356646", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356645", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+          "nonce": 27,
+          "amount": "0",
+          "destination": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+          "parameters": { "entrypoint": "doBurn", "value": { "prim": "Unit" } },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "357333" },
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "0000ec9b2c0f2942338e604d86c341d81bae534bbb1d" },
+                  { "bytes": "0000ec9b2c0f2942338e604d86c341d81bae534bbb1d" }
+                ]
+              },
+              { "int": "5000" },
+              { "bytes": "0000009ba066522ef3c735a3d8aea59b3572afb9ea8d" },
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "010497de18803f380caa9cb9ce071d4a0fad9f6f9600" },
+                  { "prim": "Pair", "args": [{ "int": "0" }, { "prim": "Right", "args": [{ "prim": "Unit" }] }] }
+                ]
+              },
+              { "bytes": "017baca8b6e7e9ef252f33730a2b17841d946315a600" }
+            ],
+            "consumed_milligas": "3675327",
+            "storage_size": "2723",
+            "lazy_storage_diff": [{ "kind": "big_map", "id": "357333", "diff": { "action": "update", "updates": [] } }]
+          }
+        },
+        {
+          "kind": "transaction",
+          "source": "KT1FPpEzPtZdVtEtmugKcbLnWMKJsDHa917P",
+          "nonce": 31,
+          "amount": "0",
+          "destination": "KT1914CUZ7EegAFPbfgQMRkw8Uz5mYkEz2ui",
+          "parameters": {
+            "entrypoint": "burn",
+            "value": [
+              {
+                "prim": "Pair",
+                "args": [
+                  { "bytes": "014ab689f980af5a197e6dc5bd8577aa5c67087e4f00" },
+                  { "prim": "Pair", "args": [{ "int": "0" }, { "int": "548939716" }] }
+                ]
+              }
+            ]
+          },
+          "result": {
+            "status": "applied",
+            "storage": [
+              { "int": "356645" },
+              { "int": "356646" },
+              { "int": "356647" },
+              { "int": "356648" },
+              { "int": "356649" }
+            ],
+            "consumed_milligas": "1937017",
+            "storage_size": "138348",
+            "lazy_storage_diff": [
+              { "kind": "big_map", "id": "356649", "diff": { "action": "update", "updates": [] } },
+              { "kind": "big_map", "id": "356648", "diff": { "action": "update", "updates": [] } },
+              {
+                "kind": "big_map",
+                "id": "356647",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "expruLX4sAkHLgVZSru4yo6apDZ4PpPT45zxDrzLvAENULtcTUGh5e",
+                      "key": {
+                        "prim": "Pair",
+                        "args": [{ "bytes": "014ab689f980af5a197e6dc5bd8577aa5c67087e4f00" }, { "int": "0" }]
+                      },
+                      "value": { "int": "0" }
+                    }
+                  ]
+                }
+              },
+              {
+                "kind": "big_map",
+                "id": "356646",
+                "diff": {
+                  "action": "update",
+                  "updates": [
+                    {
+                      "key_hash": "exprtZBwZUeYYYfUs9B9Rg2ywHezVHnCCnmF9WsDQVrs582dSK63dC",
+                      "key": { "int": "0" },
+                      "value": { "int": "49938202746492057" }
+                    }
+                  ]
+                }
+              },
+              { "kind": "big_map", "id": "356645", "diff": { "action": "update", "updates": [] } }
+            ]
+          }
+        }
+      ]
+    }
+  }
+]

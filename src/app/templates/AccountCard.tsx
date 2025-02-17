@@ -14,7 +14,7 @@ export interface AccountCardProps {
   account: StoredAccount;
   isCurrent: boolean;
   showRadioOnHover?: boolean;
-  searchValue: string;
+  searchValue?: string;
   attractSelf: boolean;
   onClick?: EmptyFn;
 }

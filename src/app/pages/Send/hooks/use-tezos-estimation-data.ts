@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
 
-import { Estimate, getRevealFee, TezosToolkit } from '@taquito/taquito';
+import { getRevealFee, TezosToolkit } from '@taquito/taquito';
 import BigNumber from 'bignumber.js';
 
+import { TezosEstimationData } from 'app/templates/TransactionTabs/types';
 import { toastError } from 'app/toaster';
 import { isTezAsset, toPenny } from 'lib/assets';
 import { toTransferParams } from 'lib/assets/contract.utils';
@@ -11,16 +12,12 @@ import { AssetMetadataBase } from 'lib/metadata';
 import { useTypedSWR } from 'lib/swr';
 import { mutezToTz } from 'lib/temple/helpers';
 import { tezosManagerKeyHasManager } from 'lib/tezos';
+import { checkZeroBalance } from 'lib/utils/check-zero-balance';
+import { ZERO } from 'lib/utils/numbers';
+import { serializeEstimate } from 'lib/utils/serialize-estimate';
 import { AccountForTezos } from 'temple/accounts';
 
 import { estimateTezosMaxFee } from '../form/utils';
-
-import { checkZeroBalance } from './utils';
-
-export interface TezosEstimationData {
-  baseFee: BigNumber;
-  estimates: Estimate;
-}
 
 export const useTezosEstimationData = (
   to: string,
@@ -37,20 +34,19 @@ export const useTezosEstimationData = (
   const estimate = useCallback(async (): Promise<TezosEstimationData | undefined> => {
     try {
       const isTez = isTezAsset(assetSlug);
+      const from = account.ownerAddress || accountPkh;
 
       checkZeroBalance(balance, tezBalance, isTez);
 
       const [transferParams, manager] = await Promise.all([
         toTransferParams(tezos, assetSlug, assetMetadata, accountPkh, to, toPenny(assetMetadata)),
-        tezos.rpc.getManagerKey(account.ownerAddress || accountPkh)
+        tezos.rpc.getManagerKey(from)
       ]);
 
-      const estmtnMax = await estimateTezosMaxFee(account, isTez, tezos, to, balance, transferParams, manager);
+      const estmtnMax = await estimateTezosMaxFee(account, isTez, tezos, from, to, balance, transferParams, manager);
 
-      let estimatedBaseFee = mutezToTz(estmtnMax.burnFeeMutez + estmtnMax.suggestedFeeMutez);
-      if (!tezosManagerKeyHasManager(manager)) {
-        estimatedBaseFee = estimatedBaseFee.plus(mutezToTz(getRevealFee(to)));
-      }
+      const revealFeeMutez = tezosManagerKeyHasManager(manager) ? ZERO : mutezToTz(getRevealFee(from));
+      const estimatedBaseFee = mutezToTz(estmtnMax.burnFeeMutez + estmtnMax.suggestedFeeMutez).plus(revealFeeMutez);
 
       if (isTez ? estimatedBaseFee.isGreaterThanOrEqualTo(balance) : estimatedBaseFee.isGreaterThan(tezBalance)) {
         toastError('Not enough funds');
@@ -59,7 +55,9 @@ export const useTezosEstimationData = (
 
       return {
         baseFee: estimatedBaseFee,
-        estimates: estmtnMax
+        gasFee: mutezToTz(estmtnMax.suggestedFeeMutez).plus(revealFeeMutez),
+        revealFee: revealFeeMutez,
+        estimates: [serializeEstimate(estmtnMax)]
       };
     } catch (err: any) {
       console.error(err);

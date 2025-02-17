@@ -20,34 +20,34 @@ export const [AddAssetProvider, useAddAsset] = constate(() => {
 
   const handleConfirm = useCallback(
     async (id: string, confirmed: boolean, dAppAssetMetadata: EvmAssetToAddMetadata) => {
-      if (confirmed) {
-        if (assetMetadata && accountPkh) {
-          const assetSlug = toTokenSlug(assetMetadata.address);
+      if (!confirmed) {
+        return void confirmDAppEvmAssetAdding(id, confirmed);
+      }
 
-          dispatch(
-            putNewEvmTokenAction({
-              publicKeyHash: accountPkh,
-              chainId: dAppAssetMetadata.chainId,
-              assetSlug
-            })
-          );
+      if (assetMetadata && accountPkh) {
+        const assetSlug = toTokenSlug(assetMetadata.address);
 
-          dispatch(
-            putEvmTokensMetadataAction({
-              chainId: dAppAssetMetadata.chainId,
-              records: { [assetSlug]: assetMetadata }
-            })
-          );
+        dispatch(
+          putNewEvmTokenAction({
+            publicKeyHash: accountPkh,
+            chainId: dAppAssetMetadata.chainId,
+            assetSlug
+          })
+        );
 
-          // ensuring the last changes to the store will be persisted before window closes
-          await persistor.flush();
+        dispatch(
+          putEvmTokensMetadataAction({
+            chainId: dAppAssetMetadata.chainId,
+            records: { [assetSlug]: assetMetadata }
+          })
+        );
 
-          confirmDAppEvmAssetAdding(id, confirmed);
-        } else {
-          setErrorMessage('Something’s not right. Please try again later.');
-        }
-      } else {
+        // ensuring the last changes to the store will be persisted before window closes
+        await persistor.flush();
+
         confirmDAppEvmAssetAdding(id, confirmed);
+      } else {
+        setErrorMessage('Something’s not right. Please try again later.');
       }
     },
     [accountPkh, assetMetadata, confirmDAppEvmAssetAdding]

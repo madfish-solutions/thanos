@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import constate from 'constate';
 import { omit } from 'lodash';
+import { TransactionRequest, formatTransactionRequest } from 'viem';
 import browser from 'webextension-polyfill';
 
 import { WALLETS_SPECS_STORAGE_KEY } from 'lib/constants';
@@ -15,12 +16,11 @@ import {
   TempleSettings,
   DerivationType,
   TempleAccountType,
-  WalletSpecs
+  WalletSpecs,
+  EvmTransactionRequestWithSender
 } from 'lib/temple/types';
 import { useDidMount } from 'lib/ui/hooks';
 import { DEFAULT_PROMISES_QUEUE_COUNTERS } from 'lib/utils';
-import type { EvmTxParams } from 'temple/evm/types';
-import { toSerializableEvmTxParams } from 'temple/evm/utils';
 import type { EvmChain } from 'temple/front';
 import {
   intercomClient,
@@ -353,14 +353,27 @@ export const [TempleClientProvider, useTempleClient] = constate(() => {
     assertResponse(res.type === TempleMessageType.DAppPermConfirmationResponse);
   }, []);
 
-  const confirmDAppOperation = useCallback(
+  const confirmTezosDAppOperation = useCallback(
     async (id: string, confirmed: boolean, modifiedTotalFee?: number, modifiedStorageLimit?: number) => {
       const res = await request({
-        type: TempleMessageType.DAppOpsConfirmationRequest,
+        type: TempleMessageType.DAppTezosOpsConfirmationRequest,
         id,
         confirmed,
         modifiedTotalFee,
         modifiedStorageLimit
+      });
+      assertResponse(res.type === TempleMessageType.DAppOpsConfirmationResponse);
+    },
+    []
+  );
+
+  const confirmEvmDAppOperation = useCallback(
+    async (id: string, confirmed: boolean, modifiedReq: EvmTransactionRequestWithSender) => {
+      const res = await request({
+        type: TempleMessageType.DAppEvmOpsConfirmationRequest,
+        id,
+        confirmed,
+        modifiedReq
       });
       assertResponse(res.type === TempleMessageType.DAppOpsConfirmationResponse);
     },
@@ -413,17 +426,20 @@ export const [TempleClientProvider, useTempleClient] = constate(() => {
     assertResponse(res.type === TempleMessageType.DAppSwitchEvmChainResponse);
   }, []);
 
-  const sendEvmTransaction = useCallback(async (accountPkh: HexString, network: EvmChain, txParams: EvmTxParams) => {
-    const res = await request({
-      type: TempleMessageType.SendEvmTransactionRequest,
-      accountPkh,
-      network,
-      txParams: toSerializableEvmTxParams(txParams)
-    });
-    assertResponse(res.type === TempleMessageType.SendEvmTransactionResponse);
+  const sendEvmTransaction = useCallback(
+    async (accountPkh: HexString, network: EvmChain, txParams: TransactionRequest) => {
+      const res = await request({
+        type: TempleMessageType.SendEvmTransactionRequest,
+        accountPkh,
+        network,
+        txParams: formatTransactionRequest(txParams)
+      });
+      assertResponse(res.type === TempleMessageType.SendEvmTransactionResponse);
 
-    return res.txHash;
-  }, []);
+      return res.txHash;
+    },
+    []
+  );
 
   const resetExtension = useCallback(async (password: string) => {
     const res = await request({
@@ -479,7 +495,8 @@ export const [TempleClientProvider, useTempleClient] = constate(() => {
     confirmInternal,
     getDAppPayload,
     confirmDAppPermission,
-    confirmDAppOperation,
+    confirmTezosDAppOperation,
+    confirmEvmDAppOperation,
     confirmDAppSign,
     removeDAppSession,
     confirmDAppEvmAssetAdding,

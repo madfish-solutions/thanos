@@ -1,77 +1,153 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 
+import type { Omit as StrictOmit } from 'viem';
+
+import { IconBase } from 'app/atoms';
+import { ReactComponent as UnlockFillIcon } from 'app/icons/base/unlock_fill.svg';
 import { AccountCard } from 'app/templates/AccountCard';
-import { EvmOperationView } from 'app/templates/EvmOperationView';
-import { ModifyFeeAndLimit } from 'app/templates/ExpensesView/ExpensesView';
-import TezosOperationView from 'app/templates/TezosOperationView';
-import { StoredAccount, TempleEvmDAppPayload, TempleTezosDAppPayload } from 'lib/temple/types';
+import { EvmTransactionView } from 'app/templates/EvmTransactionView';
+import { SignPayloadView } from 'app/templates/SignPayloadView';
+import { TezosTransactionView } from 'app/templates/TezosTransactionView';
+import { T, TID } from 'lib/i18n';
+import {
+  EvmTransactionRequestWithSender,
+  StoredAccount,
+  TempleEvmDAppPayload,
+  TempleEvmDAppTransactionPayload,
+  TempleTezosDAppOperationsPayload,
+  TempleTezosDAppPayload
+} from 'lib/temple/types';
 import { NetworkEssentials } from 'temple/networks';
 import { TempleChainKind } from 'temple/types';
 
 import { AddAssetView } from './add-asset/add-asset-view';
 import { AddChainView } from './add-chain/add-chain-view';
-import { ConnectView } from './connect-view';
 
 type DAppPayload<T extends TempleChainKind> = T extends TempleChainKind.EVM
   ? TempleEvmDAppPayload
   : TempleTezosDAppPayload;
 
-type ExcludedDAppPayloads = 'connect' | 'add_chain' | 'add_asset';
-type OperationDAppPayload<T extends TempleChainKind> = Exclude<DAppPayload<T>, { type: ExcludedDAppPayloads }>;
+type DAppOperationsPayload<T extends TempleChainKind> = T extends TempleChainKind.EVM
+  ? TempleEvmDAppTransactionPayload
+  : TempleTezosDAppOperationsPayload;
 
-interface OperationViewProps<T extends TempleChainKind> {
+interface OperationViewPropsBase<T extends TempleChainKind> {
   network: NetworkEssentials<T>;
-  payload: OperationDAppPayload<T>;
-  error?: any;
-  modifyFeeAndLimit?: ModifyFeeAndLimit;
+  payload: DAppOperationsPayload<T>;
+  error: any;
+  formId: string;
+  onSubmit: EmptyFn;
 }
 
-interface PayloadContentProps<T extends TempleChainKind> extends Omit<OperationViewProps<T>, 'payload'> {
+interface PayloadContentPropsBase<T extends TempleChainKind> extends Omit<OperationViewPropsBase<T>, 'payload'> {
   account: StoredAccount;
   payload: DAppPayload<T>;
   openAccountsModal: EmptyFn;
 }
 
-const PayloadContentHOC =
-  <T extends TempleChainKind>(OperationView: FC<OperationViewProps<T>>) =>
-  ({ network, payload, error, modifyFeeAndLimit, account, openAccountsModal }: PayloadContentProps<T>) => {
-    const shouldShowAccountCard = payload.type !== 'add_chain' && payload.type !== 'add_asset';
+const permissionsDescriptionsI18nKeys: TID[] = [
+  'viewWalletPermissionDescription',
+  'transactionsPermissionDescription',
+  'signingPermissionDescription'
+];
 
-    return (
-      <div className="w-full flex flex-col gap-4">
-        {shouldShowAccountCard && (
-          <AccountCard
-            account={account}
-            isCurrent={false}
-            attractSelf={false}
-            searchValue=""
-            showRadioOnHover={false}
-            onClick={openAccountsModal}
-          />
-        )}
-        {(() => {
-          switch (payload.type) {
-            case 'connect':
-              return <ConnectView />;
-            case 'add_asset':
-              return <AddAssetView metadata={payload.metadata} />;
-            case 'add_chain':
-              return <AddChainView metadata={payload.metadata} />;
-            default:
-              return (
-                <OperationView
-                  network={network}
-                  payload={payload as OperationDAppPayload<T>}
-                  error={error}
-                  modifyFeeAndLimit={modifyFeeAndLimit}
-                />
-              );
-          }
-        })()}
-      </div>
-    );
-  };
+const ConnectView = memo<{ account: StoredAccount; openAccountsModal: EmptyFn }>(({ account, openAccountsModal }) => (
+  <>
+    <AccountCard
+      account={account}
+      isCurrent={false}
+      attractSelf={false}
+      searchValue=""
+      showRadioOnHover={false}
+      onClick={openAccountsModal}
+    />
+    <div className="bg-white shadow-bottom rounded-lg p-4">
+      <p className="my-1 text-font-description-bold text-grey-1">
+        <T id="permissions" />
+      </p>
+      {permissionsDescriptionsI18nKeys.map(key => (
+        <div className="flex justify-between items-center py-2.5" key={key}>
+          <span className="text-font-description">
+            <T id={key} />
+          </span>
+          <div className="bg-grey-4 rounded-md pl-1.5 pr-2 py-1 flex items-center gap-px">
+            <IconBase Icon={UnlockFillIcon} size={12} className="text-success" />
 
-export const TezosPayloadContent = PayloadContentHOC<TempleChainKind.Tezos>(TezosOperationView);
+            <span className="text-font-num-bold-10 uppercase">
+              <T id="allowed" />
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </>
+));
 
-export const EvmPayloadContent = PayloadContentHOC<TempleChainKind.EVM>(EvmOperationView);
+const isConfirmOperationsPayload = <T extends TempleChainKind>(
+  payload: DAppPayload<T>
+): payload is DAppOperationsPayload<T> => payload.type === 'confirm_operations';
+
+const PayloadContentHOC = <
+  T extends TempleChainKind,
+  E extends StrictOmit<StringRecord<unknown>, keyof PayloadContentPropsBase<T>>
+>(
+  OperationView: FC<OperationViewPropsBase<T> & E>
+) => {
+  const PayloadContent: FC<PayloadContentPropsBase<T> & { extraProps: E }> = ({
+    network,
+    payload,
+    error,
+    account,
+    formId,
+    onSubmit,
+    openAccountsModal,
+    extraProps
+  }) => (
+    <div className="w-full flex flex-col gap-4">
+      {(() => {
+        if (payload.type === 'connect') {
+          return <ConnectView account={account} openAccountsModal={openAccountsModal} />;
+        }
+
+        if (payload.type === 'sign' || payload.type === 'personal_sign' || payload.type === 'sign_typed') {
+          return <SignPayloadView payload={payload} />;
+        }
+
+        if (isConfirmOperationsPayload(payload)) {
+          return (
+            <OperationView
+              network={network}
+              payload={payload}
+              error={error}
+              formId={formId}
+              onSubmit={onSubmit}
+              {...extraProps}
+            />
+          );
+        }
+
+        if (payload.type === 'add_asset') {
+          return <AddAssetView metadata={payload.metadata} />;
+        }
+
+        if (payload.type === 'add_chain') {
+          return <AddChainView metadata={payload.metadata} />;
+        }
+
+        return null;
+      })()}
+    </div>
+  );
+
+  return PayloadContent;
+};
+
+export const TezosPayloadContent = PayloadContentHOC<
+  TempleChainKind.Tezos,
+  { setTotalFee: SyncFn<number>; setStorageLimit: SyncFn<number> }
+>(TezosTransactionView);
+
+export const EvmPayloadContent = PayloadContentHOC<
+  TempleChainKind.EVM,
+  { setFinalEvmTransaction: ReactSetStateFn<EvmTransactionRequestWithSender> }
+>(EvmTransactionView);

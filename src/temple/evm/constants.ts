@@ -26,7 +26,10 @@ export const evmRpcMethodsNames = {
   wallet_requestPermissions: 'wallet_requestPermissions',
   wallet_revokePermissions: 'wallet_revokePermissions',
   personal_ecRecover: 'personal_ecRecover',
-  eth_chainId: 'eth_chainId'
+  wallet_sendTransaction: 'wallet_sendTransaction',
+  eth_sendTransaction: 'eth_sendTransaction',
+  eth_chainId: 'eth_chainId',
+  eth_gasPrice: 'eth_gasPrice'
 } as const;
 
 export const RETURNED_ACCOUNTS_CAVEAT_NAME = 'restrictReturnedAccounts';

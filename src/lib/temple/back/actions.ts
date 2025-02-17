@@ -7,6 +7,7 @@ import {
   TempleDAppRequest,
   TempleDAppResponse
 } from '@temple-wallet/dapp/dist/types';
+import { TransactionRequest } from 'viem';
 import browser, { Runtime } from 'webextension-polyfill';
 
 import { CUSTOM_TEZOS_NETWORKS_STORAGE_KEY } from 'lib/constants';
@@ -14,10 +15,12 @@ import { BACKGROUND_IS_WORKER } from 'lib/env';
 import { putToStorage } from 'lib/storage';
 import { addLocalOperation } from 'lib/temple/activity';
 import * as Beacon from 'lib/temple/beacon';
+import { buildFinalTezosOpParams } from 'lib/temple/helpers';
 import { TempleState, TempleMessageType, TempleRequest, TempleSettings, TempleAccountType } from 'lib/temple/types';
 import { PromisesQueue, PromisesQueueCounters, delay } from 'lib/utils';
-import { evmRpcMethodsNames, GET_DEFAULT_WEB3_PARAMS_METHOD_NAME } from 'temple/evm/constants';
-import { EvmTxParams } from 'temple/evm/types';
+import { EVMErrorCodes, evmRpcMethodsNames, GET_DEFAULT_WEB3_PARAMS_METHOD_NAME } from 'temple/evm/constants';
+import { ErrorWithCode } from 'temple/evm/types';
+import { parseTransactionRequest } from 'temple/evm/utils';
 import { EvmChain } from 'temple/front';
 import { loadTezosChainId } from 'temple/tezos';
 import { TempleChainKind } from 'temple/types';
@@ -32,7 +35,7 @@ import {
 } from './dapp';
 import { intercom } from './defaults';
 import type { DryRunResult } from './dryrun';
-import { buildFinalOpParams, dryRunOpParams } from './dryrun';
+import { dryRunOpParams } from './dryrun';
 import {
   connectEvm,
   getDefaultWeb3Params,
@@ -46,6 +49,7 @@ import {
   init as initEvm,
   recoverEvmMessageAddress,
   handleEvmRpcRequest,
+  sendEvmTransactionAfterConfirm,
   addChain,
   addAsset
 } from './evm-dapp';
@@ -57,6 +61,7 @@ import {
   ethPersonalSignPayloadValidationSchema,
   ethSignTypedDataValidationSchema,
   personalSignRecoverPayloadValidationSchema,
+  sendTransactionPayloadValidationSchema,
   switchEthChainPayloadValidationSchema
 } from './evm-validation-schemas';
 import {
@@ -115,7 +120,7 @@ export function canInteractWithDApps() {
   return Vault.isExist();
 }
 
-export function sendEvmTransaction(accountPkh: HexString, network: EvmChain, txParams: EvmTxParams) {
+export function sendEvmTransaction(accountPkh: HexString, network: EvmChain, txParams: TransactionRequest) {
   return withUnlocked(async ({ vault }) => {
     return await vault.sendEvmTransaction(accountPkh, network, txParams);
   });
@@ -363,13 +368,14 @@ const promisableUnlock = async (
 
   const stopRequestListening = intercom.onRequest(async (req: TempleRequest, reqPort) => {
     if (reqPort === port && req?.type === TempleMessageType.ConfirmationRequest && req?.id === id) {
-      if (req.confirmed) {
+      const { confirmed, modifiedStorageLimit, modifiedTotalFee } = req;
+      if (confirmed) {
         try {
           const op = await withUnlocked(({ vault }) =>
             vault.sendOperations(
               sourcePkh,
               networkRpc,
-              buildFinalOpParams(opParams, req.modifiedTotalFee, req.modifiedStorageLimit)
+              buildFinalTezosOpParams(opParams, modifiedTotalFee, modifiedStorageLimit)
             )
           );
 
@@ -558,6 +564,16 @@ export async function processEvmDApp(origin: string, payload: EvmRequestPayload,
       const [message, signature] = personalSignRecoverPayloadValidationSchema.validateSync(params);
       methodHandler = () => recoverEvmMessageAddress(message, signature);
       requiresConfirm = false;
+      break;
+    case evmRpcMethodsNames.wallet_sendTransaction:
+    case evmRpcMethodsNames.eth_sendTransaction:
+      let req: TransactionRequest;
+      try {
+        req = parseTransactionRequest(sendTransactionPayloadValidationSchema.validateSync(params)[0]);
+      } catch (e: any) {
+        throw new ErrorWithCode(EVMErrorCodes.INVALID_PARAMS, e.message ?? 'Invalid transaction request');
+      }
+      methodHandler = () => sendEvmTransactionAfterConfirm(origin, chainId, req, iconUrl);
       break;
     default:
       methodHandler = () => handleEvmRpcRequest(origin, payload, chainId);
